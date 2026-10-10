@@ -363,6 +363,37 @@ footer .fl{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
 .sigma .mk{position:absolute;top:8px;width:4px;height:32px;background:var(--fg);border-radius:2px;transform:translateX(-2px)}
 .sigma .lb{position:absolute;top:38px;font-family:var(--mono);font-size:11px;color:var(--muted);transform:translateX(-50%)}
 
+/* ===== v25: pulido profesional ===== */
+:root{--ease:cubic-bezier(.2,.7,.2,1);--shadow-hover:0 6px 18px -8px rgba(22,32,46,.28)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--shadow-hover:0 8px 22px -8px rgba(0,0,0,.6)}}
+:root[data-theme="dark"]{--shadow-hover:0 8px 22px -8px rgba(0,0,0,.6)}
+body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+/* transición entre páginas */
+#app.enter{animation:pageIn .26s var(--ease)}
+@keyframes pageIn{from{opacity:.35;transform:translateY(8px)}to{opacity:1;transform:none}}
+/* menú con indicador deslizante */
+nav.main{position:relative}
+nav.main a[aria-current="page"]{color:var(--accent);background:none}
+nav.main a{transition:color .18s var(--ease),background-color .18s var(--ease)}
+.nav-ind{position:absolute;bottom:-1px;left:0;height:2px;width:0;background:var(--accent);border-radius:2px;transition:transform .28s var(--ease),width .28s var(--ease),opacity .2s;pointer-events:none;opacity:0}
+/* micro-interacciones */
+.cat,.q,.case-card,.tpl,.post,.card,.cl .links a,.idx section,.slide{transition:border-color .18s var(--ease),box-shadow .22s var(--ease),transform .22s var(--ease)}
+.cat:hover,.case-card:hover,.tpl:hover,.post:hover,.slide:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover)}
+.q .arrow{display:inline-block;transition:transform .2s var(--ease)}
+.q:hover .arrow{transform:translateX(4px)}
+.cat .ic{transition:transform .22s var(--ease),background-color .18s}
+.cat:hover .ic{transform:scale(1.08)}
+.btn,.theme-btn,.choice button,.opt,.cat{transition:transform .12s var(--ease),border-color .18s var(--ease),color .18s,background-color .18s}
+.btn:active,.theme-btn:active,.choice button:active,.opt:active:not([disabled]),.cat:active{transform:scale(.97)}
+.read{display:inline-block;transition:transform .2s var(--ease)}
+.read:hover{transform:translateX(3px)}
+/* ritmo tipográfico */
+.page h1,.fhead h1,.article h1{letter-spacing:-.022em}
+.hero h1{letter-spacing:-.03em;line-height:1.02}
+.lead{text-wrap:pretty}
+.kpi .v,.score,.statline b{font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion:reduce){#app.enter{animation:none}.nav-ind{transition:none}.cat:hover,.case-card:hover,.tpl:hover,.post:hover,.slide:hover{transform:none}.q:hover .arrow,.read:hover,.cat:hover .ic{transform:none}}
 /* ===== v22: contacto ===== */
 .li-btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none}
 .trust{display:flex;flex-wrap:wrap;align-items:center;gap:6px 22px;padding:14px 18px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
@@ -453,6 +484,7 @@ pre.code{margin:0;padding:44px 16px 16px;overflow-x:auto;font-family:var(--mono)
       <a href="#plantillas" data-nav="plantillas">Plantillas</a>
       <a href="#radar" data-nav="radar">Radar industrial</a>
       <a href="#autor" data-nav="autor">Sobre el autor</a>
+      <span class="nav-ind" aria-hidden="true"></span>
     </nav>
     <button class="theme-btn" id="theme-btn" type="button" aria-label="Cambiar tema"></button>
   </header>
@@ -1056,7 +1088,7 @@ function viewHome(){
   return `
   <section class="hero"><div class="hero-in">
     <div class="hero-top"><div>
-    <span class="slogan">De la duda al cálculo, en un solo lugar</span>
+    <span class="slogan">De la duda al cálculo, con criterio</span>
     <h1>¿Qué necesitas resolver?</h1>
     <p class="sub">Encuentra la herramienta, entiende la fórmula y aplícala con un ejemplo.</p>
     </div>${heroChart()}</div>
@@ -2419,6 +2451,14 @@ let theme='auto'; try{ theme=localStorage.getItem('it-theme')||'auto'; }catch(_)
 if(!THEMES.includes(theme)) theme='auto';
 applyTheme(theme);
 $('#theme-btn').addEventListener('click',()=>{ const t=THEMES[(THEMES.indexOf($('#theme-btn').dataset.t)+1)%3]; applyTheme(t); try{localStorage.setItem('it-theme',t)}catch(_){} toast('Tema: '+THEME_LABEL[t].toLowerCase()); });
+function moveNavInd(){
+  const ind=document.querySelector('.nav-ind'), a=document.querySelector('nav.main a[aria-current="page"]');
+  if(!ind) return;
+  if(!a){ ind.style.opacity='0'; return; }
+  ind.style.width=a.offsetWidth-20+'px'; ind.style.transform=`translateX(${a.offsetLeft+10}px)`; ind.style.opacity='1';
+}
+window.addEventListener('resize',moveNavInd);
+document.fonts&&document.fonts.ready&&document.fonts.ready.then(moveNavInd);
 function render(){
   const h=(location.hash||'#inicio').slice(1), app=$('#app');
   let nav='';
@@ -2437,6 +2477,8 @@ function render(){
   else if(h==='creditos'){app.innerHTML=viewCreditos()}
   else { app.innerHTML=viewHome(); animateHero(); }
   document.querySelectorAll('nav.main a').forEach(a=>{ if(a.dataset.nav===nav) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
+  moveNavInd();
+  if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){ app.classList.remove('enter'); void app.offsetWidth; app.classList.add('enter'); }
   window.scrollTo(0,0);
 }
 document.addEventListener('click',e=>{
