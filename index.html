@@ -363,6 +363,13 @@ footer .fl{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
 .sigma .mk{position:absolute;top:8px;width:4px;height:32px;background:var(--fg);border-radius:2px;transform:translateX(-2px)}
 .sigma .lb{position:absolute;top:38px;font-family:var(--mono);font-size:11px;color:var(--muted);transform:translateX(-50%)}
 
+/* ===== v15: código ===== */
+.codebox{position:relative;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.codebox .btn{position:absolute;top:8px;right:8px}
+pre.code{margin:0;padding:44px 16px 16px;overflow-x:auto;font-family:var(--mono);font-size:13px;line-height:1.55;color:var(--fg)}
+.article code{font-family:var(--mono);font-size:.9em;background:var(--sunk);padding:1px 5px;border-radius:4px}
+.article pre code{background:none;padding:0;font-size:inherit}
+.pend{color:var(--warn);font-style:italic}
 /* ===== v10: presentación ===== */
 .pres{display:block;width:100%;height:clamp(560px,82vh,860px);border:1px solid var(--line);border-radius:12px;background:#f5f7fb}
 /* ===== v9: leyenda y datos accesibles ===== */
@@ -1274,9 +1281,74 @@ const POSTS=[
 <div class="opinion"><span class="label">Opinión del autor</span><p>En cursos introductorios es común calcular los límites con la desviación de los datos, porque los alumnos ya la conocen y, con un proceso estable, el resultado se parece. Creo que vale la pena enseñar los dos métodos lado a lado: la diferencia entre ellos es, en sí misma, una señal de que algo cambió.</p></div>
 <h2>Regla práctica</h2>
 <ol><li>Para gráficas de individuales, estima σ con MR̄ / 1.128.</li><li>Usa la desviación global para describir el desempeño (Pp, Ppk), no para trazar límites.</li><li>Si s es bastante mayor que MR̄ / 1.128, sospecha un cambio en el proceso y revisa la gráfica con reglas de rachas.</li></ol>`},
-  {id:'experimento', k:'probamos', f:'Lo probamos', t:'Hice el experimento: ¿soy un proceso estable?',
-   d:'Mis 20 tiempos de reacción, mi gráfica I-MR y lo que aprendí. Con datos reales del autor y, si se puede, del grupo.',
-   l:'imr', fecha:'—', status:'pending', refs:[]},
+  {id:'excel-minitab-python', k:'probamos', f:'Lo probamos', t:'La misma gráfica I-MR en Excel, Minitab y Python',
+   d:'Los mismos 25 datos de la línea de llenado en tres herramientas. Qué resultado debe salir, cómo se hace en cada una y qué tanto trabajo exige.',
+   l:'imr', fecha:'Octubre de 2026', status:'test',
+   refs:['NIST/SEMATECH e-Handbook of Statistical Methods, sec. 6.3.2.2. <a href="https://www.itl.nist.gov/div898/handbook/pmc/section3/pmc322.htm" target="_blank" rel="noopener">Individuals control charts</a>.','Minitab. Ayuda de Minitab: I-MR Chart, métodos y fórmulas.','<a href="https://colab.research.google.com/" target="_blank" rel="noopener">Google Colab</a>: entorno gratuito para ejecutar Python en el navegador.'],
+   body:`<p class="lead">Misma pregunta, mismos 25 datos, tres herramientas: ¿el proceso de llenado es estable? Antes de comparar qué tan fácil es cada una, hay que saber qué resultado debe salir.</p>
+<h2>El resultado que debe salir</h2>
+<p>Con los 25 volúmenes de la <a href="#f-imr">ficha I-MR</a>, cualquier herramienta bien usada debe dar:</p>
+<div class="tscroll"><table class="etable"><thead><tr><th>Valor</th><th style="text-align:right">Resultado</th></tr></thead><tbody>
+<tr><td>Media (línea central)</td><td class="out">501.38 ml</td></tr><tr><td>Rango móvil promedio (MR̄)</td><td class="out">1.17 ml</td></tr>
+<tr><td>Límite de control superior (LCS)</td><td class="out">504.49 ml</td></tr><tr><td>Límite de control inferior (LCI)</td><td class="out">498.27 ml</td></tr>
+<tr><td>LCS de la gráfica MR</td><td class="out">3.83 ml</td></tr><tr><td>Puntos fuera de control</td><td class="out">Ninguno</td></tr></tbody></table></div>
+<p>Si tu herramienta da otros números, revisa primero que los datos estén en orden de producción y cómo se estimó σ. Los datos están en <a href="#plantillas">Plantillas</a>.</p>
+<h2>En Excel</h2>
+<ol><li>Pega los 25 datos en la columna A, de A2 a A26.</li><li>En B3 escribe <code>=ABS(A3-A2)</code> y cópiala hasta B26: son los rangos móviles.</li><li>Calcula la media con <code>=PROMEDIO(A2:A26)</code> y el rango móvil promedio con <code>=PROMEDIO(B3:B26)</code>.</li><li>Calcula LCS = media + 2.66 × MR̄ y LCI = media − 2.66 × MR̄.</li><li>Haz columnas con la media, el LCS y el LCI repetidos en cada fila, e inserta un gráfico de líneas con los datos y esas tres columnas.</li></ol>
+<p><span class="fact">Hecho</span> Excel no tiene un tipo de gráfica de control: todo se arma a mano, y no marca solo los puntos fuera ni las rachas. Según tu configuración regional, el separador de argumentos puede ser coma o punto y coma.</p>
+<h2>En Minitab</h2>
+<ol><li>Pega los datos en una columna.</li><li>Menú <strong>Estadísticas → Gráficas de control → Gráficas de variables para individuos → I-MR</strong> (en inglés: <em>Stat → Control Charts → Variables Charts for Individuals → I-MR</em>).</li><li>Selecciona la columna y acepta.</li><li>Para activar las reglas de rachas, entra a <strong>Opciones → Pruebas</strong>.</li></ol>
+<p><span class="fact">Hecho</span> Minitab calcula la gráfica completa, I y MR, y por defecto estima σ con el rango móvil promedio, igual que esta página. Los nombres exactos de los menús pueden variar según la versión.</p>
+<h2>En Python (Google Colab)</h2>
+<p>Copia el código en una celda de Colab y ejecútalo. Solo usa Python básico y matplotlib, que Colab ya trae instalado.</p>
+<div class="codebox"><button class="btn" data-copycode>Copiar código</button><pre class="code"><code>import matplotlib.pyplot as plt
+
+# Volumen de llenado (ml) en orden de producción: datos de Industrial Toolkit
+datos = [501.3, 501.8, 500.8, 501.7, 502.3, 501.8, 503.0, 500.3, 501.4, 500.5,
+         500.4, 501.1, 501.5, 501.8, 501.9, 503.8, 502.2, 499.5, 501.5, 500.6,
+         500.7, 502.7, 501.1, 499.2, 501.6]
+
+# 1. Rangos móviles: diferencia absoluta entre datos consecutivos
+mr = [abs(datos[i] - datos[i - 1]) for i in range(1, len(datos))]
+
+# 2. Línea central y límites de control
+media = sum(datos) / len(datos)
+mr_prom = sum(mr) / len(mr)
+lcs, lci = media + 2.66 * mr_prom, media - 2.66 * mr_prom
+lcs_mr = 3.267 * mr_prom
+
+# 3. Puntos fuera de control
+fuera = [i + 1 for i, x in enumerate(datos) if x &gt; lcs or x &lt; lci]
+print(f&quot;Media {media:.2f} | MR prom. {mr_prom:.2f} | LCS {lcs:.2f} | LCI {lci:.2f} | LCS MR {lcs_mr:.2f}&quot;)
+print(&quot;Puntos fuera de control:&quot;, fuera or &quot;ninguno&quot;)
+
+# 4. Gráficas I y MR
+obs = range(1, len(datos) + 1)
+fig, (g1, g2) = plt.subplots(2, 1, figsize=(8, 6), sharex=True)
+g1.plot(obs, datos, marker=&quot;o&quot;)
+g1.axhline(media, color=&quot;green&quot;)
+for limite in (lcs, lci):
+    g1.axhline(limite, color=&quot;red&quot;, linestyle=&quot;--&quot;)
+g1.set_title(&quot;Gráfica I&quot;)
+g2.plot(obs[1:], mr, marker=&quot;o&quot;)
+g2.axhline(mr_prom, color=&quot;green&quot;)
+g2.axhline(lcs_mr, color=&quot;red&quot;, linestyle=&quot;--&quot;)
+g2.set_title(&quot;Gráfica MR&quot;)
+g2.set_xlabel(&quot;Observación&quot;)
+plt.tight_layout()
+plt.show()</code></pre></div>
+<p>Al ejecutarlo debe imprimir: <code>Media 501.38 | MR prom. 1.17 | LCS 504.49 | LCI 498.27 | LCS MR 3.83</code> y "Puntos fuera de control: ninguno", además de las dos gráficas.</p>
+<h2>Comparación</h2>
+<div class="tscroll"><table class="etable"><thead><tr><th>Criterio</th><th>Excel</th><th>Minitab</th><th>Python</th></tr></thead><tbody>
+<tr><td>Costo</td><td>Incluido en Microsoft 365</td><td>Licencia de pago</td><td>Gratuito (Colab)</td></tr>
+<tr><td>Gráfica de control lista</td><td>No, se arma a mano</td><td>Sí, desde el menú</td><td>No, se programa</td></tr>
+<tr><td>Reglas de rachas</td><td>Manuales</td><td>Integradas</td><td>Se programan</td></tr>
+<tr><td>Repetir con datos nuevos</td><td>Pegar y revisar fórmulas</td><td>Repetir el menú</td><td>Volver a ejecutar</td></tr>
+<tr><td>Tiempo que me tomó</td><td><span class="pend">Pendiente: prueba del autor</span></td><td><span class="pend">Pendiente: prueba del autor</span></td><td><span class="pend">Pendiente: prueba del autor</span></td></tr>
+<tr><td>Lo más difícil</td><td><span class="pend">Pendiente: prueba del autor</span></td><td><span class="pend">Pendiente: prueba del autor</span></td><td><span class="pend">Pendiente: prueba del autor</span></td></tr></tbody></table></div>
+<div class="opinion"><span class="label">Resultado del autor</span><p><span class="pend">Pendiente: aquí van mis tiempos, lo que me costó trabajo en cada herramienta y cuál recomiendo según la situación.</span></p></div>
+<h2>Lo que ya se puede decir</h2>
+<p>Las tres herramientas dan los mismos límites si se usa el rango móvil promedio. La diferencia está en cuánto trabajo manual exigen y en qué tan fácil es equivocarse. En Excel, por ejemplo, es tentador calcular los límites con <code>DESVEST</code>, que usa la desviación de todos los datos; ya vimos <a href="#post-limites">por qué eso esconde los cambios del proceso</a>.</p>`},
   {id:'sigma', k:'cambio', f:'Del concepto a la práctica', t:'¿De dónde sale el 3.4 por millón de Seis Sigma?',
    d:'Una normal a ±6σ deja unas 2 partes por mil millones fuera, no 3.4 por millón. La diferencia es una convención: el desplazamiento de 1.5σ.',
    l:'dpmo', fecha:'Octubre de 2026', status:'review', widget:'sigma',
@@ -1303,7 +1375,7 @@ const POSTS=[
 <h2>Regla práctica</h2>
 <ol><li>Cuando leas "3.4 DPMO", recuerda que incluye un desplazamiento supuesto de 1.5σ.</li><li>Al reportar un nivel sigma, aclara si sumaste el 1.5.</li><li>Para decisiones sobre tu proceso, usa sus datos: DPMO observado, Ppk y gráficas de control.</li></ol>`}
 ];
-const POST_STATUS={review:['todo','Borrador: revisión del autor'],pending:['todo','Pendiente: faltan datos del autor'],pub:['free','Publicado']};
+const POST_STATUS={review:['todo','Borrador: revisión del autor'],pending:['todo','Pendiente: faltan datos del autor'],test:['todo','Pendiente: falta la prueba del autor'],pub:['free','Publicado']};
 const readMin=p=>p.body?Math.max(1,Math.round(p.body.replace(/<[^>]+>/g,' ').split(/\s+/).length/200)):null;
 function viewRadar(){
   return `<div class="wrap page"><div><h1>Radar industrial</h1><p class="lead">Novedades y explicaciones útiles para el ingeniero industrial. Cada publicación lleva fuentes y fechas, separa hechos de opiniones y enlaza a una herramienta de la página.</p></div>
@@ -1485,7 +1557,7 @@ const REQS=[
   ['Dos presentaciones','mid','1 de 2 lista: ¿Qué gráfica de control uso? Falta el pitch del proyecto.','#presentacion'],
   ['Al menos un video inédito','no','Guion por capítulos listo; falta grabarlo','#autor'],
   ['Noticias relacionadas','mid','3 noticias con fuentes y fecha (Gartner, IED en México, visión con IA), en revisión del autor','#radar'],
-  ['Al menos 3 posts propios','mid','Dos escritos en revisión; el tercero espera los datos del experimento','#radar'],
+  ['Al menos 3 posts propios','mid','3 escritos: 2 en revisión y 1 que espera la prueba del autor en Excel y Minitab','#radar'],
   ['Contador de visitas','ok','Contador real en la página publicada (servicio hits.sh)','#creditos'],
   ['Licencia Creative Commons','ok','CC BY-NC-SA 4.0 en el pie de página','#creditos'],
   ['Citar fuentes e imágenes','ok','Referencias en cada ficha y página de créditos','#creditos']];
@@ -2285,6 +2357,8 @@ document.addEventListener('click',e=>{
     if(a.solved) return; a.picked.push(i); a.last=i; if(a.first===null) a.first=!!st.o[i][1]; if(st.o[i][1]) a.solved=true; renderCase(); }
   if(e.target.closest('[data-case-next]')){ caseState.step++; renderCase(); }
   if(e.target.closest('[data-case-restart]')){ caseState={id:caseState.id,step:0,ans:[]}; renderCase(); }
+  const cc=e.target.closest('[data-copycode]');
+  if(cc){ copyText(cc.parentElement.querySelector('pre').innerText); }
   const cp=e.target.closest('[data-copy]');
   if(cp){ const t=PLANTILLAS.find(x=>x.id===cp.dataset.copy); copyText([t.h.join('\t'),...t.r().map(r=>r.join('\t'))].join('\n')); }
   if(e.target.closest('#sug-btn')){ const s=$('#sug'); toast(s.value.trim()?'En el sitio publicado, tu sugerencia se guardaría aquí.':'Escribe tu pregunta primero.'); }
