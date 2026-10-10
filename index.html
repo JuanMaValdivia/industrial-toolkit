@@ -424,7 +424,7 @@ footer .fl{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
     <div class="fl"><span>Juan Manuel Valdivia Mendoza · Ingeniería industrial, BI y optimización</span></div>
     <div class="fl">
       <span title="Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0"><span class="cc"><i>cc</i><i>by</i><i>nc</i><i>sa</i></span> CC BY-NC-SA 4.0</span>
-      <span>Visitas <span class="odo" id="visits"></span></span>
+      <span id="visits-wrap">Visitas <span class="odo" id="visits"></span></span>
       <a href="#proyecto">Acerca del proyecto</a>
       <a href="#creditos">Créditos</a>
     </div>
@@ -1486,7 +1486,7 @@ const REQS=[
   ['Al menos un video inédito','no','Guion por capítulos listo; falta grabarlo','#autor'],
   ['Noticias relacionadas','mid','3 noticias con fuentes y fecha (Gartner, IED en México, visión con IA), en revisión del autor','#radar'],
   ['Al menos 3 posts propios','mid','Dos escritos en revisión; el tercero espera los datos del experimento','#radar'],
-  ['Contador de visitas','mid','Visual listo; en producción necesita un servicio real','#proyecto'],
+  ['Contador de visitas','ok','Contador real en la página publicada (servicio hits.sh)','#creditos'],
   ['Licencia Creative Commons','ok','CC BY-NC-SA 4.0 en el pie de página','#creditos'],
   ['Citar fuentes e imágenes','ok','Referencias en cada ficha y página de créditos','#creditos']];
 function viewProyecto(){
@@ -1504,6 +1504,7 @@ function viewCreditos(){
     <div class="card"><span class="label">Licencia</span><div class="cc" style="gap:6px"><i style="width:34px;height:34px;font-size:12px">cc</i><i style="width:34px;height:34px;font-size:12px">by</i><i style="width:34px;height:34px;font-size:12px">nc</i><i style="width:34px;height:34px;font-size:12px">sa</i></div>
       <p>Puedes compartir y adaptar las fichas y artículos citando al autor, sin uso comercial y con la misma licencia. Las plantillas premium no están bajo esta licencia.</p></div>
     <div class="card"><span class="label">Imágenes</span><p>Fotografía del autor: proporcionada por el autor. Las gráficas e ilustraciones se generan en la página con datos ficticios. Si se agregan fotos o imágenes externas, se citarán aquí con autor, fuente y licencia.</p></div>
+    <div class="card"><span class="label">Contador de visitas</span><p>En la página publicada, el contador usa el servicio externo hits.sh, que registra cada carga de la página. Para mostrar el número, tu navegador hace una petición a ese servicio externo.</p></div>
     <div class="card"><span class="label">Fuentes principales</span><ul><li>NIST/SEMATECH e-Handbook of Statistical Methods</li><li>ASQ, Quality Tools</li><li>Montgomery, Introduction to Statistical Quality Control</li><li>Russell y Taylor, Operations Management</li><li>Chase y Jacobs, Administración de operaciones</li></ul></div>
   </div></div>`;
 }
@@ -2290,7 +2291,8 @@ document.addEventListener('click',e=>{
 });
 window.addEventListener('hashchange',()=>{ if(!location.hash.startsWith('#caso-')) caseState=null; clearTimeout(XP.timer); if(XP.phase==='wait'||XP.phase==='go') XP.phase='idle'; render(); });
 document.addEventListener('keydown',e=>{ if(location.hash==='#experimento'&&e.key===' '&&document.activeElement.tagName!=='INPUT'&&document.activeElement.id!=='xp'){ e.preventDefault(); xpPress(); } });
-(function(){ let v=1; try{ v=(+localStorage.getItem('it-visits')||0)+1; localStorage.setItem('it-visits',v); }catch(_){}
+(function(){ if(/(^|\.)github\.io$/.test(location.hostname)){ $('#visits-wrap').innerHTML='<img src="https://hits.sh/juanmavaldivia.github.io/industrial-toolkit.svg?label=Visitas&amp;color=1f5fd1&amp;labelColor=16202e" alt="Contador de visitas" height="20" style="vertical-align:middle;display:inline-block">'; return; }
+  let v=1; try{ v=(+localStorage.getItem('it-visits')||0)+1; localStorage.setItem('it-visits',v); }catch(_){}
   $('#visits').innerHTML=String(v).padStart(5,'0').split('').map(d=>`<b>${d}</b>`).join('');
   $('#visits').title='Contador de demostración: solo cuenta en este navegador'; })();
 render();
