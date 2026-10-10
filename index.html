@@ -363,6 +363,30 @@ footer .fl{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
 .sigma .mk{position:absolute;top:8px;width:4px;height:32px;background:var(--fg);border-radius:2px;transform:translateX(-2px)}
 .sigma .lb{position:absolute;top:38px;font-family:var(--mono);font-size:11px;color:var(--muted);transform:translateX(-50%)}
 
+/* ===== v20: animaciones y tema ===== */
+.hero-top{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:32px;align-items:center}
+@media (max-width:820px){.hero-top{grid-template-columns:1fr;gap:20px}}
+.hero-chart{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px 10px;max-width:420px;width:100%;justify-self:end}
+@media (max-width:820px){.hero-chart{justify-self:start;max-width:520px}}
+@media (max-width:560px){.hero-chart{display:none}}
+.hero-chart .hc-top{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+.hero-chart svg{display:block;width:100%;height:auto;margin-top:6px}
+.hero-chart svg text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
+.hc-flag{font-size:12px;font-weight:700;letter-spacing:0;text-transform:none;padding:2px 8px;border-radius:999px;background:var(--bad-soft);color:var(--bad);transition:opacity .3s}
+.hc-pt{transition:opacity .2s}
+.hc-pt.hide{opacity:0}
+.hc-out{transform-box:fill-box;transform-origin:center}
+.hc-out.pulse{animation:hcpulse .9s ease-out 2}
+@keyframes hcpulse{0%{transform:scale(1)}40%{transform:scale(1.8)}100%{transform:scale(1)}}
+.verdict.changed{animation:vchange .7s ease-out}
+.verdict.changed .light{animation:lightpop .5s ease-out}
+@keyframes vchange{from{background:var(--from-bg)}}
+@keyframes lightpop{0%{transform:scale(1)}45%{transform:scale(1.6)}100%{transform:scale(1)}}
+.theme-btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+.theme-btn:hover{border-color:var(--accent);color:var(--accent)}
+.theme-btn svg{width:16px;height:16px}
+@media (max-width:640px){.theme-btn{order:2}nav.main{order:3}}
+@media (prefers-reduced-motion:reduce){.verdict.changed,.verdict.changed .light,.hc-out.pulse{animation:none}}
 /* ===== v15: código ===== */
 .codebox{position:relative;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
 .codebox .btn{position:absolute;top:8px;right:8px}
@@ -423,6 +447,7 @@ pre.code{margin:0;padding:44px 16px 16px;overflow-x:auto;font-family:var(--mono)
       <a href="#radar" data-nav="radar">Radar industrial</a>
       <a href="#autor" data-nav="autor">Sobre el autor</a>
     </nav>
+    <button class="theme-btn" id="theme-btn" type="button" aria-label="Cambiar tema"></button>
   </header>
 </div>
 <main id="app"></main>
@@ -1022,9 +1047,11 @@ function caseThumb(kind){
 function viewHome(){
   return `
   <section class="hero"><div class="hero-in">
+    <div class="hero-top"><div>
     <span class="slogan">De la duda al cálculo, en un solo lugar</span>
     <h1>¿Qué necesitas resolver?</h1>
     <p class="sub">Encuentra la herramienta, entiende la fórmula y aplícala con un ejemplo.</p>
+    </div>${heroChart()}</div>
     <div class="cats" role="group" aria-label="Categorías">
       ${CATS.map(c=>`<button class="cat" data-cat="${c.id}" aria-pressed="${c.id===currentCat}">
         <span class="ic">${icon(c.id)}</span><span><strong>${c.name}</strong><span class="d">${c.d}</span></span></button>`).join('')}
@@ -2332,6 +2359,55 @@ function fishSVG(ef,c){
 /* ============================================================
    ENRUTADOR
    ============================================================ */
+const HERO_PTS=[501.3,501.8,500.8,501.7,502.3,501.8,500.3,501.4,500.5,501.1,501.9,500.6,501.5,505.6];
+function heroChart(){
+  const W=380,H=170,L=8,R=46,T=12,B=20,pw=W-L-R,ph=H-T-B,lo=497.4,hi=506.2,cl=501.3,ucl=504.6,lcl=498.0;
+  const xs=i=>L+i/(HERO_PTS.length-1)*pw, ys=v=>T+ph-(v-lo)/(hi-lo)*ph, last=HERO_PTS.length-1;
+  let s=`<div class="hero-chart" aria-hidden="true"><div class="hc-top"><span>Proceso en el tiempo</span><span class="hc-flag" id="hc-flag">Punto fuera de control</span></div><svg viewBox="0 0 ${W} ${H}">`;
+  [[ucl,'LCS'],[lcl,'LCI']].forEach(([v,t])=>s+=`<line x1="${L}" x2="${L+pw}" y1="${ys(v)}" y2="${ys(v)}" stroke="var(--bad)" stroke-dasharray="5 4"/><text x="${L+pw+6}" y="${ys(v)+4}">${t}</text>`);
+  s+=`<line x1="${L}" x2="${L+pw}" y1="${ys(cl)}" y2="${ys(cl)}" stroke="var(--accent)"/><text x="${L+pw+6}" y="${ys(cl)+4}">LC</text>`;
+  s+=`<polyline id="hc-line" fill="none" stroke="var(--muted)" stroke-width="1.5" points="${HERO_PTS.map((v,i)=>`${xs(i)},${ys(v)}`).join(' ')}"/>`;
+  HERO_PTS.forEach((v,i)=>s+=`<circle class="hc-pt${i===last?' hc-out':''}" cx="${xs(i)}" cy="${ys(v)}" r="${i===last?5.5:3.5}" fill="${i===last?'var(--bad)':'var(--fg)'}"/>`);
+  return s+`<text x="${L}" y="${H-4}">muestra 1</text><text x="${L+pw}" y="${H-4}" text-anchor="end">muestra ${HERO_PTS.length}</text></svg></div>`;
+}
+let heroPlayed=false;
+function animateHero(){
+  const rm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(heroPlayed||rm) return; heroPlayed=true;
+  const pts=[...document.querySelectorAll('.hc-pt')], line=$('#hc-line'), flag=$('#hc-flag');
+  if(!pts.length||!line) return;
+  const all=line.getAttribute('points').split(' ');
+  pts.forEach(p=>p.classList.add('hide')); flag.style.opacity='0'; line.setAttribute('points','');
+  let i=0;
+  const step=()=>{ if(!document.body.contains(line)) return;
+    pts[i].classList.remove('hide'); line.setAttribute('points',all.slice(0,i+1).join(' '));
+    i++;
+    if(i<pts.length) setTimeout(step,i===pts.length-1?520:150);
+    else { flag.style.opacity='1'; pts[pts.length-1].classList.add('pulse'); } };
+  setTimeout(step,250);
+}
+/* Semáforo: anima el cambio de estado de cada calculadora */
+const verdictState=new WeakMap();
+new MutationObserver(()=>{ document.querySelectorAll('#app .verdict').forEach(v=>{
+  const root=v.closest('.calc')||v.parentElement, cls=['v-ok','v-warn','v-bad'].find(c=>v.classList.contains(c));
+  const prev=verdictState.get(root);
+  if(prev&&prev.cls!==cls&&prev.el!==v){ v.style.setProperty('--from-bg',`var(--${prev.cls==='v-ok'?'ok':prev.cls==='v-warn'?'warn':'bad'}-soft)`); v.classList.add('changed'); }
+  if(!prev||prev.el!==v) verdictState.set(root,{cls,el:v});
+}); }).observe(document.getElementById('app'),{childList:true,subtree:true});
+/* Tema: automático, claro u oscuro */
+const THEMES=['auto','light','dark'], hostTheme=document.documentElement.getAttribute('data-theme');
+const THEME_ICON={auto:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg>',light:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',dark:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>'};
+const THEME_LABEL={auto:'Automático',light:'Claro',dark:'Oscuro'};
+function applyTheme(t){
+  const r=document.documentElement;
+  if(t==='auto'){ if(hostTheme) r.setAttribute('data-theme',hostTheme); else r.removeAttribute('data-theme'); }
+  else r.setAttribute('data-theme',t);
+  const b=$('#theme-btn'); b.innerHTML=THEME_ICON[t]+'<span>'+THEME_LABEL[t]+'</span>'; b.setAttribute('aria-label','Tema: '+THEME_LABEL[t]+'. Cambiar tema'); b.dataset.t=t;
+}
+let theme='auto'; try{ theme=localStorage.getItem('it-theme')||'auto'; }catch(_){}
+if(!THEMES.includes(theme)) theme='auto';
+applyTheme(theme);
+$('#theme-btn').addEventListener('click',()=>{ const t=THEMES[(THEMES.indexOf($('#theme-btn').dataset.t)+1)%3]; applyTheme(t); try{localStorage.setItem('it-theme',t)}catch(_){} toast('Tema: '+THEME_LABEL[t].toLowerCase()); });
 function render(){
   const h=(location.hash||'#inicio').slice(1), app=$('#app');
   let nav='';
@@ -2348,7 +2424,7 @@ function render(){
   else if(h==='presentacion'){app.innerHTML=viewPresentacion();nav='herramientas'}
   else if(h==='proyecto'){app.innerHTML=viewProyecto()}
   else if(h==='creditos'){app.innerHTML=viewCreditos()}
-  else { app.innerHTML=viewHome(); }
+  else { app.innerHTML=viewHome(); animateHero(); }
   document.querySelectorAll('nav.main a').forEach(a=>{ if(a.dataset.nav===nav) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
   window.scrollTo(0,0);
 }
