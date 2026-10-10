@@ -841,31 +841,31 @@ const CASOS = {
 
 /* Plantillas: vista previa + datos copiables. Descargas reales en la versión publicada. */
 const PLANTILLAS = [
-  {id:'xbarr', n:'Gráfica X̄-R con constantes', f:'xbarr', fmt:'XLSX', p:'free', d:'20 subgrupos de 5; calcula medias, rangos y límites con la tabla de constantes.',
+  {id:'xbarr', file:'x-r.xlsx', n:'Gráfica X̄-R con constantes', f:'xbarr', fmt:'XLSX', p:'free', d:'20 subgrupos de 5; calcula medias, rangos y límites con la tabla de constantes.',
    h:['Subgrupo','x1','x2','x3','x4','x5'], r:()=>XR_BASE.map((g,i)=>[i+1,...g])},
-  {id:'van', n:'VAN, TIR y recuperación', f:'van', fmt:'XLSX', p:'free', d:'Flujos por año con VAN, TIR y periodo de recuperación descontado.',
+  {id:'van', file:'van-tir.xlsx', n:'VAN, TIR y recuperación', f:'van', fmt:'XLSX', p:'free', d:'Flujos por año con VAN, TIR y periodo de recuperación descontado.',
    h:['Año','Flujo','Flujo descontado (12 %)'], r:()=>[[0,-VAN_EJ.I,-VAN_EJ.I],...VAN_EJ.f.map((F,t)=>[t+1,F,Math.round(F/Math.pow(1.12,t+1))])]},
-  {id:'pizza', n:'Datos del caso pizzería (DMAIC)', f:'comparar', fmt:'CSV', p:'free', d:'Los 40 tiempos por horno y los 20 tiempos después de la mejora, para practicar en Excel, Minitab o Python.',
+  {id:'pizza', file:'datos-pizzeria-dmaic.csv', n:'Datos del caso pizzería (DMAIC)', f:'comparar', fmt:'CSV', p:'free', d:'Los 40 tiempos por horno y los 20 tiempos después de la mejora, para practicar en Excel, Minitab o Python.',
    h:['Pizza','Horno','Minutos','Después de la mejora (horno B)'], r:()=>PZ_A.flatMap((v,i)=>[[2*i+1,'A',v,''],[2*i+2,'B',PZ_B[i],PZ_AFTER[i]]])},
-  {id:'gantt', n:'Gantt + ruta crítica', f:'ruta', fmt:'XLSX', p:'free', d:'Captura actividades y predecesoras; calcula holguras y colorea la ruta crítica.',
+  {id:'gantt', file:'gantt-ruta-critica.xlsx', n:'Gantt + ruta crítica', f:'ruta', fmt:'XLSX', p:'free', d:'Captura actividades y predecesoras; calcula holguras y colorea la ruta crítica.',
    h:['ID','Actividad','Días','Predecesoras','IC','TC','Holgura'], r:()=>{const c=cpm(PROYECTO.map(a=>({id:a[0],n:a[1],d:a[2],p:a[3]})));return c.rows.map(a=>[a.id,a.n,a.d,a.p,a.es,a.ef,a.slack])}},
-  {id:'cpk', n:'I-MR + Cp/Cpk con validaciones', f:'cpk', fmt:'XLSX', p:'free', d:'Pega tus datos; la hoja revisa estabilidad antes de mostrar Cpk.',
+  {id:'cpk', file:'i-mr-cpk.xlsx', n:'I-MR + Cp/Cpk con validaciones', f:'cpk', fmt:'XLSX', p:'free', d:'Pega tus datos; la hoja revisa estabilidad antes de mostrar Cpk.',
    h:['Obs','Volumen (ml)','MR'], r:()=>STABLE.map((v,i)=>[i+1,v,i?Math.abs(v-STABLE[i-1]).toFixed(1):''])},
-  {id:'verif', n:'Hoja de verificación de defectos', f:'pareto', fmt:'XLSX', p:'free', d:'Registro diario por tipo de defecto, listo para alimentar el Pareto.',
+  {id:'verif', file:'hoja-verificacion.xlsx', n:'Hoja de verificación de defectos', f:'pareto', fmt:'XLSX', p:'free', d:'Registro diario por tipo de defecto, listo para alimentar el Pareto.',
    h:['Defecto','Lun','Mar','Mié','Jue','Vie','Total'], r:()=>[['Sobrellenado',9,11,10,8,10,48],['Tapa floja',6,7,5,6,7,31],['Etiqueta chueca',2,3,2,3,2,12],['Rayón',1,2,1,1,1,6],['Otro',1,0,1,0,1,3]]},
-  {id:'pareto', n:'Pareto automático', f:'pareto', fmt:'XLSX', p:'free', d:'Ordena categorías, calcula el acumulado y dibuja la gráfica.',
+  {id:'pareto', file:'pareto.xlsx', n:'Pareto automático', f:'pareto', fmt:'XLSX', p:'free', d:'Ordena categorías, calcula el acumulado y dibuja la gráfica.',
    h:['Categoría','Frecuencia','%','% acumulado'], r:()=>{let a=0;return PARETO.map(([k,v])=>{a+=v;return [k,v,v+'%',a+'%']})}},
-  {id:'eoq', n:'EOQ y costo total', f:'eoq', fmt:'XLSX', p:'free', d:'Calcula el lote económico y la curva de costo total.',
+  {id:'eoq', file:'eoq.xlsx', n:'EOQ y costo total', f:'eoq', fmt:'XLSX', p:'free', d:'Calcula el lote económico y la curva de costo total.',
    h:['Parámetro','Valor','Unidad'], r:()=>[['Demanda anual (D)',12000,'u/año'],['Costo por pedido (S)',450,'$/pedido'],['Costo de mantener (H)',18,'$/u·año'],['Q*',775,'u']]},
   {id:'pron', n:'Comparación de pronósticos', f:'errores', fmt:'XLSX', p:'paid', d:'Promedio móvil y suavizamiento lado a lado, con MAD, MSE y MAPE.',
    h:['Mes','Demanda','PM3','PMP 3-2-1','SE α=0.4'], r:()=>{const f=forecasts(DEMANDA,0.4);return DEMANDA.map((v,i)=>[i+1,v,f.pm[i]==null?'':f.pm[i].toFixed(1),f.pmp[i]==null?'':f.pmp[i].toFixed(1),f.se[i].toFixed(1)])}},
-  {id:'ishi', n:'Diagrama de causa y efecto (6M)', f:'ishikawa', fmt:'XLSX', p:'free', d:'Una columna por categoría y una fila por causa, lista para la lluvia de ideas.',
+  {id:'ishi', file:'causa-efecto-6m.xlsx', n:'Diagrama de causa y efecto (6M)', f:'ishikawa', fmt:'XLSX', p:'free', d:'Una columna por categoría y una fila por causa, lista para la lluvia de ideas.',
    h:SIXM, r:()=>{const m=Math.max(...ISHI.causas.map(c=>c.length));return Array.from({length:m},(_,i)=>ISHI.causas.map(c=>c[i]||''))}},
-  {id:'abc', n:'Clasificación ABC', f:'abc', fmt:'XLSX', p:'free', d:'Calcula el valor de uso, el acumulado y asigna A, B o C.',
+  {id:'abc', file:'abc.xlsx', n:'Clasificación ABC', f:'abc', fmt:'XLSX', p:'free', d:'Calcula el valor de uso, el acumulado y asigna A, B o C.',
    h:['Artículo','Valor unitario','Usos','Valor de uso','% acumulado','Clase'], r:()=>abcCalc(ROPERO,80,95).rows.map(r=>[r.n,r.v,r.q,r.u,r.c.toFixed(1)+'%',r.k])},
-  {id:'dpmo', n:'DPU, DPO y DPMO', f:'dpmo', fmt:'XLSX', p:'free', d:'Registro de inspección con cálculo automático del nivel sigma.',
+  {id:'dpmo', file:'dpmo-nivel-sigma.xlsx', n:'DPU, DPO y DPMO', f:'dpmo', fmt:'XLSX', p:'free', d:'Registro de inspección con cálculo automático del nivel sigma.',
    h:['Defectos por unidad','Unidades'], r:()=>[['0',70],['1',30],['2',15],['3',5],['Oportunidades por unidad',5]]},
-  {id:'pedidos', n:'Planificación de pedidos', f:'pedidos', fmt:'XLSX', p:'free', d:'Compara pedir todo al inicio, cada mes o por lotes.',
+  {id:'pedidos', file:'planificacion-pedidos.xlsx', n:'Planificación de pedidos', f:'pedidos', fmt:'XLSX', p:'free', d:'Compara pedir todo al inicio, cada mes o por lotes.',
    h:['Estrategia','Pedidos','Costo pedir','Costo mantener','Total'], r:()=>lotStrategies(CAMISETAS.d,CAMISETAS.S,CAMISETAS.h).map(x=>[x.n,x.r.orders,x.r.oc,x.r.hc,x.r.total])}
 ];
 
@@ -1170,14 +1170,21 @@ function sheetPreview(t){
   return `<div class="sheet"><table><thead><tr><th></th>${t.h.map((h,i)=>`<th>${String.fromCharCode(65+i)}</th>`).join('')}</tr></thead>
     <tbody><tr><td class="rn">1</td>${t.h.map(h=>`<td><b>${h}</b></td>`).join('')}</tr>${rows.map((r,i)=>`<tr><td class="rn">${i+2}</td>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
 }
+const CAN_DL=/(^|\.)github\.io$|^localhost$|^127\.0\.0\.1$/.test(location.hostname);
+const SITE='https://juanmavaldivia.github.io/industrial-toolkit/';
+function dlBtn(t){
+  if(t.p==='paid') return '<span class="pill paid" style="align-self:center">Premium · próximamente</span>';
+  if(!t.file) return '';
+  return CAN_DL?`<a class="btn primary" style="text-decoration:none" href="plantillas/${t.file}" download>Descargar ${t.fmt}</a>`:`<a class="btn primary" style="text-decoration:none" href="${SITE}#plantillas" target="_blank" rel="noopener">Descargar en la página publicada</a>`;
+}
 function viewPlantillas(){
   return `<div class="wrap page"><div><h1>Plantillas</h1><p class="lead">Hojas listas para usar con tus propios datos. Cada una viene de una ficha y conserva sus validaciones.</p></div>
   <div class="tpl-grid">${PLANTILLAS.map(t=>`<article class="tpl">${sheetPreview(t)}<div class="tpl-body">
     <div class="tpl-meta"><span class="fmt">${t.fmt}</span><span class="pill ${t.p}">${t.p==='free'?'Gratis':'Premium'}</span></div>
     <h3>${t.n}</h3><p>${t.d}</p>
-    <div class="btns"><button class="btn" data-copy="${t.id}">Copiar datos</button><button class="btn primary" disabled title="Las descargas se activan en la versión publicada del sitio">Descargar ${t.fmt}</button></div>
+    <div class="btns"><button class="btn" data-copy="${t.id}">Copiar datos</button>${dlBtn(t)}</div>
     <a href="#f-${t.f}" style="font-size:14px">Ficha: ${FICHAS[t.f].tool}</a></div></article>`).join('')}</div>
-  <p class="note">En este boceto la descarga está desactivada porque la vista previa no permite bajar archivos. "Copiar datos" sí funciona: pega el resultado en Excel o Google Sheets. En el sitio publicado cada botón descargará el archivo real.</p></div>`;
+  <p class="note">${CAN_DL?'Las plantillas de Excel traen fórmulas: cambia las celdas amarillas y los resultados se recalculan. "Copiar datos" pega solo los datos en Excel o Google Sheets.':'Esta vista previa no permite descargar archivos. Usa "Descargar en la página publicada" o "Copiar datos".'}</p></div>`;
 }
 
 function postCover(kind){
