@@ -363,6 +363,11 @@ footer .fl{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
 .sigma .mk{position:absolute;top:8px;width:4px;height:32px;background:var(--fg);border-radius:2px;transform:translateX(-2px)}
 .sigma .lb{position:absolute;top:38px;font-family:var(--mono);font-size:11px;color:var(--muted);transform:translateX(-50%)}
 
+/* ===== v30: video ===== */
+.yt{position:relative;aspect-ratio:16/9;max-width:100%;background:#000}
+.yt iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.yt-poster{display:block}
+.chapters a{text-decoration:none}
 /* ===== v28: ficha del blog ===== */
 .site-info{margin-top:36px}
 .si-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;margin:0;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
@@ -1180,17 +1185,24 @@ function panel(){
   <p class="ask">¿No encuentras tu pregunta? <a href="#contacto">Cuéntame qué necesitas resolver</a>.</p>`;
 }
 
+const VIDEO={id:'3lulWOk7ne4', title:'¿Mi proceso es estable y capaz? De I-MR a Cpk', dur:'3:56',
+  chapters:[[0,'Dos preguntas de calidad'],[20,'El caso: línea de llenado'],[40,'¿El proceso es estable? Gráfica I-MR'],[85,'¿Es capaz? Cp, Cpk y K'],[125,'Cuando el proceso no es estable'],[160,'Cierre']]};
 function videoBlock(){
-  return `<div class="player">
-    <svg viewBox="0 0 640 300" role="img" aria-label="Portada del video">
+  const yt=t=>`https://youtu.be/${VIDEO.id}${t?`?t=${t}`:''}`, mmss=t=>`${Math.floor(t/60)}:${String(t%60).padStart(2,'0')}`;
+  const canEmbed=/(^|\.)github\.io$|^localhost$|^127\.0\.0\.1$/.test(location.hostname);
+  const media=canEmbed
+    ?`<div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/${VIDEO.id}?rel=0" title="Video: ${VIDEO.title}" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div>`
+    :`<a href="${yt(0)}" target="_blank" rel="noopener" class="yt-poster" aria-label="Ver el video en YouTube"><svg viewBox="0 0 640 300" role="img" aria-label="Portada del video">
       <rect width="640" height="300" fill="var(--fg)"/>
       <g opacity=".35" stroke="var(--bg)"><line x1="40" x2="600" y1="90" y2="90" stroke-dasharray="6 6"/><line x1="40" x2="600" y1="210" y2="210" stroke-dasharray="6 6"/><line x1="40" x2="600" y1="150" y2="150"/></g>
       <polyline fill="none" stroke="var(--accent)" stroke-width="3" points="40,160 90,140 140,170 190,130 240,155 290,145 340,165 390,120 440,150 490,135 540,160 600,140"/>
       <circle cx="320" cy="150" r="34" fill="var(--accent)"/><path d="M310 132 L338 150 L310 168 Z" fill="var(--accent-fg)"/>
-      <text x="32" y="44" fill="var(--bg)" style="font-family:var(--display);font-size:24px;font-weight:800">De I-MR a Cpk en 4 minutos</text>
-      <text x="32" y="270" fill="var(--bg)" opacity=".8" style="font-family:var(--mono);font-size:13px">Video propio · por grabar · 4:00 aprox.</text>
-    </svg>
-    <ul class="chapters"><li><b>0:00</b>El problema: quejas por sobrellenado</li><li><b>0:40</b>¿Es estable? Leer la gráfica I-MR</li><li><b>1:50</b>¿Es capaz? Cp frente a Cpk</li><li><b>3:00</b>Qué decidir y qué no concluir</li></ul>
+      <text x="32" y="44" fill="var(--bg)" style="font-family:var(--display);font-size:22px;font-weight:800">${VIDEO.title}</text>
+      <text x="32" y="270" fill="var(--bg)" opacity=".8" style="font-family:var(--mono);font-size:13px">Video del autor · ${VIDEO.dur} · ver en YouTube</text>
+    </svg></a>`;
+  return `<div class="player">${media}
+    <ul class="chapters">${VIDEO.chapters.map(([t,n])=>`<li><a href="${yt(t)}" target="_blank" rel="noopener"><b>${mmss(t)}</b></a>${n}</li>`).join('')}</ul>
+    <p class="note" style="margin:0 16px 14px">Video inédito elaborado por el autor · CC BY-NC-SA 4.0 · <a href="${yt(0)}" target="_blank" rel="noopener">Abrir en YouTube</a></p>
   </div>`;
 }
 
@@ -1604,7 +1616,7 @@ function viewAutor(){
   <div class="statline"><div><b>4+</b><small>años en BI, analítica y automatización</small></div><div><b>2024</b><small>docente en la Universidad Panamericana</small></div><div><b>3.er</b><small>lugar, competencia internacional de simulación logística FlexSim</small></div><div><b>MIT</b><small>certificado GCLOG en cadena de suministro</small></div></div>
   <div class="trust"><span class="label">Trayectoria en</span><span>GEODIS</span><span>Universidad Panamericana</span><span>MIT Global SCALE Network</span><span>AHYU Latinoamérica</span></div>
   <div class="two">
-    <div style="display:grid;gap:12px;align-content:start"><div class="seclead"><h2>Video del autor</h2><span class="pill todo">Por grabar</span></div>${videoBlock()}</div>
+    <div style="display:grid;gap:12px;align-content:start"><div class="seclead"><h2>Video del autor</h2><span class="pill free">Nuevo</span></div>${videoBlock()}</div>
     <div style="display:grid;gap:12px;align-content:start"><h2 style="font-size:22px">Trayectoria</h2>
       <ul class="tl">${tl.map(t=>`<li><span><span class="mono" style="font-size:12px;color:var(--accent)">${t[0]}</span><b>${t[1]}</b><span>${t[2]}</span></span></li>`).join('')}</ul></div>
   </div>
@@ -1722,7 +1734,7 @@ const REQS=[
   ['Nombre atractivo y slogan','ok','Industrial Toolkit · "De la duda al cálculo, con criterio"','#inicio'],
   ['Datos del autor','ok','Foto, trayectoria y formación','#autor'],
   ['Dos presentaciones','ok','¿Qué gráfica de control uso? y Planeación agregada: caso NovaPack, ambas interactivas','#presentacion-planeacion'],
-  ['Al menos un video inédito','no','Guion por capítulos listo; falta grabarlo','#autor'],
+  ['Al menos un video inédito','ok','¿Mi proceso es estable y capaz? De I-MR a Cpk (3:56), en Sobre el autor y en la ficha de Cpk','#autor'],
   ['Noticias relacionadas','ok','3 noticias con fuentes y fecha: Gartner Supply Chain Top 25, IED en México y visión con IA','#radar'],
   ['Al menos 3 posts propios','ok','3 publicados: límites de control, Excel vs Python y el 3.4 por millón de Seis Sigma','#radar'],
   ['Contador de visitas','ok','Contador real en la página publicada (servicio hits.sh)','#creditos'],
