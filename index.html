@@ -1835,6 +1835,8 @@ const CALCS = {
     $('#ds-ok').onclick=()=>{ta.value=STABLE.join(', ');run()};
     $('#ds-bad').onclick=()=>{ta.value=SHIFT.join(', ');run()};
     ['c-data','c-lie','c-lse','c-spec','c-nom'].forEach(i=>$('#'+i).addEventListener('input',run));
+    let showAny=false;
+    $('#c-out').addEventListener('change',e=>{ if(e.target.id==='c-any'){ showAny=e.target.checked; run(); } });
     run();
     function run(){
       const out=$('#c-out');
@@ -1855,12 +1857,12 @@ const CALCS = {
       ];
       const blocked=gates.some(g=>g.s==='bad'), warned=gates.some(g=>g.s==='warn');
       const cls=blocked?'v-bad':warned?'v-warn':'v-ok';
-      const msg=blocked?'Cp y Cpk no se muestran: falta cumplir una condición que bloquea.':warned?'Resultado válido con advertencias: léelo con cautela.':'Condiciones cumplidas: el resultado se puede interpretar.';
+      const msg=blocked?(!S.stable?'Proceso inestable: Cp y Cpk no se calculan. Con causas especiales presentes, cualquier índice de capacidad sería engañoso.':'Cp y Cpk no se calculan: confirma que LIE y LSE son especificaciones del cliente.'):warned?'Resultado válido con advertencias: léelo con cautela.':'Condiciones cumplidas: el resultado se puede interpretar.';
       const ppm=((1-phi((lse-S.mean)/S.sw))+phi((lie-S.mean)/S.sw))*1e6;
-      const na='<div class="v na">No interpretable</div>';
+      const na=v=>showAny?`<div class="v" style="text-decoration:line-through;color:var(--muted)">${fmt(v)}</div><small style="color:var(--bad);font-weight:700">No válido</small>`:'<div class="v na">No se calcula</div>';
       let interp;
       if(blocked) interp = S.stable ? 'Confirma el origen de los límites de especificación para calcular capacidad.' :
-        `<strong>Primero estabiliza el proceso.</strong> Ppk (${fmt(S.ppk)}) describe lo que pasó en estos datos, pero no predice el desempeño futuro porque el proceso cambió durante el muestreo.`;
+        `<strong>Primero estabiliza el proceso.</strong> La gráfica I marca causas especiales: el proceso cambió durante el muestreo, así que no tiene una capacidad única que medir. Ppk (${fmt(S.ppk)}) solo describe lo que pasó en estos datos y no predice el desempeño futuro. Investiga y elimina las causas especiales, vuelve a medir y entonces calcula Cpk.`;
       else {
         const center=(lse+lie)/2, nearer=S.cpu<S.cpl?'LSE':'LIE';
         const level=S.cpk>=1.33?'cumple la referencia común de 1.33':S.cpk>=1?'es marginal: cumple, con poco margen':'no es capaz: se esperan piezas fuera de especificación';
@@ -1870,20 +1872,21 @@ const CALCS = {
       }
       out.innerHTML=`
         <div class="verdict ${cls}"><span class="light"></span>${msg}</div>
+        ${blocked?`<label class="check" style="padding:10px 16px;border-top:1px solid var(--line)"><input type="checkbox" id="c-any" ${showAny?'checked':''}> Mostrar los valores de todas formas, como ejemplo de lo que no se debe reportar</label>`:''}
         <ul class="gates">${gates.map(g=>`<li><span class="g ${g.s}">${g.s==='ok'?'✓':g.s==='warn'?'!':'✕'}</span><span>${g.t}</span></li>`).join('')}</ul>
         <div class="interp" style="font-size:14px;color:var(--muted)">Comparación: con la desviación global (s = ${fmt(S.so)}) los límites serían ${fmt(S.mean-3*S.so,1)} a ${fmt(S.mean+3*S.so,1)} y marcarían ${x.filter(v=>Math.abs(v-S.mean)>3*S.so).length} punto(s) fuera, frente a ${S.outPts.length} con MR̄ (σ̂ = ${fmt(S.sw)}). ${S.so>S.sw*1.25?'La diferencia sugiere un cambio en el proceso que la desviación global oculta.':''}</div>
         <div class="kpis">
-          <div class="kpi"><small>Cp · potencial</small>${blocked?na:`<div class="v">${fmt(S.cp)}</div>`}</div>
-          <div class="kpi"><small>Cpk · real</small>${blocked?na:`<div class="v">${fmt(S.cpk)}</div>`}</div>
+          <div class="kpi"><small>Cp · potencial</small>${blocked?na(S.cp):`<div class="v">${fmt(S.cp)}</div>`}</div>
+          <div class="kpi"><small>Cpk · real</small>${blocked?na(S.cpk):`<div class="v">${fmt(S.cpk)}</div>`}</div>
           <div class="kpi"><small>Pp · global${blocked?' (descriptivo)':''}</small><div class="v">${fmt(S.pp)}</div></div>
           <div class="kpi"><small>Ppk · global${blocked?' (descriptivo)':''}</small><div class="v">${fmt(S.ppk)}</div></div>
         </div>
         ${(()=>{const K=(S.mean-N)/((lse-lie)/2)*100, cpm=(lse-lie)/(6*Math.sqrt(S.sw**2+(S.mean-N)**2));
           return `<div class="kpis k5">
-          <div class="kpi"><small>Cpi · inferior</small>${blocked?na:`<div class="v">${fmt(S.cpl)}</div>`}</div>
-          <div class="kpi"><small>Cps · superior</small>${blocked?na:`<div class="v">${fmt(S.cpu)}</div>`}</div>
-          <div class="kpi"><small>Cr · banda ocupada</small>${blocked?na:`<div class="v">${fmt(1/S.cp)}</div>`}</div>
-          <div class="kpi"><small>Cpm · Taguchi (N = ${fmt(N,1)})</small>${blocked?na:`<div class="v">${fmt(cpm)}</div>`}</div>
+          <div class="kpi"><small>Cpi · inferior</small>${blocked?na(S.cpl):`<div class="v">${fmt(S.cpl)}</div>`}</div>
+          <div class="kpi"><small>Cps · superior</small>${blocked?na(S.cpu):`<div class="v">${fmt(S.cpu)}</div>`}</div>
+          <div class="kpi"><small>Cr · banda ocupada</small>${blocked?na(1/S.cp):`<div class="v">${fmt(1/S.cp)}</div>`}</div>
+          <div class="kpi"><small>Cpm · Taguchi (N = ${fmt(N,1)})</small>${blocked?na(cpm):`<div class="v">${fmt(cpm)}</div>`}</div>
           <div class="kpi"><small>K · descentrado</small><div class="v" style="color:var(${Math.abs(K)>20?'--bad':'--fg'})">${K>0?'+':''}${fmt(K,1)} %</div><small>${Math.abs(K)>20?'Fuera de ±20 %':'Dentro de ±20 %'}</small></div></div>`})()}
         <div class="charts">
           <figure><figcaption>Gráfica I · media ${fmt(S.mean)} · MR̄ ${fmt(S.mrbar)}</figcaption>${iChart(x,S.mean,S.ucl,S.lcl)}</figure>
