@@ -1763,7 +1763,7 @@ function viewCreditos(){
       <li>Gráficas, diagramas, íconos y portadas: elaboración propia, generados en la página con datos ficticios.</li>
       <li>Bandera de Bolivia: dibujo propio a partir del diseño oficial del símbolo patrio.</li>
       <li>Tipografías Archivo, Source Sans 3 y JetBrains Mono: <i>Google Fonts</i>, licencia SIL Open Font License 1.1. ${LNK('https://fonts.google.com')}</li></ul></div>
-    <div class="card"><span class="label">Contador de visitas</span><p>En la página publicada, el contador usa el servicio externo hits.sh, que registra cada carga de la página. Para mostrar el número, tu navegador hace una petición a ese servicio externo.</p></div>
+    <div class="card"><span class="label">Contador y estadísticas de uso</span><p>En la página publicada, el contador visible usa el servicio externo hits.sh, que registra cada carga de la página. Además, para saber qué herramientas son útiles, se miden visitas de forma agregada con <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>: sección abierta, sitio de origen, país aproximado y tipo de dispositivo. No se usan cookies ni se identifica a ninguna persona.</p></div>
   </div>
   <div class="card"><span class="label">Referencias principales (APA 7)</span><ol class="refs" style="font-size:15px">${main.map(r=>`<li>${r}</li>`).join('')}</ol><p class="note" style="margin:0">Cada ficha y cada artículo incluye sus propias referencias y la forma de citarlo.</p></div></div>`;
 }
@@ -2623,6 +2623,30 @@ function moveNavInd(){
 }
 window.addEventListener('resize',moveNavInd);
 document.fonts&&document.fonts.ready&&document.fonts.ready.then(moveNavInd);
+/* Estadísticas de uso (GoatCounter): solo en la página publicada, sin cookies, datos agregados */
+const GC_CODE='industrialtoolkit';
+const GC_ON=/(^|\.)github\.io$/.test(location.hostname);
+let gcLast=null;
+function gcTitle(h){
+  if(h.startsWith('f-')&&FICHAS[h.slice(2)]) return 'Ficha: '+FICHAS[h.slice(2)].tool;
+  if(h.startsWith('post-')){const p=POSTS.find(x=>x.id===h.slice(5));if(p)return 'Radar: '+p.t}
+  if(h.startsWith('caso-')&&CASOS[h.slice(5)]) return 'Caso: '+CASOS[h.slice(5)].title;
+  if(h.startsWith('presentacion')) return 'Presentación: '+(PRES[h.slice(13)]||PRES.selector).title;
+  if(h.startsWith('curso')) return 'Ruta del curso';
+  return {inicio:'Inicio',herramientas:'Herramientas',casos:'Casos prácticos',plantillas:'Plantillas',radar:'Radar industrial',autor:'Sobre el autor',contacto:'Sobre el autor: contacto',proyecto:'Acerca del proyecto',creditos:'Créditos',experimento:'Experimento de variabilidad',acerca:'Inicio: acerca del sitio'}[h]||h;
+}
+function gcTrack(){
+  if(!GC_ON) return;
+  const h=(location.hash||'#inicio').slice(1);
+  if(h===gcLast||!(window.goatcounter&&window.goatcounter.count)) return;
+  gcLast=h;
+  try{ window.goatcounter.count({path:'/'+h, title:gcTitle(h)}); }catch(_){}
+}
+if(GC_ON){
+  window.goatcounter={no_onload:true};
+  const sc=document.createElement('script'); sc.async=true; sc.src='https://gc.zgo.at/count.js';
+  sc.dataset.goatcounter=`https://${GC_CODE}.goatcounter.com/count`; sc.onload=gcTrack; document.head.appendChild(sc);
+}
 function render(){
   const h=(location.hash||'#inicio').slice(1), app=$('#app');
   let nav='';
@@ -2642,6 +2666,7 @@ function render(){
   else { app.innerHTML=viewHome(); nav='inicio'; animateHero(); if(h==='acerca') setTimeout(()=>{const a=$('#acerca'); if(a) a.scrollIntoView({block:'start'})},0); }
   document.querySelectorAll('nav.main a').forEach(a=>{ if(a.dataset.nav===nav) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
   moveNavInd();
+  gcTrack();
   if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){ app.classList.remove('enter'); void app.offsetWidth; app.classList.add('enter'); }
   window.scrollTo(0,0);
 }
