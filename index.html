@@ -363,6 +363,15 @@ footer .fl{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
 .sigma .mk{position:absolute;top:8px;width:4px;height:32px;background:var(--fg);border-radius:2px;transform:translateX(-2px)}
 .sigma .lb{position:absolute;top:38px;font-family:var(--mono);font-size:11px;color:var(--muted);transform:translateX(-50%)}
 
+/* ===== v28: ficha del blog ===== */
+.site-info{margin-top:36px}
+.si-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;margin:0;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.si-grid>div{background:var(--surface);padding:14px 16px}
+.si-grid .si-wide{grid-column:1/-1}
+.si-grid dt{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:4px}
+.si-grid dd{margin:0;font-size:15px;line-height:1.55}
+.si-grid ul{margin:4px 0 0;padding-left:18px;display:grid;gap:4px}
+@media (max-width:640px){.si-grid{grid-template-columns:1fr}}
 /* ===== v25: pulido profesional ===== */
 :root{--ease:cubic-bezier(.2,.7,.2,1);--shadow-hover:0 6px 18px -8px rgba(22,32,46,.28)}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--shadow-hover:0 8px 22px -8px rgba(0,0,0,.6)}}
@@ -535,8 +544,9 @@ const CATS = [
        {q:'¿Qué defectos debo atender primero?', f:'pareto'},
        {q:'¿Cuáles son las posibles causas de mi problema?', f:'ishikawa'},
        {q:'¿Cuántos defectos por millón tengo?', f:'dpmo'}]},
-  {id:'pronostico', name:'Pronosticar la demanda', d:'Promedios, suavizamiento y error de pronóstico',
-   qs:[{q:'¿Qué método pronostica mejor?', f:'errores'}]},
+  {id:'pronostico', name:'Pronosticar y planear', d:'Pronósticos, error de pronóstico y planeación agregada',
+   qs:[{q:'¿Qué método pronostica mejor?', f:'errores'},
+       {q:'¿Cuánto producir cada mes y con cuánta gente?', f:'planeacion'}]},
   {id:'inventario', name:'Gestionar inventarios', d:'ABC, cuándo y cuánto pedir',
    qs:[{q:'¿Qué artículos merecen más control?', f:'abc'},
        {q:'¿Cuándo me conviene hacer pedidos?', f:'pedidos'},
@@ -550,8 +560,29 @@ const CATS = [
        {q:'¿Cuánto durará mi proyecto y qué no puede retrasarse?', f:'ruta'}]}
 ];
 
-const RT_REF='Russell, R. S. y Taylor, B. W. Operations Management: Creating Value Along the Supply Chain. Wiley.', CJ_REF='Chase, R. B. y Jacobs, F. R. Administración de operaciones: producción y cadena de suministros. McGraw-Hill.';
-const MONT_REF='Montgomery, D. C. Introduction to Statistical Quality Control. Wiley.';
+const LNK=u=>`<a href="${u}" target="_blank" rel="noopener">${u}</a>`;
+/* Referencias en formato APA 7 */
+const RT_REF='Russell, R. S., y Taylor, B. W. (2011). <i>Operations management: Creating value along the supply chain</i> (7th ed.). Wiley.';
+const CJ_REF='Chase, R. B., y Jacobs, F. R. (2014). <i>Administración de operaciones: Producción y cadena de suministros</i> (13.ª ed.). McGraw-Hill.';
+const MONT_REF='Montgomery, D. C. (2019). <i>Introduction to statistical quality control</i> (8th ed.). Wiley.';
+const NIST_REF='NIST/SEMATECH. (2012). <i>e-Handbook of statistical methods</i>. National Institute of Standards and Technology. '+LNK('https://doi.org/10.18434/M32189');
+const NIST=sec=>`NIST/SEMATECH. (2012). <i>e-Handbook of statistical methods</i> (${sec}). National Institute of Standards and Technology. `+LNK('https://doi.org/10.18434/M32189');
+const APA={
+  pyzdek:'Pyzdek, T., y Keller, P. A. (2018). <i>The Six Sigma handbook</i> (5th ed.). McGraw-Hill.',
+  wheeler:'Wheeler, D. J., y Chambers, D. S. (1992). <i>Understanding statistical process control</i> (2nd ed.). SPC Press.',
+  harry:'Harry, M., y Schroeder, R. (2000). <i>Six Sigma: The breakthrough management strategy revolutionizing the world’s top corporations</i>. Currency.',
+  ishikawa:'Ishikawa, K. (1986). <i>Guide to quality control</i> (2nd ed.). Asian Productivity Organization.',
+  goldratt:'Goldratt, E. M., y Cox, J. (2004). <i>The goal: A process of ongoing improvement</i> (3rd ed.). North River Press.',
+  horngren:'Horngren, C. T., Datar, S. M., y Rajan, M. V. (2012). <i>Contabilidad de costos: Un enfoque gerencial</i> (14.ª ed.). Pearson.',
+  pmi:'Project Management Institute. (2021). <i>A guide to the project management body of knowledge (PMBOK guide)</i> (7th ed.).',
+  blank:'Blank, L., y Tarquin, A. (2012). <i>Ingeniería económica</i> (7.ª ed.). McGraw-Hill.',
+  brealey:'Brealey, R. A., Myers, S. C., y Allen, F. (2020). <i>Principles of corporate finance</i> (13th ed.). McGraw-Hill.',
+  asqPareto:'American Society for Quality. (s. f.). <i>What is a Pareto chart?</i> '+LNK('https://asq.org/quality-resources/pareto'),
+  asqFish:'American Society for Quality. (s. f.). <i>What is a fishbone diagram?</i> '+LNK('https://asq.org/quality-resources/fishbone'),
+  minitab:'Minitab, LLC. (s. f.). <i>Methods and formulas for I-MR chart</i>. Minitab Support. '+LNK('https://support.minitab.com'),
+  colab:'Google. (s. f.). <i>Google Colaboratory</i>. '+LNK('https://colab.research.google.com/'),
+  wheelerQD:'Wheeler, D. J. (s. f.). Columnas sobre el desplazamiento de 1.5 sigma. <i>Quality Digest</i>. '+LNK('https://www.qualitydigest.com')};
+
 const FICHAS = {
   cpk:{
     cat:'calidad', tool:'Capacidad del proceso · Cp / Cpk', q:'¿Mi proceso puede cumplir las especificaciones?',
@@ -594,8 +625,8 @@ const FICHAS = {
              'Usar la desviación estándar global y llamarla Cpk (eso es Ppk).',
              'Reportar solo Cp y ocultar el descentrado.',
              'Usar la fórmula bilateral cuando la especificación tiene un solo límite.'],
-    refs:['NIST/SEMATECH e-Handbook of Statistical Methods, sec. 6.1.6 Process Capability.',
-          'Montgomery, D. C. Introduction to Statistical Quality Control. Wiley.'],
+    refs:[NIST('Sec. 6.1.6, Process capability'),
+          MONT_REF],
     recursos:[{n:'Caso interactivo: línea de llenado', p:'free', h:'#caso-llenado'},{n:'Plantilla I-MR + Cpk', p:'free', h:'#plantillas'},{n:'Presentación: ¿qué gráfica de control uso?', p:'free', h:'#presentacion'}],
     sig:{t:'¿Qué defectos debo atender primero?', f:'pareto'}
   },
@@ -610,7 +641,7 @@ const FICHAS = {
            {t:'warn', x:'Datos sin autocorrelación fuerte.'}],
     errores:['Calcular los límites con la desviación estándar de todos los datos. Si el proceso tuvo un corrimiento, esa desviación crece, los límites se ensanchan y la señal se esconde. Para individuales, estima σ con MR̄ / 1.128.','Dibujar los límites de especificación en la gráfica de control.','Recalcular límites cada vez que aparece un punto fuera.'],
     interp:'La calculadora muestra también qué pasaría con límites calculados con la desviación global. Prueba el ejemplo con corrimiento y compara cuántos puntos marca cada método.',
-    refs:['NIST/SEMATECH e-Handbook, sec. 6.3.2.'],
+    refs:[NIST('Sec. 6.3.2, Shewhart control charts for variables')],
     recursos:[{n:'Caso interactivo: línea de llenado', p:'free', h:'#caso-llenado'},{n:'Plantilla I-MR + Cpk', p:'free', h:'#plantillas'},{n:'Presentación: ¿qué gráfica de control uso?', p:'free', h:'#presentacion'}],
     sig:{t:'¿Mi proceso puede cumplir las especificaciones?', f:'cpk'},
     calcNote:'La calculadora de I-MR está integrada con la de capacidad: primero revisa estabilidad y después, solo si procede, calcula Cpk.'
@@ -620,7 +651,7 @@ const FICHAS = {
     resuelve:'Elige la gráfica según el tipo de dato y cómo se muestrea.',
     cuando:'Antes de construir cualquier gráfica de control.',
     tabla:{h:['Tipo de dato','Muestreo','Gráfica'],r:[['Continuo','1 unidad por muestra','I-MR'],['Continuo','Subgrupos de 2 a 10','X̄-R'],['Continuo','Subgrupos de más de 10','X̄-S'],['Atributo: defectuosos','Proporción de unidades malas','p / np'],['Atributo: defectos','Conteo de defectos por unidad','c / u']]},
-    refs:['Montgomery, Introduction to Statistical Quality Control, caps. 6–7.','NIST/SEMATECH e-Handbook of Statistical Methods, sec. 6.3.'],
+    refs:[MONT_REF,NIST('Sec. 6.3, Univariate and multivariate control charts')],
     recursos:[{n:'Presentación interactiva: ¿qué gráfica de control uso?', p:'free', h:'#presentacion'}],
     sig:{t:'¿Mi proceso es estable?', f:'imr'}
   },
@@ -633,7 +664,7 @@ const FICHAS = {
       pasos:['Ordenar de mayor a menor frecuencia.','Calcular el porcentaje acumulado.','Identificar las categorías que suman cerca del 80 %.'],
       res:'Sobrellenado y tapa floja explican el 79 % de los rechazos. El sobrellenado coincide con el descentrado hacia el LSE que muestra la ficha de capacidad.'},
     errores:['Mezclar periodos o criterios de registro.','Ordenar por frecuencia cuando el costo por defecto es muy distinto.','Tratar el 80/20 como ley exacta.'],
-    refs:['ASQ, Quality Tools: Pareto Chart.'],
+    refs:[APA.asqPareto],
     recursos:[{n:'Plantilla: hoja de verificación', p:'free', h:'#plantillas'},{n:'Plantilla: Pareto', p:'free', h:'#plantillas'}],
     sig:{t:'¿Mi proceso es estable?', f:'imr'}
   },
@@ -641,7 +672,7 @@ const FICHAS = {
     resuelve:'Revisa si es razonable usar métodos que suponen normalidad, como la estimación de ppm en capacidad.',
     cuando:'Antes de interpretar ppm de Cpk o aplicar pruebas paramétricas.',
     errores:['Concluir normalidad con muy pocos datos.','Confiar solo en el valor p con muestras grandes.'],
-    refs:['NIST/SEMATECH e-Handbook, sec. 1.3.3.21 Normal Probability Plot.'],
+    refs:[NIST('Sec. 1.3.3.21, Normal probability plot')],
     sig:{t:'¿Mi proceso puede cumplir las especificaciones?', f:'cpk'}},
   errores:{cat:'pronostico', tool:'Error de pronóstico · MAD, MSE, MAPE', q:'¿Qué método pronostica mejor?', nivel:3, revisada:'sep 2026', calc:'errores',
     resuelve:'Calcula el pronóstico del siguiente periodo con tres métodos y compara su error sobre los mismos periodos históricos para elegir el que se equivoca menos.',
@@ -650,7 +681,7 @@ const FICHAS = {
     vars:[['Aₜ','Demanda real del periodo t','unidades'],['Fₜ','Pronóstico del periodo t','unidades'],['α','Constante de suavizamiento','0 a 1']],
     conds:[{t:'block', x:'Ambos métodos se comparan en los mismos periodos.'},{t:'warn', x:'Si la serie tiene tendencia, promedios y suavizamiento simple se quedan atrás. Considera métodos con tendencia.'}],
     errores:['Comparar métodos en periodos distintos.','Usar MAPE con demandas cercanas a cero.','Elegir α viendo solo el último dato.'],
-    refs:['Russell, R. S. y Taylor, B. W. Operations Management: Creating Value Along the Supply Chain. Wiley.','Chase, R. B. y Jacobs, F. R. Administración de operaciones: producción y cadena de suministros. McGraw-Hill.'],
+    refs:[RT_REF,CJ_REF],
     recursos:[{n:'Plantilla: comparación de pronósticos', p:'paid', h:'#plantillas'}]},
   eoq:{cat:'inventario', tool:'Lote económico de pedido (EOQ)', q:'¿Cuánto debo pedir cada vez?', nivel:3, revisada:'sep 2026', calc:'eoq',
     resuelve:'Encuentra la cantidad de pedido que minimiza la suma de costos de ordenar y de mantener inventario.',
@@ -659,7 +690,7 @@ const FICHAS = {
     vars:[['D','Demanda anual','unidades/año'],['S','Costo por pedido','$/pedido'],['H','Costo de mantener una unidad un año','$/(unidad·año)']],
     conds:[{t:'warn', x:'Demanda constante y conocida. Con alta variabilidad, añade stock de seguridad.'},{t:'warn', x:'Sin descuentos por volumen.'}],
     errores:['Mezclar unidades: H mensual con D anual.','Usar el precio del producto como H.'],
-    refs:['Chase, R. B. y Jacobs, F. R. Administración de operaciones: producción y cadena de suministros. McGraw-Hill.'],
+    refs:[CJ_REF],
     recursos:[{n:'Plantilla EOQ', p:'free', h:'#plantillas'}]},
   cuello:{cat:'proceso', tool:'Capacidad por estación', q:'¿Dónde está el cuello de botella?', nivel:3, revisada:'sep 2026', calc:'cuello',
     resuelve:'Identifica la estación que limita la salida de todo el proceso y compara esa capacidad con la demanda.',
@@ -668,13 +699,13 @@ const FICHAS = {
     vars:[['Tiempo disponible','Minutos productivos del turno','min/turno'],['Tiempo de ciclo','Tiempo por unidad en la estación','min/unidad'],['Máquinas','Recursos en paralelo','unidades']],
     conds:[{t:'warn', x:'Los tiempos son promedios medidos, no estándares teóricos.'}],
     errores:['Mejorar una estación que no es el cuello de botella.','Ignorar máquinas en paralelo.'],
-    refs:['Goldratt, E. y Cox, J. La Meta.']},
+    refs:[APA.goldratt]},
   equilibrio:{cat:'costos', tool:'Punto de equilibrio', q:'¿Cuánto debo vender para cubrir mis costos?', nivel:3, revisada:'sep 2026', calc:'equilibrio',
     resuelve:'Calcula el volumen en el que los ingresos igualan los costos totales y cuánto margen hay frente a las ventas esperadas.',
     formulas:[{e:'Q_eq = CF / (P − CV)', n:'P − CV es el margen de contribución por unidad.'},{e:'Margen de seguridad = (Q_esperado − Q_eq) / Q_esperado', n:''}],
     vars:[['CF','Costos fijos del periodo','$'],['P','Precio unitario','$/unidad'],['CV','Costo variable unitario','$/unidad']],
     conds:[{t:'block', x:'El precio debe ser mayor que el costo variable.'},{t:'warn', x:'Supone precio y costo variable constantes en todo el rango.'}],
-    refs:['Horngren. Contabilidad de costos. Pearson.']},
+    refs:[APA.horngren]},
   ruta:{cat:'costos', tool:'Gantt con ruta crítica (CPM)', q:'¿Cuánto durará mi proyecto y qué no puede retrasarse?', nivel:4, revisada:'sep 2026', calc:'ruta',
     resuelve:'Calcula la duración mínima del proyecto, identifica las actividades críticas y cuánta holgura tiene cada una.',
     cuando:'Proyectos con actividades que dependen unas de otras: lanzamientos, mantenimientos, mudanzas de línea o tu propio proyecto final.',
@@ -684,7 +715,7 @@ const FICHAS = {
     vars:[['d','Duración de la actividad','días'],['IC, TC','Inicio y término más tempranos','día'],['IL, TL','Inicio y término más tardíos','día']],
     conds:[{t:'block', x:'No hay dependencias circulares (A depende de B y B de A).'},{t:'block', x:'Cada predecesora existe en la lista.'},{t:'warn', x:'Si las duraciones son muy inciertas, usa PERT con tres estimaciones.'}],
     errores:['Sumar todas las duraciones como si fueran en serie.','Creer que solo hay una ruta crítica.','Asignar recursos sin revisar que no se crucen actividades paralelas.'],
-    refs:['PMI. Guía del PMBOK.','Russell y Taylor. Operations Management, cap. de administración de proyectos.'],
+    refs:[APA.pmi,RT_REF],
     recursos:[{n:'Caso interactivo: lanzar esta página', p:'free', h:'#caso-proyecto'},{n:'Plantilla Gantt + ruta crítica', p:'free', h:'#plantillas'}]},
   ishikawa:{cat:'calidad', tool:'Diagrama de causa y efecto (Ishikawa, 6M)', q:'¿Cuáles son las posibles causas de mi problema?', nivel:3, revisada:'oct 2026', calc:'ishikawa',
     resuelve:'Organiza las posibles causas de un problema de calidad en seis categorías para que el equipo no se quede solo con la primera idea.',
@@ -692,7 +723,7 @@ const FICHAS = {
     tabla:{h:['Categoría','Qué incluye','Ejemplos'],r:[['Mano de obra','Personas: habilidades, capacitación, comportamiento','Falta de capacitación, rotación'],['Maquinaria','Equipo usado en el proceso','Mantenimiento inadecuado, mala configuración'],['Materiales','Materias primas e insumos','Proveedor inconsistente, mal almacenamiento'],['Métodos','Procedimientos de trabajo','Falta de estandarización'],['Medio ambiente','Condiciones físicas del entorno','Temperatura, iluminación, ruido'],['Medición','Cómo se monitorea y evalúa','Instrumento sin calibrar, muestreo insuficiente']]},
     conds:[{t:'warn', x:'El efecto está definido como un problema concreto y medible, no como una solución.'},{t:'warn', x:'Las causas son hipótesis. Hay que verificarlas con datos antes de actuar.', link:'pareto'}],
     errores:['Escribir el efecto como solución ("falta capacitación") en lugar de problema.','Llenar las seis M por obligación con causas irrelevantes.','Tomar el diagrama como prueba de la causa raíz.'],
-    refs:['Ishikawa, K. Guide to Quality Control.','ASQ, Quality Tools: Fishbone Diagram.'],
+    refs:[APA.ishikawa,APA.asqFish],
     recursos:[{n:'Plantilla: diagrama de causa y efecto', p:'free', h:'#plantillas'}],
     sig:{t:'¿Qué defectos debo atender primero?', f:'pareto'}},
   abc:{cat:'inventario', tool:'Clasificación ABC', q:'¿Qué artículos merecen más control?', nivel:3, revisada:'oct 2026', calc:'abc',
@@ -738,7 +769,7 @@ const FICHAS = {
     vars:[['μ','Media del proceso','unidad de medición'],['σ','Desviación estándar','unidad de medición'],['LIE, LSE','Límites de tolerancia','unidad de medición']],
     conds:[{t:'warn', x:'Distribución aproximadamente normal.', link:'normalidad'},{t:'warn', x:'Proceso estable: si cambia con el tiempo, la estimación no aplica al futuro.', link:'imr'}],
     errores:['Pensar que si la media está en el nominal, todo está dentro de tolerancia.','Usar la regla empírica con datos claramente sesgados.'],
-    refs:[MONT_REF,'NIST/SEMATECH e-Handbook, sec. 1.3.6.6.1 Normal Distribution.'],
+    refs:[MONT_REF,NIST('Sec. 1.3.6.6.1, Normal distribution')],
     sig:{t:'¿Mi proceso puede cumplir las especificaciones?', f:'cpk'}},
   binomial:{cat:'datos', tool:'Distribución binomial', q:'¿Qué probabilidad hay de encontrar k defectuosos?', nivel:3, revisada:'oct 2026', calc:'binomial',
     resuelve:'Calcula la probabilidad de encontrar cierto número de piezas defectuosas en una muestra, caja o lote.',
@@ -755,7 +786,7 @@ const FICHAS = {
     formulas:[{e:'DPU = defectos / unidades', n:'Defectos por unidad.'},{e:'DPO = defectos / (unidades × oportunidades)', n:'Defectos por oportunidad.'},{e:'DPMO = DPO × 1,000,000', n:'Defectos por millón de oportunidades.'},{e:'Nivel sigma = Φ⁻¹(1 − DPO) + 1.5', n:'Convención Seis Sigma: suma 1.5σ por el desplazamiento esperado a largo plazo.'}],
     conds:[{t:'warn', x:'Las oportunidades de defecto están definidas antes de inspeccionar y no cambian entre unidades.'},{t:'warn', x:'El 1.5σ es una convención de la industria, no una propiedad de tu proceso.'}],
     errores:['Confundir unidades defectuosas con número de defectos.','Inflar las oportunidades para que el DPMO se vea mejor.'],
-    refs:[MONT_REF,'Pyzdek, T. y Keller, P. The Six Sigma Handbook. McGraw-Hill.'],
+    refs:[MONT_REF,APA.pyzdek],
     sig:{t:'¿Qué defectos debo atender primero?', f:'pareto'}},
   xbarr:{cat:'calidad', tool:'Gráficas X̄-R y X̄-S (por subgrupos)', q:'¿Es estable si mido en subgrupos?', nivel:3, revisada:'oct 2026', calc:'xbarr',
     resuelve:'Vigila el centro y la variación de un proceso cuando cada muestra es un subgrupo de varias unidades tomadas bajo las mismas condiciones.',
@@ -764,7 +795,7 @@ const FICHAS = {
     vars:[['n','Unidades por subgrupo','unidades'],['X̿','Promedio de las medias de los subgrupos','unidad de medición'],['R̄, s̄','Rango o desviación promedio dentro de los subgrupos','unidad de medición']],
     conds:[{t:'block', x:'Primero la gráfica de dispersión (R o S). Si la variación dentro de los subgrupos no es estable, los límites de X̄ no son confiables.'},{t:'block', x:'Todos los subgrupos tienen el mismo tamaño.'},{t:'warn', x:'Se recomiendan al menos 20 subgrupos para calcular límites.'},{t:'warn', x:'Subgrupos racionales: unidades tomadas juntas, de la misma máquina y turno.'}],
     errores:['Mezclar en un subgrupo piezas de distintas máquinas o turnos.','Leer la gráfica X̄ sin revisar antes la de R o S.','Usar X̄-R con subgrupos grandes: el rango desperdicia información.'],
-    refs:['NIST/SEMATECH e-Handbook, sec. 6.3.2.1, Shewhart X-bar and R and S control charts.',MONT_REF],
+    refs:[NIST('Sec. 6.3.2.1, Shewhart X-bar and R and S control charts'),MONT_REF],
     recursos:[{n:'Presentación: ¿qué gráfica de control uso?', p:'free', h:'#presentacion'},{n:'Plantilla X̄-R', p:'free', h:'#plantillas'}],
     sig:{t:'¿Mi proceso puede cumplir las especificaciones?', f:'cpk'}},
   pchart:{cat:'calidad', tool:'Gráficas p y np (unidades defectuosas)', q:'¿La proporción de piezas defectuosas es estable?', nivel:3, revisada:'oct 2026', calc:'pchart',
@@ -774,7 +805,7 @@ const FICHAS = {
     vars:[['nᵢ','Unidades inspeccionadas en la muestra i','unidades'],['dᵢ','Unidades defectuosas en la muestra i','unidades'],['p̄','Proporción defectuosa promedio','0 a 1']],
     conds:[{t:'block', x:'Las defectuosas no pueden ser más que las inspeccionadas.'},{t:'warn', x:'Si n·p̄ es menor que 5, los límites de 3σ son solo aproximados.'},{t:'warn', x:'Si el límite inferior sale negativo, se usa 0.'}],
     errores:['Usar np con tamaños de muestra distintos.','Contar defectos (varios por pieza) en lugar de piezas defectuosas: eso es c o u.'],
-    refs:['NIST/SEMATECH e-Handbook, sec. 6.3.3.2, Proportions control charts.',MONT_REF],
+    refs:[NIST('Sec. 6.3.3.2, Proportions control charts'),MONT_REF],
     recursos:[{n:'Presentación: ¿qué gráfica de control uso?', p:'free', h:'#presentacion'}],
     sig:{t:'¿El número de defectos es estable?', f:'cuchart'}},
   cuchart:{cat:'calidad', tool:'Gráficas c y u (defectos)', q:'¿El número de defectos es estable?', nivel:3, revisada:'oct 2026', calc:'cuchart',
@@ -784,7 +815,7 @@ const FICHAS = {
     vars:[['aᵢ','Área o cantidad inspeccionada en la muestra i','m², piezas, horas'],['cᵢ','Defectos encontrados en la muestra i','defectos'],['ū','Defectos promedio por unidad de área','defectos/unidad']],
     conds:[{t:'warn', x:'Los defectos ocurren de forma independiente (supuesto de Poisson).'},{t:'warn', x:'Si el límite inferior sale negativo, se usa 0.'}],
     errores:['Usar c cuando el área de inspección cambia.','Contar piezas defectuosas en lugar de defectos: eso es p o np.'],
-    refs:['NIST/SEMATECH e-Handbook, sec. 6.3.3.1, Counts control charts.',MONT_REF],
+    refs:[NIST('Sec. 6.3.3.1, Counts control charts'),MONT_REF],
     recursos:[{n:'Presentación: ¿qué gráfica de control uso?', p:'free', h:'#presentacion'}],
     sig:{t:'¿Cuántos defectos por millón tengo?', f:'dpmo'}},
   van:{cat:'costos', tool:'Valor presente neto y tasa interna de retorno (VAN y TIR)', q:'¿Conviene invertir en este proyecto?', nivel:3, revisada:'oct 2026', calc:'van',
@@ -794,9 +825,23 @@ const FICHAS = {
     vars:[['I₀','Inversión inicial','$'],['Fₜ','Flujo neto de efectivo del año t','$'],['i','Tasa de descuento: TREMA o costo de capital','% anual'],['n','Horizonte del proyecto','años']],
     conds:[{t:'warn', x:'Los flujos son de efectivo e incrementales (lo que cambia por hacer el proyecto), después de impuestos.'},{t:'warn', x:'Tasa y flujos en los mismos términos: ambos nominales o ambos reales.'},{t:'warn', x:'Si el signo de los flujos cambia más de una vez, la TIR puede no ser única. Decide con el VAN.'}],
     errores:['Elegir entre proyectos excluyentes por la TIR más alta: decide con el VAN.','Usar la utilidad contable en lugar del flujo de efectivo.','Olvidar el valor de rescate o la recuperación del capital de trabajo.'],
-    refs:['Blank, L. y Tarquin, A. Ingeniería económica. McGraw-Hill.','Brealey, R., Myers, S. y Allen, F. Principles of Corporate Finance. McGraw-Hill.'],
+    refs:[APA.blank,APA.brealey],
     recursos:[{n:'Plantilla VAN y TIR', p:'free', h:'#plantillas'}],
-    sig:{t:'¿Cuánto debo vender para cubrir mis costos?', f:'equilibrio'}}
+    sig:{t:'¿Cuánto debo vender para cubrir mis costos?', f:'equilibrio'}},
+  planeacion:{cat:'pronostico', tool:'Planeación agregada', q:'¿Cuánto producir cada mes y con cuánta gente?', nivel:4, revisada:'oct 2026', calc:'planeacion',
+    resuelve:'Decide cómo cubrir una demanda que cambia mes a mes con una capacidad limitada: guardando inventario, ajustando el personal o usando horas extra, al menor costo y sin faltantes.',
+    cuando:'Para planes de mediano plazo (de 6 a 18 meses) con un pronóstico de demanda por mes y costos conocidos de personal, inventario y horas extra.',
+    tabla:{h:['Estrategia','Cómo responde a la demanda','Costo típico'],r:[['Nivelada','Personal fijo; el inventario absorbe la variación','Almacenar inventario'],['Persecución','Ajustar el personal cada mes','Contratar y despedir'],['Mixta','Personal fijo y horas extra en los meses pico','Horas extra']]},
+    formulas:[{e:'Capacidad regular = trabajadores × días × productividad', n:'Unidades que se producen en horario normal.'},{e:'Inventario final = inventario inicial + producción regular + horas extra − demanda', n:'No puede ser negativo: eso sería un faltante.'},{e:'Trabajadores necesarios = REDONDEAR.MAS((demanda + meta − inventario) / (días × productividad))', n:'Para la estrategia de persecución. La meta es el inventario final mínimo, solo en el último mes.'},{e:'Costo total = salarios + contratación + despido + inventario + horas extra', n:''}],
+    conds:[{t:'block', x:'No se permiten faltantes: el inventario final de cada mes debe ser mayor o igual a cero.'},{t:'block', x:'El último mes debe cerrar con el inventario mínimo requerido.'},{t:'warn', x:'Supuesto didáctico: las horas extra no tienen límite. En una planta real sí lo tienen.'},{t:'warn', x:'Al redondear trabajadores hacia arriba puede sobrar producción.'}],
+    ejemplo:{enunciado:'NovaPack: demanda de 8,100 unidades en seis meses, 10 trabajadores iniciales que producen 5 unidades por día cada uno, 200 unidades en inventario inicial y al menos 100 al cierre de junio.',
+      pasos:['Nivelada con 12 trabajadores: faltan 260 unidades en mayo y 460 en junio. No es factible.','Nivelada con 13 trabajadores: cumple; cuesta $1,495,500.','Persecución: 9 contrataciones y 5 despidos; cuesta $1,477,200.','Mixta con 10 trabajadores y 1,800 unidades en horas extra: cuesta $1,183,500.'],
+      res:'En este modelo, la estrategia mixta tiene el menor costo. La regla de oro: la alternativa más barata no sirve si incumple las restricciones.'},
+    interp:'Compara solo estrategias factibles. Después pregunta qué pasaría si cambian los supuestos: un límite a las horas extra, contratar y despedir al doble de costo o la importancia de la estabilidad laboral.',
+    errores:['Comparar el costo de una estrategia que tiene faltantes.','Olvidar el costo de contratación inicial al cambiar de plantilla.','Calcular el inventario sin el inventario inicial.','Suponer horas extra ilimitadas sin decirlo.'],
+    refs:[CJ_REF,RT_REF],
+    recursos:[{n:'Presentación: taller NovaPack', p:'free', h:'#presentacion-planeacion'},{n:'Plantilla de planeación agregada', p:'free', h:'#plantillas'}],
+    sig:{t:'¿Qué método pronostica mejor?', f:'errores'}}
 };
 const LEVELS = ['Consulta rápida','Entender','Aplicar','Practicar','Trabajar'];
 
@@ -826,7 +871,7 @@ const CURSO = [
   {n:5,t:'Herramientas de la calidad',temas:['Variación natural y asignable','Gráficas de control'],f:['imr','xbarr','selector','cpk'],caso:'llenado'},
   {n:6,t:'Pronósticos',temas:['Horizontes y tipos','Promedio móvil, ponderado y suavizamiento','MAD, MSE y MAPE'],f:['errores']},
   {n:7,t:'Gestión de inventarios',temas:['Tipos de inventario','FIFO, LIFO, JIT y ABC','Planificación por lotes'],f:['abc','pedidos','eoq']},
-  {n:8,t:'Planeación agregada',temas:['Persecución, nivelación e híbrida'],f:[],nota:'Próximamente: comparador de estrategias de planeación agregada.'}];
+  {n:8,t:'Planeación agregada',temas:['Persecución, nivelación e híbrida','Caso NovaPack'],f:['planeacion'],pres:{h:'#presentacion-planeacion',t:'Presentación: taller NovaPack'}}];
 const CD_NORTE=[34,36,33,38,35,31,37,36,34,39,32,35,36,33,37,34,38,35,36,33];
 const CD_SUR=[28,41,25,47,30,52,27,33,44,26,38,29,58,31,24,36,45,27,40,32];
 const CALIF=[76,96,66,78,52,86,75,78,74,88,74,82,76,72,68,84,62,92,82,70];
@@ -847,6 +892,24 @@ const U_DEF=[5,1,4,1,6,3,6,3,7,5,9,0,4,9,2,5,9,6,2,10];
 const VAN_EJ={I:1200000,r:12,f:[300000,350000,400000,400000,450000]};
 const VAN_EJ2={I:1200000,r:12,f:[450000,500000,-350000,550000,600000]};
 const XR_CONST={2:[1.880,0,3.267,1.128],3:[1.023,0,2.574,1.693],4:[0.729,0,2.282,2.059],5:[0.577,0,2.114,2.326],6:[0.483,0,2.004,2.534],7:[0.419,0.076,1.924,2.704],8:[0.373,0.136,1.864,2.847],9:[0.337,0.184,1.816,2.970],10:[0.308,0.223,1.777,3.078]};
+const NOVAPACK={D:[1000,1200,1500,1300,1700,1400],days:[20,20,22,20,22,20],meses:['Enero','Febrero','Marzo','Abril','Mayo','Junio'],W0:10,prod:5,wage:900,hire:2000,fire:3000,h:15,ot:35,inv0:200,invMin:100};
+function aggPlan(P,type,W){
+  const n=P.D.length, rows=[]; let prev=P.inv0, wPrev=P.W0, sal=0,hc=0,fc=0,hold=0,otc=0,hires=0,fires=0,otU=0,short=-1;
+  for(let t=0;t<n;t++){
+    const meta=t===n-1?P.invMin:0, cap1=P.days[t]*P.prod;
+    let w=type==='persecucion'?Math.max(0,Math.ceil((P.D[t]+meta-prev)/cap1-1e-9)):W;
+    const reg=w*cap1; let ot=0;
+    if(type==='mixta') ot=Math.max(0,P.D[t]+meta-prev-reg);
+    const inv=prev+reg+ot-P.D[t];
+    const up=Math.max(0,w-wPrev), down=Math.max(0,wPrev-w);
+    hires+=up; fires+=down; hc+=up*P.hire; fc+=down*P.fire; sal+=w*P.days[t]*P.wage; hold+=Math.max(0,inv)*P.h; otc+=ot*P.ot; otU+=ot;
+    if(inv<0&&short<0) short=t;
+    rows.push({w,reg,ot,inv,up,down}); prev=inv; wPrev=w;
+  }
+  const feasible=short<0&&prev>=P.invMin-1e-9;
+  return {type,W,rows,sal,hc,fc,hold,otc,hires,fires,otU,total:sal+hc+fc+hold+otc,feasible,short,endInv:prev};
+}
+function minLevelW(P){for(let w=1;w<=1000;w++){if(aggPlan(P,'nivelada',w).feasible)return w}return null}
 const CURSO_CEP = [
   {n:1,t:'Introducción al control de procesos',temas:['Medir para mejorar','Dinámica de variabilidad'],f:[],exp:true},
   {n:2,t:'Gestión de la calidad',temas:['Dimensiones de calidad','Gurús, TQC y TQM','Ishikawa y Pareto','Caso de tiempos de entrega'],f:['comparar','ishikawa','pareto']},
@@ -907,6 +970,8 @@ const CASOS = {
 
 /* Plantillas: vista previa + datos copiables. Descargas reales en la versión publicada. */
 const PLANTILLAS = [
+  {id:'agregada', file:'planeacion-agregada.xlsx', n:'Planeación agregada (NovaPack)', f:'planeacion', fmt:'XLSX', p:'free', d:'Escribe trabajadores y horas extra por mes; calcula producción, inventario, faltantes y costo total.',
+   h:['Mes','Demanda','Días','Trabajadores','Horas extra','Inv. final'], r:()=>{const x=aggPlan(NOVAPACK,'nivelada',13);return NOVAPACK.meses.map((m,i)=>[m,NOVAPACK.D[i],NOVAPACK.days[i],x.rows[i].w,x.rows[i].ot,x.rows[i].inv])}},
   {id:'xbarr', file:'x-r.xlsx', n:'Gráfica X̄-R con constantes', f:'xbarr', fmt:'XLSX', p:'free', d:'20 subgrupos de 5; calcula medias, rangos y límites con la tabla de constantes.',
    h:['Subgrupo','x1','x2','x3','x4','x5'], r:()=>XR_BASE.map((g,i)=>[i+1,...g])},
   {id:'van', file:'van-tir.xlsx', n:'VAN, TIR y recuperación', f:'van', fmt:'XLSX', p:'free', d:'Flujos por año con VAN, TIR y periodo de recuperación descontado.',
@@ -1102,6 +1167,7 @@ function viewHome(){
     <section style="margin-top:32px"><div class="seclead"><h2>Practica con un caso</h2><a href="#casos">Ver todos los casos</a></div>
       <div class="home-cases">${xpCard()}${Object.entries(CASOS).map(([id,c])=>`<a class="case-card" href="#caso-${id}">${caseThumb(id)}<span><strong>${c.title}</strong><span>${c.area} · ${c.steps.length} decisiones</span></span></a>`).join('')}</div>
     </section>
+    ${siteInfo()}
     <section style="margin-top:28px"><a class="band" href="#curso"><span><strong>¿Llevas Control de Procesos o Administración de Operaciones?</strong><span class="sm">Sigue la ruta de tu curso: cada clase con sus herramientas, casos y plantillas.</span></span><span class="go">Ver la ruta →</span></a></section>
   </div>`;
 }
@@ -1152,7 +1218,7 @@ function viewFicha(id){
     ${sec('Video', f.video?videoBlock():'')}
     ${sec('Interpretación', f.interp?`<p>${f.interp}</p>`:'')}
     ${sec('Errores frecuentes', f.errores?`<ul class="errs">${f.errores.map(e=>`<li>${e}</li>`).join('')}</ul>`:'')}
-    ${sec('Referencias', `<div class="refs">${(f.refs||[]).map(r=>`<span>${r}</span>`).join('')}<span>Última revisión: ${f.revisada}. Cómo citar: Valdivia, J. M. (2026). ${f.tool}. Industrial Toolkit.</span></div>`)}
+    ${sec('Referencias', `<div class="refs">${(f.refs||[]).map(r=>`<span>${r}</span>`).join('')}<span>Última revisión: ${f.revisada}. Cómo citar esta ficha (APA 7): Valdivia Mendoza, J. M. (2026). <i>${f.tool}</i>. Industrial Toolkit. ${LNK(SITE+'#f-'+id)}</span></div>`)}
     ${f.sig?`<div class="next"><span><span class="label">Siguiente pregunta</span><br><strong>${f.sig.t}</strong></span><a class="btn primary" href="#f-${f.sig.f}" style="text-decoration:none">Ir a la ficha →</a></div>`:''}
   </div>
   <aside class="aside">
@@ -1269,7 +1335,7 @@ const POSTS=[
   {id:'ied-2026-s1', tipo:'noticia', k:'ied', f:'Qué cambió', t:'Inversión extranjera en México: récord en el primer semestre, pero casi todo es reinversión',
    d:'México captó 34,968 millones de dólares entre enero y junio de 2026. La manufactura recibió el 38.6 %. Solo 7.8 % fueron inversiones nuevas. Qué significa para el ingeniero industrial.',
    l:'van', fecha:'24 de agosto de 2026', status:'pub',
-   refs:['Secretaría de Economía (24 de agosto de 2026). <a href="https://www.gob.mx/se/prensa/mexico-registra-un-maximo-historico-de-inversion-extranjera-directa-ied-para-un-primer-semestre-34-mil-968-millones-de-dolares-en-2026" target="_blank" rel="noopener">México registra un máximo histórico de Inversión Extranjera Directa (IED) para un primer semestre</a>. Comunicado núm. 79.','El Financiero (25 de agosto de 2026). <a href="https://www.elfinanciero.com.mx/economia/2026/08/25/inversion-extranjera-directa-ied-en-mexico-alcanza-nivel-historico-al-cierre-del-primer-semestre/" target="_blank" rel="noopener">Inversión extranjera directa en México alcanza nivel histórico al cierre del primer semestre</a>.','Expansión (24 de agosto de 2026). <a href="https://expansion.mx/economia/2026/08/24/ied-mexico-record-primer-semestre-2026" target="_blank" rel="noopener">IED rompe récord en México en el primer semestre, pero crecimiento se modera a 2.1 %</a>.','IMCO (2026). <a href="https://imco.org.mx/inversion-extranjera-directa-en-mexico-primer-trimestre-de-2026/" target="_blank" rel="noopener">Inversión Extranjera Directa en México, primer trimestre de 2026</a>.'],
+   refs:['Secretaría de Economía. (2026, 24 de agosto). <i>México registra un máximo histórico de inversión extranjera directa (IED) para un primer semestre: 34 mil 968 millones de dólares en 2026</i> (Comunicado núm. 79). Gobierno de México. '+LNK('https://www.gob.mx/se/prensa/mexico-registra-un-maximo-historico-de-inversion-extranjera-directa-ied-para-un-primer-semestre-34-mil-968-millones-de-dolares-en-2026'),'El Financiero. (2026, 25 de agosto). <i>Inversión extranjera directa (IED) en México alcanza nivel histórico al cierre del primer semestre</i>. '+LNK('https://www.elfinanciero.com.mx/economia/2026/08/25/inversion-extranjera-directa-ied-en-mexico-alcanza-nivel-historico-al-cierre-del-primer-semestre/'),'Expansión. (2026, 24 de agosto). <i>IED rompe récord en México en el primer semestre, pero crecimiento se modera a 2.1 %</i>. '+LNK('https://expansion.mx/economia/2026/08/24/ied-mexico-record-primer-semestre-2026'),'Instituto Mexicano para la Competitividad. (2026). <i>Inversión extranjera directa en México: Primer trimestre de 2026</i>. '+LNK('https://imco.org.mx/inversion-extranjera-directa-en-mexico-primer-trimestre-de-2026/')],
    body:`<p class="lead">El 24 de agosto de 2026, la Secretaría de Economía informó que México recibió 34,968 millones de dólares de inversión extranjera directa (IED) en el primer semestre, el monto más alto registrado para un periodo de enero a junio.</p>
 <h2>¿Qué ocurrió?</h2>
 <p><span class="fact">Hecho</span> Según el comunicado oficial, la IED creció 2.1 % frente a lo publicado para el primer semestre de 2025. Su composición fue:</p>
@@ -1293,7 +1359,7 @@ const POSTS=[
   {id:'gartner-top25-2026', tipo:'noticia', k:'ranking', f:'Qué cambió', t:'Gartner publica su ranking 2026 de las mejores cadenas de suministro',
    d:'Schneider Electric repite en el primer lugar por cuarto año; NVIDIA es segundo y Walmart sube 10 lugares hasta el tercero. Qué industrias dominan y qué significa para un ingeniero industrial.',
    l:'abc', fecha:'17 de junio de 2026', status:'pub',
-   refs:['Gartner (17 de junio de 2026). <a href="https://www.gartner.com/en/newsroom/press-releases/2026-06-17-gartner-announces-2026-rankings-of-the-global-supply-chain-top-25" target="_blank" rel="noopener">Gartner Announces 2026 Rankings of the Global Supply Chain Top 25</a>. Comunicado de prensa.','Supply Chain 24/7 (17 de junio de 2026). <a href="https://www.supplychain247.com/article/gartner-2026-global-supply-chain-top-25-rankings" target="_blank" rel="noopener">Gartner Unveils 2026 Top 25 Supply Chain Rankings</a>.','Lenovo (22 de junio de 2026). <a href="https://news.lenovo.com/pressroom/press-releases/gartner-supply-chain-top-25-for-2026/" target="_blank" rel="noopener">Lenovo Recognized in the Gartner Supply Chain Top 25 for 2026</a>. Comunicado de prensa.'],
+   refs:['Gartner. (2026, 17 de junio). <i>Gartner announces 2026 rankings of the global supply chain top 25</i> [Comunicado de prensa]. '+LNK('https://www.gartner.com/en/newsroom/press-releases/2026-06-17-gartner-announces-2026-rankings-of-the-global-supply-chain-top-25'),'Supply Chain 24/7. (2026, 17 de junio). <i>Gartner unveils 2026 top 25 supply chain rankings</i>. '+LNK('https://www.supplychain247.com/article/gartner-2026-global-supply-chain-top-25-rankings'),'Lenovo. (2026, 22 de junio). <i>Lenovo recognized in the Gartner Supply Chain Top 25 for 2026</i> [Comunicado de prensa]. '+LNK('https://news.lenovo.com/pressroom/press-releases/gartner-supply-chain-top-25-for-2026/')],
    body:`<p class="lead">El 17 de junio de 2026, Gartner publicó su ranking anual de las 25 empresas con las mejores cadenas de suministro del mundo. Schneider Electric conservó el primer lugar por cuarto año consecutivo.</p>
 <h2>¿Qué ocurrió?</h2>
 <p><span class="fact">Hecho</span> Los primeros cinco lugares del Gartner Supply Chain Top 25 de 2026 son:</p>
@@ -1318,7 +1384,7 @@ const POSTS=[
   {id:'cognex-insight-3900', tipo:'noticia', k:'vision', f:'Qué cambió', t:'Cognex lanza un sistema de visión con IA para inspeccionar a la velocidad de la línea',
    d:'El In-Sight 3900 hace inspecciones con IA dentro de la cámara, sin una computadora externa. Qué promete, qué falta comprobar y por qué no reemplaza al control estadístico.',
    l:'dpmo', fecha:'5 de mayo de 2026', status:'pub',
-   refs:['Cognex (5 de mayo de 2026). <a href="https://www.prnewswire.com/news-releases/cognex-launches-highest-performance-embedded-ai-vision-system-powered-by-qualcomm-302760462.html" target="_blank" rel="noopener">Cognex Launches Highest Performance Embedded AI Vision System Powered by Qualcomm</a>. Comunicado de prensa, PR Newswire.'],
+   refs:['Cognex Corporation. (2026, 5 de mayo). <i>Cognex launches highest performance embedded AI vision system powered by Qualcomm</i> [Comunicado de prensa]. PR Newswire. '+LNK('https://www.prnewswire.com/news-releases/cognex-launches-highest-performance-embedded-ai-vision-system-powered-by-qualcomm-302760462.html')],
    body:`<p class="lead">El 5 de mayo de 2026, Cognex, uno de los principales fabricantes de visión artificial industrial, presentó el In-Sight 3900: un sistema que ejecuta inspecciones con inteligencia artificial dentro del propio equipo, sin una computadora externa.</p>
 <h2>¿Qué ocurrió?</h2>
 <p><span class="fact">Hecho</span> Según el comunicado de la empresa:</p>
@@ -1333,7 +1399,7 @@ const POSTS=[
 <p>Los rechazos que registra un sistema de visión son datos de atributos. Con ellos puedes vigilar la estabilidad en la ficha de <a href="#f-pchart">gráficas p y np</a> o <a href="#f-cuchart">c y u</a>, medir el desempeño con <a href="#f-dpmo">DPMO y nivel sigma</a>, y priorizar con un <a href="#f-pareto">Pareto</a> de los tipos de defecto.</p>`},  {id:'limites', k:'practica', f:'Del concepto a la práctica', t:'Límites de control: por qué no usar la desviación de todos los datos',
    d:'Si calculas los límites con la desviación de todos los datos, el propio cambio del proceso ensancha los límites y la alarma no suena.',
    l:'imr', fecha:'Octubre de 2026', status:'pub', widget:'limites',
-   refs:['NIST/SEMATECH e-Handbook of Statistical Methods, sec. 6.3.2, Individuals control charts.','Montgomery, D. C. Introduction to Statistical Quality Control. Wiley. Capítulo de gráficas de control para variables.','Wheeler, D. J. y Chambers, D. S. (1992). Understanding Statistical Process Control (2.ª ed.). SPC Press.'],
+   refs:[NIST('Sec. 6.3.2.2, Individuals control charts'),MONT_REF,APA.wheeler],
    body:`<p class="lead">Una gráfica de control existe para avisar cuando el proceso cambia. Si calculas sus límites con la desviación estándar de todos los datos, el propio cambio ensancha los límites y la alarma no suena.</p>
 <h2>La pregunta: ¿qué desviación va en los límites?</h2>
 <p>Los límites de una gráfica de individuales son la media ± 3σ. La duda está en cómo estimar σ. Hay dos caminos:</p>
@@ -1359,7 +1425,7 @@ const POSTS=[
   {id:'excel-minitab-python', k:'probamos', f:'Lo probamos', t:'La misma gráfica I-MR en Excel, Minitab y Python',
    d:'Los mismos 25 datos de la línea de llenado: qué resultado debe salir, cómo se hace en cada herramienta y cuánto tardé en Excel (8 min) y en Python (2 min).',
    l:'imr', fecha:'Octubre de 2026', status:'pub',
-   refs:['NIST/SEMATECH e-Handbook of Statistical Methods, sec. 6.3.2.2. <a href="https://www.itl.nist.gov/div898/handbook/pmc/section3/pmc322.htm" target="_blank" rel="noopener">Individuals control charts</a>.','Minitab. Ayuda de Minitab: I-MR Chart, métodos y fórmulas.','<a href="https://colab.research.google.com/" target="_blank" rel="noopener">Google Colab</a>: entorno gratuito para ejecutar Python en el navegador.'],
+   refs:[NIST('Sec. 6.3.2.2, Individuals control charts'),APA.minitab,APA.colab],
    body:`<p class="lead">Misma pregunta, mismos 25 datos, tres herramientas: ¿el proceso de llenado es estable? Antes de comparar qué tan fácil es cada una, hay que saber qué resultado debe salir.</p>
 <h2>El resultado que debe salir</h2>
 <p>Con los 25 volúmenes de la <a href="#f-imr">ficha I-MR</a>, cualquier herramienta bien usada debe dar:</p>
@@ -1428,7 +1494,7 @@ plt.show()</code></pre></div>
   {id:'sigma', k:'cambio', f:'Del concepto a la práctica', t:'¿De dónde sale el 3.4 por millón de Seis Sigma?',
    d:'Una normal a ±6σ deja unas 2 partes por mil millones fuera, no 3.4 por millón. La diferencia es una convención: el desplazamiento de 1.5σ.',
    l:'dpmo', fecha:'Octubre de 2026', status:'pub', widget:'sigma',
-   refs:['Montgomery, D. C. Introduction to Statistical Quality Control. Wiley. Sección sobre Seis Sigma.','Pyzdek, T. y Keller, P. The Six Sigma Handbook. McGraw-Hill.','Harry, M. y Schroeder, R. (2000). Six Sigma: The Breakthrough Management Strategy Revolutionizing the World’s Top Corporations. Currency.','Wheeler, D. J. Columnas sobre el desplazamiento de 1.5σ en Quality Digest.'],
+   refs:[MONT_REF,APA.pyzdek,APA.harry,APA.wheelerQD],
    body:`<p class="lead">Seis Sigma se asocia con 3.4 defectos por millón de oportunidades. Pero si calculas cuánto de una distribución normal queda más allá de ±6σ, obtienes unas 2 partes por mil millones. La diferencia es una convención: el desplazamiento de 1.5σ.</p>
 <h2>La cuenta que no cuadra</h2>
 <p>Un proceso "seis sigma" tiene sus límites de especificación a 6 desviaciones estándar de la media. Si el proceso está centrado y es normal, la fracción fuera es:</p>
@@ -1469,7 +1535,7 @@ function viewPost(id){
     <span class="label">${p.f}</span><h1>${p.t}</h1>
     <div class="meta" style="display:flex;gap:16px;flex-wrap:wrap;color:var(--muted)"><span>Juan Manuel Valdivia Mendoza</span><span>${p.fecha}</span><span>${readMin(p)} min de lectura</span><span class="pill ${POST_STATUS[p.status][0]}">${POST_STATUS[p.status][1]}</span></div>
     ${p.body.replace('<!--W-->','<div id="pw"></div>')}
-    <h2>Fuentes</h2><ol class="refs" style="font-size:15px">${p.refs.map(r=>`<li>${r}</li>`).join('')}</ol>
+    <h2>Referencias</h2><ol class="refs" style="font-size:15px">${p.refs.map(r=>`<li>${r}</li>`).join('')}</ol><p class="refs" style="font-size:14px">Cómo citar este artículo (APA 7): Valdivia Mendoza, J. M. (2026). <i>${p.t}</i>. Industrial Toolkit. ${LNK(SITE+'#post-'+p.id)}</p>
     <div class="next"><span><span class="label">Herramienta relacionada</span><br><strong>${FICHAS[p.l].q}</strong></span><a class="btn primary" href="#f-${p.l}" style="text-decoration:none">Abrir la ficha →</a></div>
   </article></div>`;
 }
@@ -1545,7 +1611,7 @@ function viewAutor(){
   <div style="display:grid;gap:12px"><div class="seclead"><h2>Presentaciones</h2><span class="label">2 requeridas</span></div>
     <div class="slides">
       <div class="slide"><div class="thumb"><strong>¿Qué gráfica de control uso?</strong><small>Presentación web interactiva · 12 pantallas</small></div><div class="info"><b>Selector de gráficas de control</b><span style="color:var(--muted)">Acompaña a la ficha del selector.</span><div class="tpl-meta"><span class="pill free">Lista</span><a href="#presentacion">Ver presentación</a></div></div></div>
-      <div class="slide"><div class="thumb b"><strong>Industrial Toolkit: de la duda al cálculo</strong><small>PowerPoint · 5 min</small></div><div class="info"><b>Presentación del proyecto</b><span style="color:var(--muted)">Problema, propuesta, demo y crecimiento.</span><div class="tpl-meta"><span class="pill todo">Por crear</span></div></div></div>
+      <div class="slide"><div class="thumb b"><strong>Planeación agregada: caso NovaPack</strong><small>Presentación web interactiva · taller de 2 horas</small></div><div class="info"><b>Taller de planeación agregada</b><span style="color:var(--muted)">Nivelada, persecución y mixta: los equipos calculan, comprueban y deciden.</span><div class="tpl-meta"><span class="pill free">Lista</span><a href="#presentacion-planeacion">Ver presentación</a></div></div></div>
     </div></div>
   <div class="card contact" id="contacto"><span class="label">Contacto</span><h2 style="font-size:22px">¿Hablamos?</h2>
     <p>¿Tienes una pregunta, una herramienta que te gustaría encontrar aquí o quieres usar este material en tu clase? Escríbeme por LinkedIn.</p>
@@ -1554,8 +1620,26 @@ function viewAutor(){
 }
 
 const COURSES={
-  cep:{name:'Control de Procesos', unit:'Sesión', list:()=>CURSO_CEP, bib:[MONT_REF,'NIST/SEMATECH e-Handbook of Statistical Methods.'], bibLabel:'Referencias de la página para este curso'},
+  cep:{name:'Control de Procesos', unit:'Sesión', list:()=>CURSO_CEP, bib:[MONT_REF,NIST_REF], bibLabel:'Referencias de la página para este curso'},
   ops:{name:'Administración de Operaciones', unit:'Clase', list:()=>CURSO, bib:[RT_REF,CJ_REF], bibLabel:'Bibliografía del curso'}};
+function siteInfo(){
+  return `<section class="site-info" id="acerca" aria-labelledby="acerca-t"><div class="seclead"><h2 id="acerca-t">Acerca de este sitio</h2><span class="label">Ficha del blog</span></div>
+  <dl class="si-grid">
+    <div><dt>Título</dt><dd><strong>Industrial Toolkit</strong> · De la duda al cálculo, con criterio</dd></div>
+    <div><dt>Autor</dt><dd><a href="#autor">Mtro. Juan Manuel Valdivia Mendoza</a>, ingeniero industrial y profesor de la Universidad Panamericana</dd></div>
+    <div><dt>Área</dt><dd>Ingeniería industrial: control estadístico de procesos, calidad, administración de operaciones y evaluación de proyectos</dd></div>
+    <div><dt>Dirigido a</dt><dd>Estudiantes de últimos semestres, ingenieros en sus primeros años de trabajo y profesores</dd></div>
+    <div class="si-wide"><dt>Descripción</dt><dd>Caja de herramientas interactiva en español: partes de una pregunta concreta, llegas a la herramienta adecuada, entiendes la fórmula y la aplicas con calculadoras que revisan las condiciones antes de darte un resultado.</dd></div>
+    <div class="si-wide"><dt>Estructura</dt><dd><ul>
+      <li><a href="#inicio">Inicio</a>: seis categorías organizadas por preguntas.</li>
+      <li><a href="#herramientas">Herramientas</a>: fichas con fórmula, condiciones, ejemplo resuelto, calculadora y referencias.</li>
+      <li><a href="#curso">Ruta del curso</a>: las clases de Control de Procesos y Administración de Operaciones con sus herramientas.</li>
+      <li><a href="#casos">Casos prácticos</a>: casos interactivos y el experimento de variabilidad.</li>
+      <li><a href="#plantillas">Plantillas</a>: hojas de Excel descargables con fórmulas.</li>
+      <li><a href="#radar">Radar industrial</a>: noticias y artículos del autor.</li>
+      <li><a href="#autor">Sobre el autor</a>: trayectoria, presentaciones, video y contacto.</li></ul></dd></div>
+  </dl></section>`;
+}
 function viewCurso(k){
   const C=COURSES[k];
   return `<div class="wrap page"><div><span class="label">Universidad Panamericana · Ingeniería</span><h1>Ruta del curso</h1><p class="lead">Las clases en orden, con las herramientas para practicar cada tema fuera del aula.</p></div>
@@ -1563,7 +1647,7 @@ function viewCurso(k){
   <div class="course">${C.list().map(c=>`<div class="cl"><span class="num ${c.f.length||c.exp?'':'off'}">${c.n}</span><div class="cbody">
     <span class="label">${C.unit} ${c.n}</span><h2>${c.t}</h2>
     <div class="chips">${c.temas.map(t=>`<span class="chip">${t}</span>`).join('')}</div>
-    ${c.f.length||c.exp||c.caso?`<div class="links">${c.exp?`<a href="#experimento"><span>Experimento: ¿eres un proceso estable?<br><small style="color:var(--muted)">Mide tu propia variabilidad</small></span><span class="pill free">Interactivo</span></a>`:''}${c.f.map(id=>`<a href="#f-${id}"><span>${FICHAS[id].q}<br><small style="color:var(--muted)">${FICHAS[id].tool}</small></span>${lvl(FICHAS[id].nivel)}</a>`).join('')}${c.caso?`<a href="#caso-${c.caso}"><span>Caso interactivo: ${CASOS[c.caso].title}</span><span class="pill free">Caso</span></a>`:''}</div>`:''}
+    ${c.f.length||c.exp||c.caso||c.pres?`<div class="links">${c.pres?`<a href="${c.pres.h}"><span>${c.pres.t}<br><small style="color:var(--muted)">Presentación interactiva para la clase</small></span><span class="pill free">Presentación</span></a>`:''}${c.exp?`<a href="#experimento"><span>Experimento: ¿eres un proceso estable?<br><small style="color:var(--muted)">Mide tu propia variabilidad</small></span><span class="pill free">Interactivo</span></a>`:''}${c.f.map(id=>`<a href="#f-${id}"><span>${FICHAS[id].q}<br><small style="color:var(--muted)">${FICHAS[id].tool}</small></span>${lvl(FICHAS[id].nivel)}</a>`).join('')}${c.caso?`<a href="#caso-${c.caso}"><span>Caso interactivo: ${CASOS[c.caso].title}</span><span class="pill free">Caso</span></a>`:''}</div>`:''}
     ${c.nota?`<p class="note" style="margin:0">${c.nota}</p>`:''}
   </div></div>`).join('')}</div>
   <div class="card"><span class="label">${C.bibLabel}</span><ul>${C.bib.map(b=>`<li>${b}</li>`).join('')}</ul></div></div>`;
@@ -1620,26 +1704,33 @@ function initExperimento(){
   xpRender();
 }
 
-function viewPresentacion(){
-  return `<div class="wrap page"><div class="crumbs" style="padding:0"><a href="#f-selector">Selector de gráfica de control</a> / Presentación</div>
-  <div><span class="label">Presentación interactiva · Control estadístico de procesos</span><h1>¿Qué gráfica de control uso?</h1><p class="lead">Encuentra la gráfica adecuada en dos preguntas, revisa cómo se calculan sus límites y pon a prueba lo aprendido con un repaso de tres preguntas.</p></div>
-  <div class="btns"><a class="btn" style="text-decoration:none" href="#f-selector">Ir a la ficha del selector</a></div>
-  <iframe id="pres" class="pres" src="selector.html" title="Presentación interactiva: ¿Qué gráfica de control uso?" allow="fullscreen"></iframe>
-  <p class="note">Presentación elaborada por el autor como recurso de aprendizaje · 12 pantallas · CC BY-NC-SA 4.0. Usa el botón "Pantalla completa" de la presentación para proyectarla en clase. Los botones "Probar en la página" te traen a la ficha correspondiente.</p></div>`;
+const PRES={
+  selector:{file:'selector.html', crumb:['#f-selector','Selector de gráfica de control'], label:'Presentación interactiva · Control estadístico de procesos', title:'¿Qué gráfica de control uso?', lead:'Encuentra la gráfica adecuada en dos preguntas, revisa cómo se calculan sus límites y pon a prueba lo aprendido con un repaso de tres preguntas.', ficha:['#f-selector','Ir a la ficha del selector'], meta:'12 pantallas'},
+  planeacion:{file:'planeacion.html', crumb:['#f-planeacion','Planeación agregada'], label:'Presentación interactiva · Administración de operaciones', title:'Planeación agregada: caso NovaPack', lead:'Taller en equipo de 2 horas: decidir cuánto producir, cuándo y a qué costo. Los equipos llenan las tablas, comprueban sus respuestas y defienden una estrategia ante la gerencia.', ficha:['#f-planeacion','Ir al comparador de estrategias'], meta:'17 pantallas · taller de 120 minutos'}};
+function viewPresentacion(k){
+  const p=PRES[k]||PRES.selector;
+  return `<div class="wrap page"><div class="crumbs" style="padding:0"><a href="${p.crumb[0]}">${p.crumb[1]}</a> / Presentación</div>
+  <div><span class="label">${p.label}</span><h1>${p.title}</h1><p class="lead">${p.lead}</p></div>
+  <div class="btns"><a class="btn" style="text-decoration:none" href="${p.ficha[0]}">${p.ficha[1]}</a></div>
+  <iframe id="pres" class="pres" src="${p.file}" title="Presentación interactiva: ${p.title}" allow="fullscreen"></iframe>
+  <p class="note">Presentación elaborada por el autor como recurso de aprendizaje · ${p.meta} · CC BY-NC-SA 4.0. Usa el botón "Pantalla completa" de la presentación para proyectarla en clase.</p></div>`;
 }
 
 const REQS=[
   ['Creación propia y creativa','ok','Diseño, fichas y calculadoras propias','#inicio'],
   ['Utilidad informativa en un área específica','ok','Herramientas para ingeniería industrial','#herramientas'],
-  ['Nombre atractivo y slogan','mid','Industrial Toolkit · "De la duda al cálculo". Falta validar el nombre','#inicio'],
+  ['Nombre atractivo y slogan','ok','Industrial Toolkit · "De la duda al cálculo, con criterio"','#inicio'],
   ['Datos del autor','ok','Foto, trayectoria y formación','#autor'],
-  ['Dos presentaciones','mid','1 de 2 lista: ¿Qué gráfica de control uso? Falta el pitch del proyecto.','#presentacion'],
+  ['Dos presentaciones','ok','¿Qué gráfica de control uso? y Planeación agregada: caso NovaPack, ambas interactivas','#presentacion-planeacion'],
   ['Al menos un video inédito','no','Guion por capítulos listo; falta grabarlo','#autor'],
   ['Noticias relacionadas','ok','3 noticias con fuentes y fecha: Gartner Supply Chain Top 25, IED en México y visión con IA','#radar'],
   ['Al menos 3 posts propios','ok','3 publicados: límites de control, Excel vs Python y el 3.4 por millón de Seis Sigma','#radar'],
   ['Contador de visitas','ok','Contador real en la página publicada (servicio hits.sh)','#creditos'],
   ['Licencia Creative Commons','ok','CC BY-NC-SA 4.0 en el pie de página','#creditos'],
-  ['Citar fuentes e imágenes','ok','Referencias en cada ficha y página de créditos','#creditos']];
+  ['Fuentes e imágenes citadas en APA 7','ok','Referencias de fichas, artículos y noticias en APA 7, y créditos de imágenes','#creditos'],
+  ['Contenidos de libre difusión','ok','Contenido propio bajo CC BY-NC-SA 4.0, datos ficticios y fuentes citadas sin reproducirlas','#creditos'],
+  ['Autor, título y área del blog','ok','Sección "Acerca de este sitio" en la portada','#acerca'],
+  ['Descripción del contenido y estructura','ok','Sección "Acerca de este sitio" en la portada','#acerca']];
 function viewProyecto(){
   const c={ok:0,mid:0,no:0}; REQS.forEach(r=>c[r[1]]++);
   const pct=k=>(c[k]/REQS.length*100)+'%';
@@ -1647,17 +1738,22 @@ function viewProyecto(){
   <div style="display:grid;gap:8px"><div class="bar"><i style="width:${pct('ok')};background:var(--ok)"></i><i style="width:${pct('mid')};background:var(--warn)"></i></div>
     <div class="legend" style="padding:0"><span><i style="background:var(--ok)"></i>Listo: ${c.ok}</span><span><i style="background:var(--warn)"></i>Falta contenido: ${c.mid}</span><span><i style="background:var(--line)"></i>Por crear: ${c.no}</span></div></div>
   <div class="req">${REQS.map(r=>`<a href="${r[3]}"><span class="st ${r[1]}">${{ok:'✓',mid:'◐',no:'○'}[r[1]]}</span><span><b>${r[0]}</b><small>${r[2]}</small></span><span aria-hidden="true">→</span></a>`).join('')}</div>
-  <p class="note">El último requisito de la consigna aparecía cortado en la fotografía. Hay que confirmar su texto completo.</p></div>`;
+  </div>`;
 }
 function viewCreditos(){
-  return `<div class="wrap page"><div><h1>Créditos y licencia</h1><p class="lead">Fuentes consultadas, origen de las imágenes y condiciones de uso.</p></div>
+  const main=[MONT_REF,NIST_REF,RT_REF,CJ_REF,APA.pyzdek,APA.wheeler,APA.asqPareto,APA.asqFish].sort((a,b)=>a.replace(/<[^>]+>/g,'').localeCompare(b.replace(/<[^>]+>/g,''),'es'));
+  return `<div class="wrap page"><div><h1>Créditos y licencia</h1><p class="lead">Fuentes consultadas, origen de las imágenes y condiciones de uso. Las referencias siguen el formato APA 7.</p></div>
   <div class="cards">
-    <div class="card"><span class="label">Licencia</span><div class="cc" style="gap:6px"><i style="width:34px;height:34px;font-size:12px">cc</i><i style="width:34px;height:34px;font-size:12px">by</i><i style="width:34px;height:34px;font-size:12px">nc</i><i style="width:34px;height:34px;font-size:12px">sa</i></div>
-      <p>Puedes compartir y adaptar las fichas y artículos citando al autor, sin uso comercial y con la misma licencia. Las plantillas premium no están bajo esta licencia.</p></div>
-    <div class="card"><span class="label">Imágenes</span><p>Fotografía del autor: proporcionada por el autor. Las gráficas e ilustraciones se generan en la página con datos ficticios. Si se agregan fotos o imágenes externas, se citarán aquí con autor, fuente y licencia.</p></div>
+    <div class="card"><span class="label">Licencia y libre difusión</span><div class="cc" style="gap:6px"><i style="width:34px;height:34px;font-size:12px">cc</i><i style="width:34px;height:34px;font-size:12px">by</i><i style="width:34px;height:34px;font-size:12px">nc</i><i style="width:34px;height:34px;font-size:12px">sa</i></div>
+      <p>Las fichas, artículos, calculadoras, presentaciones y plantillas gratuitas son de elaboración propia y se publican con licencia <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>: puedes compartirlos y adaptarlos citando al autor, sin uso comercial y con la misma licencia. Los datos de los ejemplos y casos son ficticios. Las fuentes externas se citan y se enlazan; no se reproduce su contenido.</p></div>
+    <div class="card"><span class="label">Imágenes y elementos visuales</span><ul>
+      <li>Valdivia Mendoza, J. M. (2026). <i>Retrato del autor</i> [Fotografía]. Archivo personal.</li>
+      <li>Gráficas, diagramas, íconos y portadas: elaboración propia, generados en la página con datos ficticios.</li>
+      <li>Bandera de Bolivia: dibujo propio a partir del diseño oficial del símbolo patrio.</li>
+      <li>Tipografías Archivo, Source Sans 3 y JetBrains Mono: <i>Google Fonts</i>, licencia SIL Open Font License 1.1. ${LNK('https://fonts.google.com')}</li></ul></div>
     <div class="card"><span class="label">Contador de visitas</span><p>En la página publicada, el contador usa el servicio externo hits.sh, que registra cada carga de la página. Para mostrar el número, tu navegador hace una petición a ese servicio externo.</p></div>
-    <div class="card"><span class="label">Fuentes principales</span><ul><li>NIST/SEMATECH e-Handbook of Statistical Methods</li><li>ASQ, Quality Tools</li><li>Montgomery, Introduction to Statistical Quality Control</li><li>Russell y Taylor, Operations Management</li><li>Chase y Jacobs, Administración de operaciones</li></ul></div>
-  </div></div>`;
+  </div>
+  <div class="card"><span class="label">Referencias principales (APA 7)</span><ol class="refs" style="font-size:15px">${main.map(r=>`<li>${r}</li>`).join('')}</ol><p class="note" style="margin:0">Cada ficha y cada artículo incluye sus propias referencias y la forma de citarlo.</p></div></div>`;
 }
 
 /* ============================================================
@@ -2337,6 +2433,59 @@ const CALCS = {
         <div class="interp">${roots.length===1?`La TIR (${tirTxt}) ${roots[0]>r?'supera':'no alcanza'} la TREMA, consistente con el VAN. `:roots.length>1?'Con varias TIR, ninguna sirve para decidir; el VAN sí. ':''}${pbD!=null?`La inversión se recupera, ya descontada, en ${fmt(pbD,1)} años de ${f.length}.`:'Con esta tasa, la inversión no se recupera dentro del horizonte.'} Para comparar proyectos que se excluyen entre sí, elige el de mayor VAN, no el de mayor TIR.</div>`;
     }
   },
+  planeacion(el){
+    let P=JSON.parse(JSON.stringify(NOVAPACK)), Wn=13, Wm=10, sel='mixta';
+    const f=(v,d=0)=>fmt(v,d), money=v=>'$'+fmt(v,0);
+    el.innerHTML=`<div class="calc"><div class="calc-head"><h3>Comparador de estrategias · caso NovaPack</h3><button class="btn" id="ag-reset">Restaurar caso NovaPack</button></div>
+      <details style="padding:12px 16px 0"><summary style="cursor:pointer;font-weight:600;color:var(--accent)">Datos del caso (puedes cambiarlos)</summary>
+        <div class="tscroll" style="margin-top:10px"><table class="etable"><thead><tr><th>Mes</th>${P.meses.map(m=>`<th>${m.slice(0,3)}</th>`).join('')}</tr></thead><tbody>
+          <tr><td>Demanda</td>${P.D.map((v,i)=>`<td><input data-a="D" data-i="${i}" type="number" min="0" value="${v}" aria-label="Demanda ${P.meses[i]}"></td>`).join('')}</tr>
+          <tr><td>Días</td>${P.days.map((v,i)=>`<td><input data-a="days" data-i="${i}" type="number" min="1" value="${v}" aria-label="Días ${P.meses[i]}"></td>`).join('')}</tr></tbody></table></div>
+        <div class="calc-in" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));padding:12px 0">
+          ${[['W0','Trabajadores iniciales'],['prod','Unidades por trabajador por día'],['wage','Salario ($/trabajador/día)'],['hire','Contratar ($/trabajador)'],['fire','Despedir ($/trabajador)'],['h','Inventario ($/unidad/mes)'],['ot','Horas extra ($/unidad)'],['inv0','Inventario inicial'],['invMin','Inventario final mínimo']].map(([k,l])=>`<div class="field"><label for="ag-${k}">${l}</label><input id="ag-${k}" data-p="${k}" type="number" min="0" value="${P[k]}"></div>`).join('')}
+        </div></details>
+      <div class="row2" style="padding:12px 16px 0">
+        <div class="field"><label for="ag-wn">Nivelada: trabajadores fijos <span id="ag-wnv" class="mono"></span></label><input id="ag-wn" type="range" min="5" max="25" step="1" value="13"></div>
+        <div class="field"><label for="ag-wm">Mixta: trabajadores fijos <span id="ag-wmv" class="mono"></span></label><input id="ag-wm" type="range" min="5" max="25" step="1" value="10"></div>
+      </div>
+      <div id="ag-out"></div></div>`;
+    const read=()=>{ el.querySelectorAll('[data-a]').forEach(i=>P[i.dataset.a][+i.dataset.i]=+i.value); el.querySelectorAll('[data-p]').forEach(i=>P[i.dataset.p]=+i.value); };
+    el.addEventListener('input',e=>{ if(e.target.id==='ag-wn') Wn=+e.target.value; else if(e.target.id==='ag-wm') Wm=+e.target.value; else read(); run(); });
+    el.addEventListener('click',e=>{ const b=e.target.closest('[data-sel]'); if(b){ sel=b.dataset.sel; run(); } });
+    $('#ag-reset').onclick=()=>{ P=JSON.parse(JSON.stringify(NOVAPACK)); Wn=13; Wm=10; sel='mixta';
+      el.querySelectorAll('[data-a]').forEach(i=>i.value=P[i.dataset.a][+i.dataset.i]); el.querySelectorAll('[data-p]').forEach(i=>i.value=P[i.dataset.p]);
+      $('#ag-wn').value=Wn; $('#ag-wm').value=Wm; run(); };
+    run();
+    function run(){
+      $('#ag-wnv').textContent=Wn; $('#ag-wmv').textContent=Wm;
+      const o=$('#ag-out');
+      if(P.D.some(v=>!(v>=0))||P.days.some(v=>!(v>0))||['W0','prod','wage','hire','fire','h','ot','inv0','invMin'].some(k=>!(P[k]>=0))||!(P.prod>0))
+        return o.innerHTML='<p class="err">Revisa los datos del caso: la demanda y los costos deben ser números positivos, y los días y la productividad mayores que cero.</p>';
+      const S={nivelada:aggPlan(P,'nivelada',Wn), persecucion:aggPlan(P,'persecucion'), mixta:aggPlan(P,'mixta',Wm)};
+      const names={nivelada:`Nivelada · ${Wn} trabajadores`,persecucion:'Persecución',mixta:`Mixta · ${Wm} trabajadores`};
+      const feas=Object.values(S).filter(x=>x.feasible), best=feas.sort((a,b)=>a.total-b.total)[0], mw=minLevelW(P);
+      const R=S[sel];
+      const why=x=>x.feasible?'Sí':x.short>=0?`No: faltan ${f(-x.rows[x.short].inv)} uds. en ${P.meses[x.short].toLowerCase()}`:`No: cierra con ${f(x.endInv)} uds.`;
+      const W=560,H=210,Lm=10,T=14,B=26,pw=W-20,ph=H-T-B,bw=pw/6, mx=Math.max(...P.D,...R.rows.map(r=>r.reg+r.ot))*1.08, mi=Math.min(0,...R.rows.map(r=>r.inv)), Mx=Math.max(mx,...R.rows.map(r=>r.inv));
+      const ys=v=>T+ph-(v-mi)/(Mx-mi)*ph, xc=i=>Lm+i*bw+bw/2;
+      let svg=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Demanda, producción e inventario por mes">`;
+      R.rows.forEach((r,i)=>{ svg+=`<rect x="${xc(i)-bw*.36}" y="${ys(P.D[i])}" width="${bw*.34}" height="${ys(0)-ys(P.D[i])}" rx="2" fill="var(--line)"/><rect x="${xc(i)+bw*.02}" y="${ys(r.reg)}" width="${bw*.34}" height="${ys(0)-ys(r.reg)}" rx="2" fill="var(--accent)" opacity=".75"/>`;
+        if(r.ot>0) svg+=`<rect x="${xc(i)+bw*.02}" y="${ys(r.reg+r.ot)}" width="${bw*.34}" height="${ys(r.reg)-ys(r.reg+r.ot)}" rx="2" fill="var(--warn)"/>`;
+        svg+=`<text x="${xc(i)}" y="${H-8}" text-anchor="middle">${P.meses[i].slice(0,3)}</text>`; });
+      svg+=`<line x1="${Lm}" x2="${Lm+pw}" y1="${ys(0)}" y2="${ys(0)}" stroke="var(--muted)"/><polyline fill="none" stroke="var(--fg)" stroke-width="2" points="${R.rows.map((r,i)=>`${xc(i)},${ys(r.inv)}`).join(' ')}"/>${R.rows.map((r,i)=>`<circle cx="${xc(i)}" cy="${ys(r.inv)}" r="${r.inv<0?5:3.5}" fill="${r.inv<0?'var(--bad)':'var(--fg)'}"/>`).join('')}</svg>`;
+      o.innerHTML=`<div class="verdict ${best?'v-ok':'v-bad'}"><span class="light"></span>${best?`La estrategia factible más barata es ${names[best.type].toLowerCase()}: ${money(best.total)}.`:'Ninguna estrategia cumple las restricciones con estos datos.'}</div>
+        <ul class="gates"><li><span class="g ${S.nivelada.feasible?'ok':'bad'}">${S.nivelada.feasible?'✓':'✕'}</span><span>Nivelada con ${Wn} trabajadores: ${S.nivelada.feasible?'factible':'no factible'}. ${mw?`El mínimo factible es ${mw} trabajadores.`:''}</span></li><li><span class="g warn">!</span><span>Supuesto didáctico: horas extra sin límite.</span></li></ul>
+        <div class="tscroll" style="padding:12px 16px 8px"><table class="etable"><thead><tr><th>Estrategia</th><th style="text-align:right">Salarios</th><th style="text-align:right">Contratar</th><th style="text-align:right">Despedir</th><th style="text-align:right">Inventario</th><th style="text-align:right">Horas extra</th><th style="text-align:right">Total</th><th>¿Factible?</th></tr></thead><tbody>
+          ${['nivelada','persecucion','mixta'].map(k=>{const x=S[k];return `<tr${best&&best.type===k?' class="crit"':''}><td><button class="btn" data-sel="${k}" aria-pressed="${sel===k}" style="${sel===k?'border-color:var(--accent);color:var(--accent)':''}">${names[k]}</button></td><td class="out">${money(x.sal)}</td><td class="out">${money(x.hc)}</td><td class="out">${money(x.fc)}</td><td class="out">${money(x.hold)}</td><td class="out">${money(x.otc)}</td><td class="out">${x.feasible?money(x.total):'—'}</td><td style="color:var(${x.feasible?'--ok':'--bad'})">${why(x)}</td></tr>`}).join('')}
+        </tbody></table></div>
+        <div style="padding:8px 16px 0"><span class="label">Detalle por mes · ${names[sel]}</span></div>
+        <div style="padding:8px 16px 0">${svg}<div class="legend" style="padding:8px 0 0"><span><i style="background:var(--line)"></i>Demanda</span><span><i style="background:var(--accent);opacity:.75"></i>Producción regular</span><span><i style="background:var(--warn)"></i>Horas extra</span><span><i style="background:var(--fg);height:3px"></i>Inventario final</span></div></div>
+        <div class="tscroll" style="padding:8px 16px"><table class="etable"><thead><tr><th>Mes</th><th style="text-align:right">Trabajadores</th><th style="text-align:right">Altas</th><th style="text-align:right">Bajas</th><th style="text-align:right">Producción</th><th style="text-align:right">Horas extra</th><th style="text-align:right">Inventario final</th></tr></thead><tbody>
+          ${R.rows.map((r,i)=>`<tr><td>${P.meses[i]}</td><td class="out">${f(r.w)}</td><td class="out">${f(r.up)}</td><td class="out">${f(r.down)}</td><td class="out">${f(r.reg)}</td><td class="out">${f(r.ot)}</td><td class="out" style="${r.inv<0?'color:var(--bad);font-weight:700':''}">${f(r.inv)}</td></tr>`).join('')}
+        </tbody></table></div>
+        <div class="interp">${best?`Con estos datos conviene ${names[best.type].toLowerCase()}. `:''}Prueba cambiar los supuestos: duplica el costo de contratar y despedir, sube el costo de las horas extra o pide más inventario al cierre, y observa si cambia la recomendación.</div>`;
+    }
+  },
   productividad(el){
     const P=PRODUCT, f=(id,lab,v)=>`<div class="field"><label for="${id}">${lab}</label><input id="${id}" type="number" min="0" step="any" value="${v}"></div>`;
     el.innerHTML=`<div class="calc"><div class="calc-head"><h3>Productividad: antes y después</h3></div>
@@ -2472,10 +2621,10 @@ function render(){
   else if(h==='plantillas'){app.innerHTML=viewPlantillas();nav=h}
   else if(h==='radar'){app.innerHTML=viewRadar();nav=h}
   else if(h==='autor'||h==='contacto'){app.innerHTML=viewAutor();nav='autor';if(h==='contacto')setTimeout(()=>{const c=$('#contacto');if(c)c.scrollIntoView({block:'start'})},0)}
-  else if(h==='presentacion'){app.innerHTML=viewPresentacion();nav='herramientas'}
+  else if(h==='presentacion'||h.startsWith('presentacion-')){app.innerHTML=viewPresentacion(h.slice(13)||'selector');nav='herramientas'}
   else if(h==='proyecto'){app.innerHTML=viewProyecto()}
   else if(h==='creditos'){app.innerHTML=viewCreditos()}
-  else { app.innerHTML=viewHome(); nav='inicio'; animateHero(); }
+  else { app.innerHTML=viewHome(); nav='inicio'; animateHero(); if(h==='acerca') setTimeout(()=>{const a=$('#acerca'); if(a) a.scrollIntoView({block:'start'})},0); }
   document.querySelectorAll('nav.main a').forEach(a=>{ if(a.dataset.nav===nav) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
   moveNavInd();
   if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){ app.classList.remove('enter'); void app.offsetWidth; app.classList.add('enter'); }
