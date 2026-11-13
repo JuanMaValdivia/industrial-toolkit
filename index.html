@@ -875,7 +875,7 @@ const CURSO = [
   {n:4,t:'Gestión de la calidad',temas:['Dimensiones de calidad','TQM y gurús','Pareto e Ishikawa'],f:['pareto','ishikawa']},
   {n:5,t:'Herramientas de la calidad',temas:['Variación natural y asignable','Gráficas de control'],f:['imr','xbarr','selector','cpk'],caso:'llenado'},
   {n:6,t:'Pronósticos',temas:['Horizontes y tipos','Promedio móvil, ponderado y suavizamiento','MAD, MSE y MAPE'],f:['errores']},
-  {n:7,t:'Gestión de inventarios',temas:['Tipos de inventario','FIFO, LIFO, JIT y ABC','Planificación por lotes'],f:['abc','pedidos','eoq']},
+  {n:7,t:'Gestión de inventarios',temas:['Tipos de inventario','FIFO, LIFO, JIT y ABC','Planificación por lotes','Efecto látigo'],f:['abc','pedidos','eoq'],pres:{h:'#presentacion-cadena',t:'Curso y juego: la cadena de suministro y el efecto látigo'}},
   {n:8,t:'Planeación agregada',temas:['Persecución, nivelación e híbrida','Caso NovaPack'],f:['planeacion'],pres:{h:'#presentacion-planeacion',t:'Presentación: taller NovaPack'}}];
 const CD_NORTE=[34,36,33,38,35,31,37,36,34,39,32,35,36,33,37,34,38,35,36,33];
 const CD_SUR=[28,41,25,47,30,52,27,33,44,26,38,29,58,31,24,36,45,27,40,32];
@@ -1257,6 +1257,7 @@ function viewCasos(){
     <div class="chips">${[...new Set(c.steps.map(s=>s.f))].map(f=>`<span class="chip">${FICHAS[f].tool.split(' · ')[0]}</span>`).join('')}</div>
     <a class="btn primary" style="justify-self:start;text-decoration:none" href="#caso-${id}">Resolver el caso →</a></article>`).join('')}
     <article class="card"><span class="label">Experimento interactivo</span><h3>¿Eres un proceso estable?</h3><p>Mide tu tiempo de reacción 20 veces y analiza tus propios datos con una gráfica de control.</p><a class="btn primary" style="justify-self:start;text-decoration:none" href="#experimento">Hacer el experimento →</a></article>
+    <article class="card"><span class="label">Juego por equipos · Cadena de suministro</span><h3>Juego de la cadena de suministro</h3><p>Cada equipo es una cadena y cada integrante opera un eslabón desde su celular. Vivan el efecto látigo y compitan por el menor costo.</p><div class="btns"><a class="btn primary" style="text-decoration:none" href="cadena.html" target="_blank" rel="noopener">Jugar ↗</a><a class="btn" style="text-decoration:none" href="#presentacion-cadena">Ver la clase</a></div></article>
     <article class="card"><span class="label">Próximo caso</span><div class="slot">Inventario de una cafetería universitaria: ABC, pedidos y punto de equilibrio.<br>Se publicará cuando se pruebe en clase.</div></article></div></div>`;
 }
 
@@ -1624,6 +1625,7 @@ function viewAutor(){
     <div class="slides">
       <div class="slide"><div class="thumb"><strong>¿Qué gráfica de control uso?</strong><small>Presentación web interactiva · 12 pantallas</small></div><div class="info"><b>Selector de gráficas de control</b><span style="color:var(--muted)">Acompaña a la ficha del selector.</span><div class="tpl-meta"><span class="pill free">Lista</span><a href="#presentacion">Ver presentación</a></div></div></div>
       <div class="slide"><div class="thumb b"><strong>Planeación agregada: caso NovaPack</strong><small>Presentación web interactiva · taller de 2 horas</small></div><div class="info"><b>Taller de planeación agregada</b><span style="color:var(--muted)">Nivelada, persecución y mixta: los equipos calculan, comprueban y deciden.</span><div class="tpl-meta"><span class="pill free">Lista</span><a href="#presentacion-planeacion">Ver presentación</a></div></div></div>
+      <div class="slide"><div class="thumb"><strong>La cadena de suministro y el efecto látigo</strong><small>Curso interactivo · 2 sesiones y examen</small></div><div class="info"><b>Curso y juego de la cadena de suministro</b><span style="color:var(--muted)">Teoría, técnica y un examen en forma de juego por equipos.</span><div class="tpl-meta"><span class="pill free">Lista</span><a href="#presentacion-cadena">Ver presentación</a><a href="cadena.html" target="_blank" rel="noopener">Abrir el juego ↗</a></div></div></div>
     </div></div>
   <div class="card contact" id="contacto"><span class="label">Contacto</span><h2 style="font-size:22px">¿Hablamos?</h2>
     <p>¿Tienes una pregunta, una herramienta que te gustaría encontrar aquí o quieres usar este material en tu clase? Escríbeme por LinkedIn.</p>
@@ -1718,12 +1720,13 @@ function initExperimento(){
 
 const PRES={
   selector:{file:'selector.html', crumb:['#f-selector','Selector de gráfica de control'], label:'Presentación interactiva · Control estadístico de procesos', title:'¿Qué gráfica de control uso?', lead:'Encuentra la gráfica adecuada en dos preguntas, revisa cómo se calculan sus límites y pon a prueba lo aprendido con un repaso de tres preguntas.', ficha:['#f-selector','Ir a la ficha del selector'], meta:'12 pantallas'},
-  planeacion:{file:'planeacion.html', crumb:['#f-planeacion','Planeación agregada'], label:'Presentación interactiva · Administración de operaciones', title:'Planeación agregada: caso NovaPack', lead:'Taller en equipo de 2 horas: decidir cuánto producir, cuándo y a qué costo. Los equipos llenan las tablas, comprueban sus respuestas y defienden una estrategia ante la gerencia.', ficha:['#f-planeacion','Ir al comparador de estrategias'], meta:'17 pantallas · taller de 120 minutos'}};
+  planeacion:{file:'planeacion.html', crumb:['#f-planeacion','Planeación agregada'], label:'Presentación interactiva · Administración de operaciones', title:'Planeación agregada: caso NovaPack', lead:'Taller en equipo de 2 horas: decidir cuánto producir, cuándo y a qué costo. Los equipos llenan las tablas, comprueban sus respuestas y defienden una estrategia ante la gerencia.', ficha:['#f-planeacion','Ir al comparador de estrategias'], meta:'17 pantallas · taller de 120 minutos'},
+  cadena:{file:'cadena-clase.html', crumb:['#casos','Casos prácticos'], label:'Curso interactivo · Cadena de suministro', title:'La cadena de suministro y el efecto látigo', lead:'Dos sesiones de teoría y técnica (flujos, eslabones, línea de suministro, política de pedido y medición del látigo) y un examen en forma de juego: equipos de 3 compiten desde el celular.', ficha:['cadena.html','Abrir el juego ↗'], meta:'29 pantallas · 2 sesiones y examen'}};
 function viewPresentacion(k){
   const p=PRES[k]||PRES.selector;
   return `<div class="wrap page"><div class="crumbs" style="padding:0"><a href="${p.crumb[0]}">${p.crumb[1]}</a> / Presentación</div>
   <div><span class="label">${p.label}</span><h1>${p.title}</h1><p class="lead">${p.lead}</p></div>
-  <div class="btns"><a class="btn" style="text-decoration:none" href="${p.ficha[0]}">${p.ficha[1]}</a></div>
+  <div class="btns"><a class="btn" style="text-decoration:none" href="${p.ficha[0]}"${p.ficha[0].startsWith('#')?'':' target="_blank" rel="noopener"'}>${p.ficha[1]}</a></div>
   <iframe id="pres" class="pres" src="${p.file}" title="Presentación interactiva: ${p.title}" allow="fullscreen"></iframe>
   <p class="note">Presentación elaborada por el autor como recurso de aprendizaje · ${p.meta} · CC BY-NC-SA 4.0. Usa el botón "Pantalla completa" de la presentación para proyectarla en clase.</p></div>`;
 }
