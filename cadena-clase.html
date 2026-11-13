@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#1F5FD1"><title>Cadena de suministro y efecto látigo · Industrial Toolkit</title><meta name="description" content="Curso de 3 sesiones: teoría y técnica de la cadena de suministro y el efecto látigo, con un examen en forma de juego por equipos."><style>
+
+:root{--blue:#1F5FD1;--ink:#142844;--muted:#65748a;--line:#dae2ed;--paper:#f5f7fb;--light:#eaf0fc}*{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--paper);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,a,input{font:inherit}button,a{touch-action:manipulation}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #f19f29;outline-offset:5px}button{border:0}header{height:86px;display:flex;align-items:center;justify-content:space-between;padding:0 5vw;border-bottom:1px solid var(--line);background:#fff}.brand{display:flex;gap:12px;align-items:center;font-weight:800;font-size:15px;letter-spacing:-.4px}.mark{color:white;background:var(--blue);padding:9px;border-radius:9px;line-height:0}.brand small{display:block;font-size:10px;letter-spacing:1.7px;font-weight:600;color:var(--muted);margin-top:3px}.tools{display:flex;gap:10px}.quiet{background:transparent;border:1px solid var(--line);border-radius:8px;color:var(--ink);padding:10px 14px;font-size:13px;font-weight:600}.quiet:hover{background:var(--light)}main{max-width:1250px;margin:auto;padding:38px 5vw 28px;min-height:calc(100svh - 162px)}.slide{display:none;animation:appear .25s ease}.slide.active{display:block}@keyframes appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}.eyebrow{color:var(--blue);font-size:11px;font-weight:750;letter-spacing:2px;text-transform:uppercase;margin:0 0 20px;display:flex;gap:12px;align-items:center}.eyebrow:before{content:"";width:25px;height:2px;background:var(--blue)}h1{font-size:clamp(42px,5.4vw,76px);line-height:1.06;letter-spacing:-3px;font-weight:760;margin:0 0 28px}h2{font-size:clamp(30px,3.5vw,47px);line-height:1.16;letter-spacing:-1.6px;margin:0 0 24px;max-width:920px}h3{font-size:22px;letter-spacing:-.6px;margin:0 0 10px}p{font-size:17px;line-height:1.65;margin:0 0 16px}.muted{color:var(--muted)}.hero{display:grid;grid-template-columns:1.15fr 1fr;gap:64px;align-items:center;min-height:510px}.hero h1 span{color:var(--blue)}.subtitle{font-size:23px;color:var(--muted)}.byline{font-size:13px;margin:28px 0;color:var(--muted);max-width:300px}.primary{display:inline-flex;gap:28px;align-items:center;justify-content:center;color:white;background:var(--blue);padding:16px 24px;border-radius:9px;font-weight:650;box-shadow:0 6px 18px #1f5fd11c}.primary:hover{background:#174dae}.secondary{background:#fff;color:var(--ink);padding:15px 21px;border:1px solid var(--line);border-radius:9px;font-weight:600}.secondary:hover{border-color:var(--blue);color:var(--blue)}.actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:28px}.technical{padding:28px;border:1px solid var(--line);background:white;border-radius:16px;position:relative;overflow:hidden}.technical:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#dae2ed55 1px,transparent 1px),linear-gradient(90deg,#dae2ed55 1px,transparent 1px);background-size:24px 24px;pointer-events:none}.technical>*{position:relative}.chart-label{display:flex;justify-content:space-between;font-size:10px;letter-spacing:1.3px;font-weight:700;color:var(--muted)}svg{max-width:100%;height:auto}.technical svg{margin:30px 0 12px}.chart-caption{font-size:12px;color:var(--muted);line-height:1.5;margin:0}.chip{display:inline-block;font-size:11px;padding:6px 10px;border-radius:5px;background:var(--light);color:var(--blue);font-weight:650;letter-spacing:.3px}.chart-family{display:flex;gap:7px;flex-wrap:wrap;margin-top:23px}.intro-list{margin-top:34px;max-width:950px}.intro-item{display:flex;gap:25px;padding:22px 0;border-top:1px solid var(--line);align-items:flex-start}.step-no{font:500 15px ui-monospace,monospace;color:var(--blue);padding-top:6px}.intro-item p{font-size:23px;line-height:1.55;margin:0}.intro-item:last-child{border-bottom:1px solid var(--line)}.question{padding-top:28px}.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:34px}.choices.three{grid-template-columns:repeat(3,1fr)}.choice{text-align:left;display:flex;flex-direction:column;align-items:flex-start;gap:16px;min-height:215px;background:white;border:1px solid var(--line);padding:26px;border-radius:12px;color:var(--ink);transition:border .15s,transform .15s}.choice:hover{border-color:var(--blue);transform:translateY(-3px);box-shadow:0 9px 24px #18375908}.choice .icon{width:44px;height:44px;border-radius:10px;color:var(--blue);background:var(--light);display:grid;place-items:center;font-size:24px}.choice strong{font-size:24px;line-height:1.2;font-weight:650;letter-spacing:-.6px}.choice small{font-size:15px;color:var(--muted);line-height:1.5}.choice .arrow{align-self:flex-end;color:var(--blue);margin-top:auto}.hint{font-size:13px;color:var(--muted);margin-top:20px}.result-head{display:flex;align-items:baseline;gap:22px;flex-wrap:wrap;margin-bottom:25px}.result-head h2{font-size:52px;margin:0;color:var(--blue);letter-spacing:-2px}.result-head p{font-size:20px;color:var(--muted);margin:0}.result-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:30px}.text-block{margin:0 0 22px}.label{font-size:10px;letter-spacing:1.8px;font-weight:750;text-transform:uppercase;color:var(--muted);margin-bottom:9px}.example{border-left:3px solid var(--blue);padding:5px 0 5px 20px;margin-top:22px}.formula{padding:23px 25px;background:var(--light);border-radius:10px}.formula .math{font-family:Cambria,"Times New Roman",serif;font-size:30px;line-height:1.6;color:#174587;overflow-wrap:anywhere}.formula small{font-size:13px;color:var(--muted);display:block;margin-top:6px;line-height:1.5}.warning{padding:19px 23px;border:1px solid var(--line);border-radius:10px;background:#fff;margin-top:16px}.warning p{font-size:15px;margin:0}.warning .label{color:var(--blue)}.duo{display:grid;grid-template-columns:1fr 1fr;gap:20px}.duo article{background:white;border:1px solid var(--line);border-radius:12px;padding:24px}.duo h3{font-size:37px;color:var(--blue);margin-bottom:6px}.duo p{font-size:16px}.duo .formula{padding:16px;margin-top:15px}.duo .math{font-size:23px}details{margin-top:18px;max-width:960px;font-size:13px;color:var(--muted)}summary{cursor:pointer;font-weight:600}details p{font-size:13px;margin-top:12px}details a{color:var(--blue)}.result-links{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:24px}.result-links .actions{margin:0}.link-button{background:none;padding:12px 0;color:var(--blue);font-weight:650;font-size:14px}.quiz-shell{max-width:900px}.quiz-meta{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px;margin:30px 0 20px}.quiz-dots{display:flex;gap:6px}.quiz-dots i{width:36px;height:5px;border-radius:3px;background:var(--line)}.quiz-dots i.done{background:var(--blue)}.quiz-question{font-size:25px;line-height:1.5;min-height:82px}.quiz-options{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:26px}.quiz-option{padding:22px;background:#fff;border:1px solid var(--line);border-radius:9px;font-size:23px;color:var(--ink);font-weight:650}.quiz-option:hover:not(:disabled){border-color:var(--blue)}.quiz-option:disabled{cursor:default;color:var(--muted)}.quiz-option.correct{background:#e8f4ed;border-color:#338257;color:#236d43}.quiz-option.incorrect{background:#fff0e9;border-color:#cf795b;color:#954c34}.feedback{padding:18px 22px;border-radius:9px;background:var(--light);margin-top:20px;font-size:16px;line-height:1.6}.score{font-size:74px;font-weight:750;letter-spacing:-4px;color:var(--blue);margin:10px 0}.close-quote{font-size:clamp(28px,3.5vw,44px);line-height:1.45;letter-spacing:-1.3px;max-width:920px;margin:22px 0 35px}.close-quote strong{color:var(--blue)}.license{font-size:12px;color:var(--muted);margin-top:46px}.license a{color:inherit}footer{max-width:1250px;margin:auto;min-height:76px;padding:15px 5vw;display:flex;align-items:center;gap:22px;border-top:1px solid var(--line)}.foot-label{font-size:10px;color:var(--muted);letter-spacing:1px;white-space:nowrap}.progress-track{height:3px;flex:1;background:var(--line);border-radius:8px;overflow:hidden}.progress-track span{display:block;background:var(--blue);height:100%;transition:width .2s}.counter{font:12px ui-monospace,monospace;color:var(--muted);white-space:nowrap}#back{background:none;color:var(--ink);font-size:13px;padding:10px 0}#back:disabled{opacity:.3;cursor:default}dialog{border:1px solid var(--line);border-radius:15px;padding:30px;max-width:620px;width:calc(100% - 30px);max-height:85svh;box-shadow:0 25px 120px #14284430;color:var(--ink)}dialog::backdrop{background:#14284465;backdrop-filter:blur(3px)}.dialog-top{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:22px}.dialog-top h3{margin:0}.index-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.index-grid button{text-align:left;padding:13px;background:var(--paper);color:var(--ink);font-size:13px;border-radius:7px;line-height:1.5}.index-grid button:hover{background:var(--light);color:var(--blue)}.index-grid span{display:inline-block;color:var(--blue);font:12px ui-monospace,monospace;margin-right:8px}.input-label{display:block;font-size:13px;font-weight:650;margin:18px 0 7px}input[type=url]{width:100%;padding:12px;border:1px solid #aebcd0;border-radius:7px;color:var(--ink)}.settings-copy{font-size:14px;color:var(--muted)}#urlStatus{font-size:13px;color:#236d43;margin-top:15px}.is-hidden{display:none!important}@media(min-width:1450px){main{padding-top:64px}}@media(max-width:750px){header{height:72px;padding:0 6vw}.brand{font-size:13px}.brand small{font-size:8px}.tools{gap:6px}.tools button{padding:9px;font-size:11px}main{padding:28px 6vw;min-height:calc(100svh - 147px)}h1{letter-spacing:-1.8px}.hero{grid-template-columns:1fr;gap:35px;min-height:0}.technical{padding:22px}.hero .technical{max-width:480px}.choices,.choices.three,.result-grid,.duo{grid-template-columns:1fr}.choice{min-height:165px;gap:12px}.choice strong{font-size:22px}.intro-item p{font-size:20px}.result-head{gap:7px}.result-head h2{font-size:43px}.quiz-question{font-size:21px}.quiz-options{gap:8px}.quiz-option{padding:20px 8px;font-size:20px}.foot-label{display:none}footer{padding:12px 6vw;gap:16px}.formula .math{font-size:27px}.duo .math{font-size:23px}.question{padding-top:10px}.index-grid{grid-template-columns:1fr}.actions .primary,.actions .secondary{font-size:14px}.result-links{align-items:flex-start}}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}@media print{header,.tools,footer,button,dialog,.actions,.result-links{display:none!important}main{padding:0;max-width:none}.slide{display:block!important;break-after:page;padding:25px 0;min-height:90vh}.hero{min-height:0}.technical{break-inside:avoid}body{background:white}h1{font-size:50px}h2{font-size:34px}details{display:none}}
+
+.tbl{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:16px}
+.tbl th{background:var(--light);color:var(--blue);text-align:left;font-size:12px;letter-spacing:1px;text-transform:uppercase;padding:12px 14px;font-weight:700}
+.tbl td{padding:10px 14px;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
+.tbl td.n,.tbl th.n{text-align:right}
+.tbl tr.total td{font-weight:700;background:var(--paper)}
+.tbl tr.bad td{color:#954c34;background:#fff0e9;font-weight:650}
+.tbl tr.best td{color:#236d43;background:#e8f4ed;font-weight:650}
+.tbl input{width:100%;min-width:70px;padding:8px 10px;border:1px solid #aebcd0;border-radius:7px;font:inherit;text-align:right;color:var(--ink);background:#fff}
+.tbl input.ok{border-color:#338257;background:#e8f4ed}
+.tbl input.no{border-color:#cf795b;background:#fff0e9}
+.tscroll{overflow-x:auto}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px}
+.grid2{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;align-items:start;margin-top:22px}
+.box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px}
+.box h3{font-size:20px;margin-bottom:8px}
+.box p{font-size:16px;margin:0}
+.tag{display:inline-block;font-size:11px;font-weight:750;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+.golden{margin-top:22px;padding:16px 20px;border-radius:10px;background:var(--light);color:#174587;font-weight:650;font-size:17px}
+.alert{margin-top:18px;padding:14px 18px;border-radius:10px;background:#fff0e9;color:#954c34;font-weight:650}
+.good{margin-top:18px;padding:14px 18px;border-radius:10px;background:#e8f4ed;color:#236d43;font-weight:650}
+.vote{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.vote b{font-size:30px;color:var(--blue);font-variant-numeric:tabular-nums}
+.big{font-size:44px;font-weight:760;letter-spacing:-1.5px;color:var(--blue);margin:0}
+.chk{margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.chk .msg{font-size:15px;font-weight:650}
+.formula4{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
+.formula4 .formula .math{font-size:22px}
+@media(max-width:750px){.grid3,.grid2,.formula4{grid-template-columns:1fr}.big{font-size:34px}.tbl{font-size:14px}.tbl th,.tbl td{padding:8px}}
+
+a.primary,a.secondary{text-decoration:none}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--muted);margin-top:6px}.legend span{display:inline-flex;align-items:center;gap:6px}.legend i{width:16px;height:3px;border-radius:2px;display:inline-block}
+.technical svg{margin:14px 0 8px}
+.calc-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}.calc-form label{display:grid;gap:6px;font-size:13px;font-weight:650}.calc-form input[type=number]{padding:10px 12px;border:1px solid #aebcd0;border-radius:8px;font:inherit;color:var(--ink)}
+.calc-form .chkline{grid-column:1/-1;display:flex;gap:10px;align-items:center;font-size:14px}.calc-form .chkline input{width:18px;height:18px;accent-color:var(--blue)}
+#ex1 th,#ex2 th,#ex3 th,#ex4 th,#sheet th{text-transform:none;letter-spacing:.2px;font-size:13px}
+.qblock+.qblock{border-top:1px solid var(--line);margin-top:18px}
+.quiz-option.correct,.quiz-option.incorrect{opacity:1}
+@media(max-width:750px){.calc-form{grid-template-columns:1fr}}
+@media print{body.print-one header,body.print-one footer,body.print-one .slide:not(.active),body.print-one .actions{display:none!important}body.print-one .slide.active{min-height:0}}
+</style></head><body>
+<header><div class="brand"><span class="mark" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 15V5M7 15V10M12 15V2M17 15V7" stroke="currentColor" stroke-width="2.3"/></svg></span><div>Industrial Toolkit<small>CADENA DE SUMINISTRO</small></div></div><nav class="tools" aria-label="Herramientas"><button class="quiet" id="indexBtn">Índice</button><button class="quiet" id="fullBtn" aria-label="Activar pantalla completa">⛶ <span>Pantalla completa</span></button></nav></header>
+<main id="main">
+
+<!-- ================= SESIÓN 1 · TEORÍA ================= -->
+<section class="slide active" data-screen="1" aria-labelledby="title1"><div class="hero"><div><p class="eyebrow">Curso en 3 sesiones · el examen es un juego</p><h1 id="title1" tabindex="-1">La cadena de suministro y el <span>efecto látigo</span></h1><p class="subtitle">Teoría, técnica y una competencia por equipos para demostrar lo aprendido</p><p class="byline">Mtro. Juan Manuel Valdivia Mendoza<br>Industrial Toolkit</p><button class="primary" data-go="2">Empezar <span aria-hidden="true">→</span></button></div>
+<div><div class="technical"><div class="chart-label"><span>PEDIDOS POR ESLABÓN</span><span>SEMANAS 1 — 36</span></div><div id="heroChart"></div><p class="chart-caption">La demanda del cliente (línea punteada) cambia una sola vez. Los pedidos de cada eslabón oscilan cada vez más. Simulación con el mismo modelo del juego.</p></div></div></div></section>
+
+<section class="slide" data-screen="2" aria-labelledby="title2"><p class="eyebrow">Ruta del curso</p><h2 id="title2" tabindex="-1">Tres sesiones, un objetivo: operar una cadena sin provocar el látigo</h2>
+<div class="grid3"><div class="box"><span class="tag">Sesión 1 · 100 min</span><h3>Teoría</h3><p>Qué es una cadena de suministro, sus flujos, sus eslabones y por qué aparece el efecto látigo.</p></div>
+<div class="box"><span class="tag">Sesión 2 · 100 min</span><h3>Técnica</h3><p>Las ecuaciones de cada semana, la línea de suministro, cómo calcular un pedido y cómo medir la amplificación.</p></div>
+<div class="box"><span class="tag">Sesión 3 · 90 min</span><h3>Examen: el juego</h3><p>Equipos de 3 compiten; cada integrante opera un eslabón. Se califica el desempeño y una reflexión escrita.</p></div></div>
+<p class="golden">Al terminar podrán: (1) explicar los flujos y eslabones de una cadena, (2) identificar las causas del efecto látigo, (3) calcular un pedido con una política de inventario y (4) medir y justificar su desempeño con datos.</p>
+<div class="actions"><button class="primary" data-go="3">Continuar <span aria-hidden="true">→</span></button></div></section>
+
+<section class="slide" data-screen="3" aria-labelledby="title3"><p class="eyebrow">Sesión 1 · Discusión inicial · 10 minutos</p><h2 id="title3" tabindex="-1">En 2020 faltó papel de baño en los supermercados. ¿Por qué?</h2><p class="muted">La gente no usó más papel que antes. Voten la explicación que les parezca más probable y defiéndanla en 30 segundos.</p>
+<div class="grid3">
+<div class="box"><span class="tag">A · Producción</span><p>Las fábricas no pudieron producir lo suficiente.</p><div class="vote" style="margin-top:14px"><button class="secondary" data-vote="0">+1 voto</button><b id="v0">0</b></div></div>
+<div class="box"><span class="tag">B · Pánico amplificado</span><p>Las compras de pánico se convirtieron en pedidos cada vez más grandes hacia arriba de la cadena.</p><div class="vote" style="margin-top:14px"><button class="secondary" data-vote="1">+1 voto</button><b id="v1">0</b></div></div>
+<div class="box"><span class="tag">C · Transporte</span><p>Los camiones y las rutas de distribución fallaron.</p><div class="vote" style="margin-top:14px"><button class="secondary" data-vote="2">+1 voto</button><b id="v2">0</b></div></div>
+</div><p class="hint">Guarden su respuesta: al final de la sesión volveremos a esta pregunta.</p><div class="actions"><button class="primary" data-go="4">Continuar <span aria-hidden="true">→</span></button><button class="link-button" id="resetVotes">Reiniciar votos</button></div></section>
+
+<section class="slide" data-screen="4" aria-labelledby="title4"><p class="eyebrow">Sesión 1 · Concepto</p><h2 id="title4" tabindex="-1">Una cadena de suministro mueve tres cosas</h2>
+<p class="muted" style="max-width:900px">Es la red de empresas que lleva un producto desde la materia prima hasta el consumidor final. Cada empresa es un <b>eslabón</b> y depende de las demás.</p>
+<div class="technical" style="margin-top:20px"><svg viewBox="0 0 760 230" role="img" aria-label="Diagrama de la cadena: el producto fluye de la fábrica al cliente; los pedidos y el dinero fluyen del cliente a la fábrica">
+<defs><marker id="ahB" markerWidth="12" markerHeight="12" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L10 5L0 10z" fill="#1F5FD1"/></marker><marker id="ahO" markerWidth="12" markerHeight="12" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L10 5L0 10z" fill="#e08a1e"/></marker><marker id="ahG" markerWidth="12" markerHeight="12" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L10 5L0 10z" fill="#338257"/></marker></defs>
+<path d="M30 38H720" stroke="#1F5FD1" stroke-width="3" marker-end="url(#ahB)"/><text x="30" y="26" font-size="13" font-weight="700" fill="#1F5FD1" font-family="sans-serif">PRODUCTO: aguas abajo, hacia el cliente</text>
+<g font-family="sans-serif" font-size="15" font-weight="700" text-anchor="middle">
+<rect x="20" y="70" width="150" height="70" rx="12" fill="#fff" stroke="#b8495a" stroke-width="2"/><text x="95" y="111" fill="#142844">Fábrica</text>
+<rect x="215" y="70" width="150" height="70" rx="12" fill="#fff" stroke="#1f9a8a" stroke-width="2"/><text x="290" y="111" fill="#142844">Mayorista</text>
+<rect x="410" y="70" width="150" height="70" rx="12" fill="#fff" stroke="#1F5FD1" stroke-width="2"/><text x="485" y="111" fill="#142844">Minorista</text>
+<rect x="605" y="70" width="135" height="70" rx="12" fill="#f5f7fb" stroke="#65748a" stroke-width="2" stroke-dasharray="6 4"/><text x="672" y="111" fill="#142844">Cliente</text></g>
+<path d="M730 178H40" stroke="#e08a1e" stroke-width="3" marker-end="url(#ahO)"/><text x="730" y="170" text-anchor="end" font-size="13" font-weight="700" fill="#b46a0e" font-family="sans-serif">INFORMACIÓN (pedidos): aguas arriba</text>
+<path d="M730 214H40" stroke="#338257" stroke-width="3" marker-end="url(#ahG)"/><text x="730" y="206" text-anchor="end" font-size="13" font-weight="700" fill="#236d43" font-family="sans-serif">DINERO: aguas arriba</text>
+</svg></div>
+<p class="golden">La idea clave: el producto viaja en un sentido y la información en el otro, y ambos tardan. Cada eslabón decide con información incompleta y atrasada.</p>
+<div class="actions"><button class="primary" data-go="5">Continuar <span aria-hidden="true">→</span></button></div></section>
+
+<section class="slide" data-screen="5" aria-labelledby="title5"><p class="eyebrow">Sesión 1 · Los eslabones del juego</p><h2 id="title5" tabindex="-1">Cada eslabón ve solo una parte de la cadena</h2>
+<div class="grid3">
+<div class="box"><span class="tag" style="color:#1F5FD1">Minorista</span><h3>Vende al consumidor</h3><p><b>Ve:</b> la demanda real del cliente y su inventario.<br><b>No ve:</b> el inventario del mayorista ni de la fábrica.<br><b>Decide:</b> cuánto pedir al mayorista.</p></div>
+<div class="box"><span class="tag" style="color:#1f9a8a">Mayorista</span><h3>Surte a las tiendas</h3><p><b>Ve:</b> los pedidos del minorista, no la demanda real.<br><b>No ve:</b> qué compró el consumidor.<br><b>Decide:</b> cuánto pedir a la fábrica.</p></div>
+<div class="box"><span class="tag" style="color:#b8495a">Fábrica</span><h3>Produce</h3><p><b>Ve:</b> los pedidos del mayorista, ya distorsionados.<br><b>No ve:</b> la demanda real ni el inventario de abajo.<br><b>Decide:</b> cuánto producir (tarda 3 semanas).</p></div>
+</div>
+<p class="hint">En la versión clásica hay un cuarto eslabón, el <b>Distribuidor</b>, entre el mayorista y la fábrica. En el examen usaremos 3 eslabones: uno por integrante.</p>
+<div class="actions"><button class="primary" data-go="6">Continuar <span aria-hidden="true">→</span></button></div></section>
+
+<section class="slide" data-screen="6" aria-labelledby="title6"><p class="eyebrow">Sesión 1 · Vocabulario</p><h2 id="title6" tabindex="-1">Seis conceptos que usarán en cada decisión</h2>
+<div class="formula4">
+<div class="formula"><div class="label">Inventario disponible</div><div class="math" style="font-size:20px">Cajas físicamente en tu almacén</div><small>Nunca es negativo.</small></div>
+<div class="formula"><div class="label">Pendientes (backorders)</div><div class="math" style="font-size:20px">Lo que le debes a tu cliente</div><small>Se surte en cuanto llegue mercancía.</small></div>
+<div class="formula"><div class="label">Inventario neto</div><div class="math" style="font-size:20px">Disponible − pendientes</div><small>Negativo = tienes clientes sin surtir.</small></div>
+<div class="formula"><div class="label">Tiempo de entrega (lead time)</div><div class="math" style="font-size:20px">Semanas entre pedir y recibir</div><small>En el juego: 2 + 2 = 4 semanas (fábrica: 3).</small></div>
+<div class="formula"><div class="label">Línea de suministro</div><div class="math" style="font-size:20px">Lo pedido que aún no llega</div><small>Es inventario “en camino”. El error más común es olvidarla.</small></div>
+<div class="formula"><div class="label">Posición de inventario</div><div class="math" style="font-size:20px">Inventario neto + línea de suministro</div><small>Tu verdadera situación antes de pedir.</small></div>
+</div><div class="actions"><button class="primary" data-go="7">Continuar <span aria-hidden="true">→</span></button></div></section>
+
+<section class="slide" data-screen="7" aria-labelledby="title7"><p class="eyebrow">Sesión 1 · Costos</p><h2 id="title7" tabindex="-1">Tener de más cuesta; quedarse corto cuesta el doble</h2>
+<div class="grid2"><div><div class="duo"><article><div class="label">Mantener inventario</div><h3>$0.50</h3><p>por caja, por semana. Representa almacén, capital inmovilizado, seguros y merma.</p></article><article><div class="label">Faltante (pendiente)</div><h3 style="color:#954c34">$1.00</h3><p>por caja, por semana. Representa clientes insatisfechos, ventas perdidas y entregas urgentes.</p></article></div>
+<div class="formula" style="margin-top:16px"><div class="label">Costo de la semana</div><div class="math" style="font-size:24px">0.50 × inventario + 1.00 × pendientes</div></div></div>
+<div class="box"><span class="tag">Discutan en parejas · 3 min</span><p>1. ¿Por qué en la vida real un faltante suele costar más que guardar inventario?<br>2. Si el faltante costara $5, ¿cómo cambiaría su forma de pedir?<br>3. ¿Qué empresa de su ciudad prefiere tener de más y cuál prefiere tener de menos? ¿Por qué?</p></div></div>
+<div class="actions"><button class="primary" data-go="8">Continuar <span aria-hidden="true">→</span></button></div></section>
+
+<section class="slide" data-screen="8" aria-labelledby="title8"><p class="eyebrow">Sesión 1 · El fenómeno</p><h2 id="title8" tabindex="-1">El efecto látigo: la variación crece al alejarse del cliente</h2>
+<div class="grid2"><div class="technical"><div class="chart-label"><span>PEDIDOS SEMANALES (CAJAS)</span><span>DEMANDA: 4 → 8 EN LA SEMANA 5</span></div><div id="bwChart"></div></div>
+<div><p>Un pequeño cambio en la demanda del consumidor provoca oscilaciones cada vez mayores en los pedidos de los eslabones de arriba, como el movimiento de un látigo.</p>
+<p class="muted">Jay Forrester lo describió en 1961 con simulaciones de dinámica de sistemas; Lee, Padmanabhan y Whang (1997) lo documentaron en empresas reales como Procter &amp; Gamble con los pañales Pampers: el consumo de bebés es estable, pero los pedidos de los distribuidores variaban mucho.</p>
+<p class="golden" id="bwNote">Amplificación en esta simulación: —</p></div></div>
+<div class="actions"><button class="primary" data-go="9">Continuar <span aria-hidden="true">→</span></button></div></section>
+
+<section class="slide" data-screen="9" aria-labelledby="title9"><p class="eyebrow">Sesión 1 · Causas operativas</p><h2 id="title9" tabindex="-1">Las cuatro causas de Lee, Padmanabhan y Whang (1997)</h2>
+<div class="formula4">
+<div class="box"><span class="tag">1 · Pronósticos encadenados</span><p>Cada eslabón pronostica con los pedidos que recibe, no con la demanda real, y agrega su propio inventario de seguridad. La señal se deforma en cada paso.</p></div>
+<div class="box"><span class="tag">2 · Pedidos por lotes</span><p>Pedir una vez al mes o en camiones completos convierte una demanda pareja en picos y valles.</p></div>
+<div class="box"><span class="tag">3 · Variación de precios</span><p>Las promociones y descuentos hacen que se compre de más cuando hay oferta y casi nada después.</p></div>
+<div class="box"><span class="tag">4 · Racionamiento y escasez</span><p>Si el proveedor reparte en proporción a lo pedido, todos inflan sus pedidos para recibir más. Cuando la escasez termina, cancelan.</p></div>
+</div><div class="actions"><button class="primary" data-go="10">Continuar <span aria-hidden="true">→</span></button></div></section>
+
+<section class="slide" data-screen="10" aria-labelledby="title10"><p class="eyebrow">Sesión 1 · Causa conductual</p><h2 id="title10" tabindex="-1">Aun sin lotes ni promociones, las personas generan el látigo</h2>
+<div class="grid2"><div><p>John Sterman (1989) puso a cientos de personas a jugar una cadena como la nuestra. Sin lotes, sin precios y con demanda casi constante, el látigo apareció en casi todas las partidas.</p>
+<p>La razón: las personas <b>subestiman la línea de suministro</b>. Ven que no llega nada, piden otra vez, y luego llega todo junto.</p>
+<p class="muted">En su modelo, una persona típica solo toma en cuenta cerca de un tercio de lo que ya pidió y viene en camino.</p></div>
+<div class="box"><span class="tag">Piénsenlo · ¿qué harían?</span><p class="quiz-question" style="font-size:19px;min-height:0">Eres el mayorista. Hace 3 semanas pides 12 cajas cada semana, pero solo te han llegado 4 por semana. Tienes 6 pendientes. ¿Qué haces?</p>
+<div class="quiz-options" style="grid-template-columns:1fr;gap:8px" data-quiz="beh">
+<button class="quiz-option" style="font-size:16px;text-align:left" data-opt="0">Pido 25 para recuperarme rápido.</button>
+<button class="quiz-option" style="font-size:16px;text-align:left" data-opt="1">Cuento lo que ya viene en camino y pido cerca de lo que me piden.</button>
+<button class="quiz-option" style="font-size:16px;text-align:left" data-opt="2">Dejo de pedir hasta que llegue algo.</button></div>
+<div class="feedback" id="fb-beh" hidden></div></div></div>
+<div class="actions"><button class="primary" data-go="11">Continuar <span aria-hidden="true">→</span></button></div></section>
+
+<section class="slide" data-screen="11" aria-labelledby="title11"><p class="eyebrow">Sesión 1 · Soluciones</p><h2 id="title11" tabindex="-1">Cómo combaten el látigo las empresas</h2>
+<div class="tscroll"><table class="tbl"><thead><tr><th>Mecanismo</th><th>En qué consiste</th><th>Ataca la causa</th></tr></thead><tbody>
+<tr><td><b>Compartir datos de venta</b></td><td>Toda la cadena ve la demanda del punto de venta</td><td>Pronósticos encadenados</td></tr>
+<tr><td><b>Inventario administrado por el proveedor (VMI)</b></td><td>El proveedor decide cuándo reponer el inventario del cliente</td><td>Pronósticos encadenados, lotes</td></tr>
+<tr><td><b>Planeación colaborativa (CPFR)</b></td><td>Cliente y proveedor pronostican y planean juntos</td><td>Pronósticos encadenados</td></tr>
+<tr><td><b>Lotes pequeños y frecuentes</b></td><td>Pedidos más seguidos, camiones consolidados</td><td>Pedidos por lotes</td></tr>
+<tr><td><b>Precios bajos todos los días</b></td><td>Menos promociones y descuentos temporales</td><td>Variación de precios</td></tr>
+<tr><td><b>Asignar por ventas históricas</b></td><td>En escasez, repartir según lo que cada cliente vendió antes</td><td>Racionamiento</td></tr>
+<tr><td><b>Reducir tiempos de entrega</b></td><td>Menos semanas entre pedir y recibir</td><td>Todas, y la conductual</td></tr>
+</tbody></table></div>
+<div class="actions"><button class="primary" data-go="12">Continuar <span aria-hidden="true">→</span></button></div></section>
+
+<section class="slide" data-screen="12" aria-labelledby="title12"><p class="eyebrow">Sesión 1 · Repaso</p><h2 id="title12" tabindex="-1">Tres preguntas antes de cerrar</h2>
+<div class="quiz-shell" id="quiz1"></div>
+<div class="actions"><button class="primary" data-go="13">Continuar <span aria-hidden="true">→</span></button></div></section>
+
+<section class="slide" data-screen="13" aria-labelledby="title13"><p class="eyebrow">Sesión 1 · Cierre y tarea</p><h2 id="title13" tabindex="-1">Volvamos al papel de baño</h2>
+<p class="close-quote" style="font-size:clamp(22px,2.6vw,32px)">La respuesta más cercana es la <strong>B</strong>: el consumo casi no cambió, pero las compras de pánico se volvieron <strong>pedidos amplificados</strong> en cada eslabón, con tiempos de entrega que no permitían reaccionar.</p>
+<div class="box" style="max-width:900px"><span class="tag">Tarea para la sesión 2</span><p>Jueguen <b>una partida individual</b> de 24 semanas como <b>minorista</b>, con 3 eslabones y demanda “Sorpréndeme”. Traigan una captura de su pantalla final y anoten: su costo, su amplificación y la semana en que más pidieron.</p></div>
+<div class="actions"><a class="primary" href="cadena.html" target="_blank" rel="noopener">Abrir el juego ↗</a><button class="secondary" data-go="14">Ir a la sesión 2 <span aria-hidden="true">→</span></button></div></section>
+
+<!-- ================= SESIÓN 2 · TÉCNICA ================= -->
+<section class="slide" data-screen="14" aria-labelledby="title14"><div class="hero" style="min-height:420px"><div><p class="eyebrow">Sesión 2 · Técnica · 100 minutos</p><h1 id="title14" tabindex="-1">Cómo decidir <span>cuánto pedir</span></h1><p class="subtitle">Las ecuaciones de cada semana, la línea de suministro y una política de inventario que pueden calcular a mano.</p>
+<div class="box" style="margin-top:20px"><span class="tag">Calentamiento · 10 min</span><p>Comparen la tarea en parejas: ¿quién tuvo menor costo? ¿Su semana de pedido más alto fue antes o después de que subiera la demanda?</p></div></div>
+<div><div class="intro-list" style="margin-top:0"><div class="intro-item"><span class="step-no">01</span><p>La semana paso a paso</p></div><div class="intro-item"><span class="step-no">02</span><p>Tiempo de entrega y línea de suministro</p></div><div class="intro-item"><span class="step-no">03</span><p>Pronóstico y política de pedido</p></div><div class="intro-item"><span class="step-no">04</span><p>Medir la amplificación</p></div></div></div></div>
+<div class="actions"><button class="primary" data-go="15">Empezar <span aria-hidden="true">→</span></button></div></section>
+
+<section class="slide" data-screen="15" aria-labelledby="title15"><p class="eyebrow">Sesión 2 · 01 · Balance de cada semana</p><h2 id="title15" tabindex="-1">Lo que pasa en cada eslabón, en ecuaciones</h2>
+<div class="formula4">
+<div class="formula"><div class="label">1 · Llega mercancía</div><div class="math" style="font-size:22px">Disponible = Inventario + Llegada</div></div>
+<div class="formula"><div class="label">2 · Se debe surtir</div><div class="math" style="font-size:22px">Por surtir = Pendientes + Pedido recibido</div></div>
+<div class="formula"><div class="label">3 · Envío</div><div class="math" style="font-size:22px">Envío = mín(Disponible, Por surtir)</div></div>
+<div class="formula"><div class="label">4 · Al cierre</div><div class="math" style="font-size:22px">Inventario = Disponible − Envío<br>Pendientes = Por surtir − Envío</div></div>
+</div>
+<p class="golden">Costo de la semana = 0.50 × Inventario + 1.00 × Pendientes. Después de esto, y solo entonces, decides tu pedido.</p>
+<div class="actions"><button class="primary" data-go="16">Practicar <span aria-hidden="true">→</span></button></div></section>
+
+<section class="slide" data-screen="16" aria-labelledby="title16"><p class="eyebrow">Sesión 2 · Ejercicio 1 · En parejas · 15 minutos</p><h2 id="title16" tabindex="-1">Completen el registro del minorista</h2><p class="muted">Empieza con 12 cajas en inventario y 0 pendientes. La semana 1 está resuelta.</p>
+<div class="tscroll"><table class="tbl" id="ex1"></table></div>
+<div class="chk"><button class="primary" data-check="ex1">Comprobar</button><button class="secondary" data-solve="ex1">Ver respuestas</button><span class="msg" id="msg-ex1" role="status"></span></div>
+<div class="actions"><button class="primary" data-go="17">Continuar <span aria-hidden="true">→</span></button></div></section>
+
+<section class="slide" data-screen="17" aria-labelledby="title17"><p class="eyebrow">Sesión 2 · 02 · Tiempo de entrega</p><h2 id="title17" tabindex="-1">Lo que pides hoy llega en 4 semanas</h2>
+<div class="technical"><svg viewBox="0 0 760 170" role="img" aria-label="Línea de tiempo: el pedido tarda 2 semanas en llegar al proveedor y el envío 2 semanas más">
+<g font-family="sans-serif" font-size="13" fill="#65748a" text-anchor="middle">
+<line x1="40" y1="110" x2="720" y2="110" stroke="#dae2ed" stroke-width="2"/>
+<g><circle cx="40" cy="110" r="6" fill="#1F5FD1"/><text x="40" y="140">Semana 0</text><text x="40" y="160" font-weight="700" fill="#142844">Pides</text></g>
+<g><circle cx="210" cy="110" r="5" fill="#9aa8bb"/><text x="210" y="140">Semana 1</text></g>
+<g><circle cx="380" cy="110" r="6" fill="#e08a1e"/><text x="380" y="140">Semana 2</text><text x="380" y="160" font-weight="700" fill="#142844">Tu proveedor recibe el pedido y envía</text></g>
+<g><circle cx="550" cy="110" r="5" fill="#9aa8bb"/><text x="550" y="140">Semana 3</text></g>
+<g><circle cx="720" cy="110" r="6" fill="#338257"/><text x="720" y="140">Semana 4</text><text x="705" y="160" font-weight="700" fill="#142844" text-anchor="end">Te llega (si tenía inventario)</text></g>
+<path d="M45 70H375" stroke="#e08a1e" stroke-width="4"/><text x="210" y="60" font-weight="700" fill="#b46a0e">El pedido viaja: 2 semanas</text>
+<path d="M385 70H715" stroke="#1F5FD1" stroke-width="4"/><text x="550" y="60" font-weight="700" fill="#1F5FD1">La mercancía viaja: 2 semanas</text></g></svg></div>
+<div class="grid2" style="margin-top:18px"><div class="box"><span class="tag">Consecuencia</span><p>En cualquier momento tienes hasta 4 semanas de pedidos “en el aire”. Si pides 8 por semana, deberías tener unas <b>32 cajas en la línea de suministro</b>. Si tu proveedor no tiene inventario, el retraso es mayor.</p></div>
+<div class="box"><span class="tag">Fábrica</span><p>No pide a nadie: decide cuánto producir y sale de la planta en <b>3 semanas</b>. Su línea de suministro es su producción en proceso.</p></div></div>
+<div class="actions"><button class="primary" data-go="18">Continuar <span aria-hidden="true">→</span></button></div></section>
+
+<section class="slide" data-screen="18" aria-labelledby="title18"><p class="eyebrow">Sesión 2 · 03 · Pronóstico</p><h2 id="title18" tabindex="-1">Primero estimen cuánto les van a pedir</h2>
+<div class="grid2"><div><div class="formula"><div class="label">Suavizamiento exponencial</div><div class="math" style="font-size:24px">D̂<sub>nuevo</sub> = D̂<sub>anterior</sub> + θ × (Pedido recibido − D̂<sub>anterior</sub>)</div><small>θ entre 0.2 y 0.4: corrige una parte del error cada semana, sin perseguir cada pico.</small></div>
+<p class="hint">Con θ = 1 copiarían el último pedido (reaccionan de más). Con θ = 0 nunca aprenderían.</p></div>
+<div><div class="label">Ejercicio 2 · θ = 0.3 · D̂ inicial = 4</div><div class="tscroll"><table class="tbl" id="ex2"></table></div>
+<div class="chk"><button class="primary" data-check="ex2">Comprobar</button><button class="secondary" data-solve="ex2">Ver respuestas</button><span class="msg" id="msg-ex2" role="status"></span></div></div></div>
+<div class="actions"><button class="primary" data-go="19">Continuar <span aria-hidden="true">→</span></button></div></section>
+
+<section class="slide" data-screen="19" aria-labelledby="title19"><p class="eyebrow">Sesión 2 · 03 · Política de pedido</p><h2 id="title19" tabindex="-1">La regla para pedir: reponer, corregir y contar lo que viene</h2>
+<div class="formula"><div class="label">Política de reabastecimiento (inventario base)</div><div class="math" style="font-size:clamp(20px,2.4vw,30px)">Pedido = D̂ + α × [(Inv. objetivo − Inv. neto) + (D̂ × L − Línea de suministro)]</div><small>Si el resultado es negativo, se pide 0. L = 4 semanas (fábrica: 3). Inventario objetivo = 12 cajas.</small></div>
+<div class="grid3">
+<div class="box"><span class="tag">D̂</span><p>Reponer lo que esperas que te pidan esta semana.</p></div>
+<div class="box"><span class="tag">Inv. objetivo − Inv. neto</span><p>Corregir el hueco (o el exceso) en tu almacén.</p></div>
+<div class="box"><span class="tag">D̂ × L − Línea</span><p>Corregir lo que viene en camino: si ya hay mucho, pides menos. <b>Esto es lo que casi todos olvidan.</b></p></div></div>
+<p class="golden">α es qué tan rápido corriges: α = 1 corrige todo en una semana; α = 0.5 corrige la mitad y suaviza los pedidos. La “computadora con visión de sistema” del juego usa una regla como esta.</p>
+<div class="actions"><button class="primary" data-go="20">Practicar <span aria-hidden="true">→</span></button></div></section>
+
+<section class="slide" data-screen="20" aria-labelledby="title20"><p class="eyebrow">Sesión 2 · Ejercicio 3 · En equipos · 15 minutos</p><h2 id="title20" tabindex="-1">Calculen el pedido en cuatro situaciones</h2><p class="muted">Inventario objetivo = 12. Redondeen al entero más cercano y escriban 0 si el resultado es negativo.</p>
+<div class="tscroll"><table class="tbl" id="ex3"></table></div>
+<div class="chk"><button class="primary" data-check="ex3">Comprobar</button><button class="secondary" data-solve="ex3">Ver respuestas</button><span class="msg" id="msg-ex3" role="status"></span></div>
+<p class="hint">Pregunta para discutir: en la situación C, una persona que olvida la línea de suministro pediría 4 con α = 0.5. ¿Por qué es un error si ya vienen 40 cajas en camino?</p>
+<div class="actions"><button class="primary" data-go="21">Continuar <span aria-hidden="true">→</span></button></div></section>
+
+<section class="slide" data-screen="21" aria-labelledby="title21"><p class="eyebrow">Sesión 2 · 04 · Medir</p><h2 id="title21" tabindex="-1">Cómo se mide el efecto látigo</h2>
+<div class="grid2"><div><div class="formula"><div class="label">Amplificación de un eslabón</div><div class="math" style="font-size:24px">σ(pedidos que hace) ÷ σ(pedidos que recibe)</div><small>σ = desviación estándar. Mayor que 1: el eslabón amplifica la variación. Esta es la medida individual del examen.</small></div>
+<div class="formula" style="margin-top:14px"><div class="label">Amplificación acumulada</div><div class="math" style="font-size:24px">σ(pedidos del eslabón) ÷ σ(demanda del cliente)</div></div></div>
+<div><div class="label">Ejercicio 4 · σ de cada serie</div><div class="tscroll"><table class="tbl" id="ex4"></table></div>
+<div class="chk"><button class="primary" data-check="ex4">Comprobar</button><button class="secondary" data-solve="ex4">Ver respuestas</button><span class="msg" id="msg-ex4" role="status"></span></div></div></div>
+<div class="actions"><button class="primary" data-go="22">Continuar <span aria-hidden="true">→</span></button></div></section>
+
+<section class="slide" data-screen="22" aria-labelledby="title22"><p class="eyebrow">Sesión 2 · Cada eslabón, técnicamente</p><h2 id="title22" tabindex="-1">Ficha técnica de los tres eslabones</h2>
+<div class="tscroll"><table class="tbl"><thead><tr><th></th><th style="color:#1F5FD1">Minorista</th><th style="color:#1f9a8a">Mayorista</th><th style="color:#b8495a">Fábrica</th></tr></thead><tbody>
+<tr><td><b>Recibe pedidos de</b></td><td>Consumidor final</td><td>Minorista</td><td>Mayorista</td></tr>
+<tr><td><b>Le pide a</b></td><td>Mayorista</td><td>Fábrica</td><td>Su planta (producción)</td></tr>
+<tr><td><b>Tiempo de reposición</b></td><td>4 semanas</td><td>4 semanas</td><td>3 semanas</td></tr>
+<tr><td><b>Línea de suministro “normal” con D̂ = 8</b></td><td>32 cajas</td><td>32 cajas</td><td>24 cajas</td></tr>
+<tr><td><b>Error típico</b></td><td>Reaccionar al primer cambio de demanda</td><td>Confundir un pedido grande con una tendencia</td><td>Copiar los picos y sobreproducir</td></tr>
+<tr><td><b>Indicador a vigilar</b></td><td>Pendientes con el consumidor</td><td>Línea de suministro</td><td>Producción en proceso</td></tr>
+</tbody></table></div>
+<div class="actions"><button class="primary" data-go="23">Continuar <span aria-hidden="true">→</span></button></div></section>
+
+<section class="slide" data-screen="23" aria-labelledby="title23"><p class="eyebrow">Sesión 2 · Herramienta para el examen</p><h2 id="title23" tabindex="-1">Hoja de control semanal</h2>
+<p class="muted">Impriman una por integrante. En cada semana: actualicen D̂, anoten su inventario neto y su línea de suministro, y calculen el pedido con la regla.</p>
+<div class="tscroll"><table class="tbl" id="sheet"></table></div>
+<div class="actions"><button class="secondary" id="printSheet">Imprimir esta hoja</button><button class="primary" data-go="24">Continuar <span aria-hidden="true">→</span></button></div></section>
+
+<section class="slide" data-screen="24" aria-labelledby="title24"><p class="eyebrow">Sesión 2 · Repaso y práctica</p><h2 id="title24" tabindex="-1">Tres preguntas y una ronda de práctica</h2>
+<div class="quiz-shell" id="quiz2"></div>
+<p class="golden">Práctica (30 min): abran una sala de prueba con demanda “Variable” y 24 semanas. Usen la hoja de control. No cuenta para la calificación.</p>
+<div class="actions"><a class="primary" href="cadena.html" target="_blank" rel="noopener">Abrir el juego ↗</a><button class="secondary" data-go="25">Ir al examen <span aria-hidden="true">→</span></button></div></section>
+
+<!-- ================= SESIÓN 3 · EXAMEN ================= -->
+<section class="slide" data-screen="25" aria-labelledby="title25"><p class="eyebrow">Sesión 3 · Examen · 90 minutos</p><h2 id="title25" tabindex="-1">Instrucciones del examen</h2>
+<div class="grid2"><div class="intro-list" style="margin-top:0">
+<div class="intro-item"><span class="step-no">01</span><p style="font-size:18px">Equipos de 3. Cada equipo es una cadena; cada integrante opera un eslabón con su celular y su <b>nombre real</b>.</p></div>
+<div class="intro-item"><span class="step-no">02</span><p style="font-size:18px">Siéntense lejos de su propio equipo. <b>No se vale hablar</b> con los otros eslabones de su cadena.</p></div>
+<div class="intro-item"><span class="step-no">03</span><p style="font-size:18px">Todos los equipos enfrentan la <b>misma demanda</b>. Nadie sabe cuántas semanas dura.</p></div>
+<div class="intro-item"><span class="step-no">04</span><p style="font-size:18px">Pueden usar su hoja de control y calculadora. Al terminar, contestan la reflexión escrita (20 min).</p></div></div>
+<div class="box"><span class="tag">Configuración para el facilitador</span><p>Modo: <b>Competencia por equipos</b><br>Eslabones: <b>3</b><br>Equipos: según el grupo<br>Demanda: <b>Sorpréndeme</b><br>Duración: <b>36 semanas</b> (≈ 40 min)<br>Computadora: persona típica<br>Compartir demanda: <b>no</b></p></div></div>
+<div class="actions"><a class="primary" href="cadena.html" target="_blank" rel="noopener">Abrir la sala ↗</a><button class="secondary" data-go="26">Ver la rúbrica <span aria-hidden="true">→</span></button></div></section>
+
+<section class="slide" data-screen="26" aria-labelledby="title26"><p class="eyebrow">Sesión 3 · Evaluación mixta · 100 puntos</p><h2 id="title26" tabindex="-1">Rúbrica del examen</h2>
+<div class="grid3">
+<div class="box"><span class="tag">Individual · 40 pts</span><h3>Cómo operó su eslabón</h3><p><b>Costo (15):</b> lugar frente al mismo eslabón de los otros equipos. Con 3 equipos: 15 / 12 / 9.<br><b>Amplificación (15):</b> ≤ 1.2 → 15 · ≤ 1.5 → 12 · ≤ 2.0 → 9 · ≤ 3.0 → 6 · más → 3.<br><b>Servicio (10):</b> semanas con faltantes ≤ 10 % → 10 · ≤ 25 % → 7 · ≤ 40 % → 4 · más → 2.</p></div>
+<div class="box"><span class="tag">Equipo · 30 pts</span><h3>Resultado de la cadena</h3><p><b>Lugar (20):</b> con 3 equipos: 20 / 16 / 12.<br><b>Vencer a la computadora (10):</b> 10 si el costo de su cadena es menor que el de la computadora “persona típica” con la misma demanda; 5 si no.</p></div>
+<div class="box"><span class="tag">Reflexión · 30 pts</span><h3>Explicar con teoría</h3><p>Tres preguntas de 10 puntos.<br><b>10:</b> correcta, con datos de su partida y conceptos del curso.<br><b>7:</b> correcta pero sin datos, o con un error menor.<br><b>4:</b> solo describe lo que pasó, sin teoría.<br><b>0:</b> no contesta.</p></div></div>
+<p class="hint">Todos los datos individuales y de equipo aparecen en la pantalla de resultados del juego: “Cómo operó cada integrante” y la clasificación.</p>
+<div class="actions"><button class="primary" data-go="27">Continuar <span aria-hidden="true">→</span></button></div></section>
+
+<section class="slide" data-screen="27" aria-labelledby="title27"><p class="eyebrow">Sesión 3 · Reflexión escrita · 20 minutos</p><h2 id="title27" tabindex="-1">Contesten de forma individual</h2>
+<div class="intro-list" style="margin-top:10px">
+<div class="intro-item"><span class="step-no">01</span><p style="font-size:20px">Ubiquen la semana de su pedido más alto. ¿Por qué pidieron esa cantidad? Explíquenlo con los conceptos de <b>tiempo de entrega</b> y <b>línea de suministro</b>. <span class="muted">(10 pts)</span></p></div>
+<div class="intro-item"><span class="step-no">02</span><p style="font-size:20px">Escriban su amplificación y la de los otros eslabones de su cadena. ¿Quién amplificó más y cuál de las causas vistas en clase lo explica? <span class="muted">(10 pts)</span></p></div>
+<div class="intro-item"><span class="step-no">03</span><p style="font-size:20px">Propongan dos mecanismos para reducir el efecto látigo en su cadena y digan qué causa ataca cada uno. <span class="muted">(10 pts)</span></p></div></div>
+<div class="actions"><button class="primary" data-go="28">Calculadora de calificación <span aria-hidden="true">→</span></button></div></section>
+
+<section class="slide" data-screen="28" aria-labelledby="title28"><p class="eyebrow">Sesión 3 · Para el docente</p><h2 id="title28" tabindex="-1">Calculadora de calificación</h2><p class="muted">Copien los datos de la pantalla de resultados del juego. La calificación se actualiza sola.</p>
+<div class="grid2"><form class="calc-form" id="grade" onsubmit="return false">
+<label>Número de equipos<input type="number" name="teams" min="2" max="6" value="3"></label>
+<label>Lugar del integrante en su eslabón<input type="number" name="rank" min="1" max="6" value="1"></label>
+<label>Amplificación del integrante (×)<input type="number" name="amp" min="0" step="0.1" value="1.4"></label>
+<label>Semanas con faltantes<input type="number" name="stock" min="0" value="6"></label>
+<label>Semanas jugadas<input type="number" name="weeks" min="1" value="36"></label>
+<label>Lugar del equipo<input type="number" name="place" min="1" max="6" value="2"></label>
+<label class="chkline"><input type="checkbox" name="beat" checked> La cadena le ganó a la computadora “persona típica”</label>
+<label>Reflexión 1 (0, 4, 7 o 10)<input type="number" name="r1" min="0" max="10" value="7"></label>
+<label>Reflexión 2 (0, 4, 7 o 10)<input type="number" name="r2" min="0" max="10" value="10"></label>
+<label>Reflexión 3 (0, 4, 7 o 10)<input type="number" name="r3" min="0" max="10" value="7"></label>
+</form>
+<div><div class="tscroll"><table class="tbl" id="gradeOut"></table></div><p class="big" id="gradeTotal" style="margin-top:16px">—</p></div></div>
+<div class="actions"><button class="primary" data-go="29">Cierre <span aria-hidden="true">→</span></button></div></section>
+
+<section class="slide" data-screen="29" aria-labelledby="title29"><p class="eyebrow">Cierre del curso</p><h2 id="title29" tabindex="-1">Lo que el juego enseña</h2>
+<p class="close-quote">El látigo no lo causa una mala persona: lo causan <strong>los retrasos, la información local y olvidar lo que viene en camino</strong>. Por eso se resuelve con mejores reglas y más información compartida.</p>
+<div class="actions"><a class="primary" href="cadena.html" target="_blank" rel="noopener">Abrir el juego ↗</a><button class="secondary" data-go="1">Volver al inicio</button></div>
+<p class="license"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" target="_blank" rel="noopener">Licencia CC BY-NC-SA 4.0</a> · Mtro. Juan Manuel Valdivia Mendoza</p>
+<p class="license" style="margin-top:10px">Referencias (APA 7): Chopra, S., y Meindl, P. (2013). <i>Administración de la cadena de suministro: Estrategia, planeación y operación</i> (5.ª ed.). Pearson. · Forrester, J. W. (1961). <i>Industrial dynamics</i>. MIT Press. · Lee, H. L., Padmanabhan, V., y Whang, S. (1997). The bullwhip effect in supply chains. <i>Sloan Management Review, 38</i>(3), 93–102. · Sterman, J. D. (1989). Modeling managerial behavior: Misperceptions of feedback in a dynamic decision making experiment. <i>Management Science, 35</i>(3), 321–339.</p></section>
+</main>
+<footer><button id="back" disabled>← Atrás</button><span class="foot-label" id="stage">SESIÓN 1</span><div class="progress-track" aria-hidden="true"><span id="progress"></span></div><span class="counter" id="counter" aria-live="polite">01 / 29</span></footer>
+<dialog id="indexDialog"><div class="dialog-top"><h3>Explora el curso</h3><button class="quiet" data-close="indexDialog" aria-label="Cerrar índice">✕</button></div><div class="index-grid" id="indexGrid"></div></dialog>
+<script>
+'use strict';
+const TITLES=['Portada','Ruta del curso','Discusión: papel de baño','Tres flujos','Los eslabones','Vocabulario','Costos','El efecto látigo','Cuatro causas','Causa conductual','Soluciones','Repaso sesión 1','Cierre y tarea','Sesión 2: portada','Balance semanal','Ejercicio 1','Tiempo de entrega','Pronóstico · Ejercicio 2','Política de pedido','Ejercicio 3','Medir · Ejercicio 4','Ficha técnica','Hoja de control','Repaso y práctica','Examen: instrucciones','Rúbrica','Reflexión escrita','Calculadora de calificación','Cierre'];
+const slides=[...document.querySelectorAll('.slide')],N=slides.length;
+const fmt=(v,d=0)=>Number(v).toLocaleString('es-MX',{minimumFractionDigits:d,maximumFractionDigits:d});
+const sdv=a=>{const m=a.reduce((x,y)=>x+y,0)/a.length;return Math.sqrt(a.reduce((s,x)=>s+(x-m)**2,0)/Math.max(1,a.length-1))};
+
+/* Mismo modelo que el juego (cadena.html), para las gráficas */
+function simulate(chain,weeks,demand){
+ const n=chain,B=4,th=.36,al=.26,be=.34,L=j=>j===n-1?3:4;
+ const S=Array.from({length:n},(_,j)=>({inv:12,back:0,E:B,ship:Array(j===n-1?3:2).fill(B),ordIn:j?[B,B]:null,on:B*L(j),orders:[]}));
+ for(let t=1;t<=weeks;t++){
+  const d=demand(t),rec=S.map(s=>s.ship.shift());S.forEach((s,j)=>{s.inv+=rec[j];s.on-=rec[j]});
+  const inc=S.map((s,j)=>j?s.ordIn.shift():d);
+  const sent=S.map((s,j)=>{const w=s.back+inc[j],x=Math.min(s.inv,w);s.inv-=x;s.back=w-x;return x});sent.forEach((x,j)=>{if(j)S[j-1].ship.push(x)});
+  S.forEach((s,j)=>{s.E+=th*(inc[j]-s.E);const q=Math.max(0,Math.round(s.E+al*(12-(s.inv-s.back))+al*be*(s.E*L(j)-s.on)));s.orders.push(q);s.on+=q;if(j<n-1)S[j+1].ordIn.push(q);else s.ship.push(q)});
+ }
+ return S.map(s=>s.orders);
+}
+function chart(series,h=230){
+ const w=760,l=36,r=10,t=10,b=24,n=series[0].data.length,all=series.flatMap(s=>s.data),hi=Math.ceil(Math.max(...all)/5)*5;
+ const X=i=>l+i/(n-1)*(w-l-r),Y=v=>t+(hi-v)/hi*(h-t-b);let g='';
+ for(let v=0;v<=hi;v+=hi/5)g+=`<line x1="${l}" x2="${w-r}" y1="${Y(v)}" y2="${Y(v)}" stroke="#e6ebf2"/><text x="${l-6}" y="${Y(v)+4}" text-anchor="end">${fmt(v)}</text>`;
+ [1,10,20,30].forEach(i=>{if(i<=n)g+=`<text x="${X(i-1)}" y="${h-6}" text-anchor="middle">${i}</text>`});
+ return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Pedidos por eslabón y demanda del cliente"><g font-size="11" fill="#65748a" font-family="sans-serif">${g}</g>${series.map(s=>`<path d="${s.data.map((v,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)).join('')}" fill="none" stroke="${s.c}" stroke-width="2.3" ${s.dash?'stroke-dasharray="5 4"':''} stroke-linejoin="round"/>`).join('')}</svg><div class="legend">${series.map(s=>`<span><i style="background:${s.c}"></i>${s.n}</span>`).join('')}</div>`;
+}
+(function(){
+ const W=36,dem=t=>t<=4?4:8,o=simulate(3,W,dem),d=Array.from({length:W},(_,i)=>dem(i+1));
+ const ser=[{n:'Cliente',c:'#142844',data:d,dash:1},{n:'Minorista',c:'#1F5FD1',data:o[0]},{n:'Mayorista',c:'#1f9a8a',data:o[1]},{n:'Fábrica',c:'#b8495a',data:o[2]}];
+ document.getElementById('heroChart').innerHTML=chart(ser,220);document.getElementById('bwChart').innerHTML=chart(ser,250);
+ const a=o.map(x=>sdv(x)/sdv(d));
+ document.getElementById('bwNote').textContent=`Amplificación en esta simulación: el minorista ×${fmt(a[0],1)}, el mayorista ×${fmt(a[1],1)} y la fábrica ×${fmt(a[2],1)} la variación de la demanda del cliente.`;
+})();
+
+/* Ejercicios con comprobación. Las respuestas se calculan con las mismas ecuaciones, no se escriben a mano. */
+const EX={};
+(function(){ // Ejercicio 1: registro del minorista
+ const arr=[4,4,4,4,12],dem=[4,8,8,12,8];let inv=12,back=0;const rows=[];
+ for(let i=0;i<5;i++){const disp=inv+arr[i],need=back+dem[i],env=Math.min(disp,need);inv=disp-env;back=need-env;rows.push([env,inv,back,inv*.5+back*1])}
+ EX.ex1={head:['Semana','Llegada','Pedido recibido','Envío','Inventario','Pendientes','Costo ($)'],given:rows.map((_,i)=>[i+1,arr[i],dem[i]]),sol:rows,fixed:[0],tol:.001,
+  done:'¡Correcto! Fíjense en la semana 4: el faltante de 4 cajas se surte en la semana 5, en cuanto llegan las 12.'};
+})();
+(function(){ // Ejercicio 2: suavizamiento exponencial
+ const rec=[8,8,8,8];let e=4;const rows=rec.map(x=>{e=e+.3*(x-e);return[Math.round(e*100)/100]});
+ EX.ex2={head:['Semana','Pedido recibido','D̂ nuevo'],given:rec.map((x,i)=>[i+1,x]),sol:rows,fixed:[],tol:.015,
+  done:'¡Correcto! D̂ se acerca a 8 poco a poco: no persigue el cambio de golpe.'};
+})();
+(function(){ // Ejercicio 3: política de pedido
+ const sc=[['A · Minorista en equilibrio',8,12,32,4],['B · Mayorista con faltantes',8,4,28,4],['C · Minorista con mucho en camino',8,20,40,4],['D · Fábrica en escasez',10,-6,24,3]];
+ const q=(D,IN,SL,L,a)=>Math.max(0,Math.round(D+a*((12-IN)+(D*L-SL))));
+ EX.ex3={head:['Situación','D̂','Inv. neto','Línea','L','Pedido α = 1','Pedido α = 0.5'],given:sc,sol:sc.map(([_,D,IN,SL,L])=>[q(D,IN,SL,L,1),q(D,IN,SL,L,.5)]),fixed:[],tol:.001,
+  done:'¡Correcto! Con α = 0.5 los pedidos son más suaves; en C ambos dan 0 porque ya viene más que suficiente.'};
+})();
+(function(){ // Ejercicio 4: amplificación
+ const s=[['Cliente',2.0],['Minorista',3.0],['Mayorista',5.4],['Fábrica',9.0]];
+ EX.ex4={head:['Serie','σ de pedidos','Amplificación del eslabón','Amplificación acumulada'],given:s.slice(1).map((x,i)=>[x[0],fmt(x[1],1)]),
+  sol:s.slice(1).map((x,i)=>[Math.round(x[1]/s[i][1]*10)/10,Math.round(x[1]/2*10)/10]),fixed:[],tol:.051,pre:'<tr><td>Cliente</td><td class="n">2.0</td><td class="n muted">—</td><td class="n muted">—</td></tr>',
+  done:'¡Correcto! Cada eslabón amplifica entre ×1.5 y ×1.8, y la fábrica acumula ×4.5.'};
+})();
+function buildEx(k){
+ const x=EX[k],t=document.getElementById(k);
+ let h=`<thead><tr>${x.head.map((c,i)=>`<th${i?' class="n"':''}>${c}</th>`).join('')}</tr></thead><tbody>${x.pre||''}`;
+ x.given.forEach((g,r)=>{h+=`<tr>${g.map((v,i)=>`<td${i?' class="n"':''}>${typeof v==='number'?fmt(v):v}</td>`).join('')}${x.sol[r].map((v,c)=>x.fixed.includes(r)?`<td class="n">${fmt(v,v%1?2:0)}</td>`:`<td><input inputmode="decimal" data-ex="${k}" data-r="${r}" data-c="${c}" aria-label="Fila ${r+1}, ${x.head[g.length+c]}"></td>`).join('')}</tr>`});
+ t.innerHTML=h+'</tbody>';
+}
+const parse=v=>Number(String(v).replace(/[\s$]/g,'').replace(',','.').replace('−','-'));
+function check(k){
+ const x=EX[k],ins=[...document.querySelectorAll(`input[data-ex="${k}"]`)];let ok=0,empty=0;
+ ins.forEach(i=>{i.classList.remove('ok','no');if(i.value.trim()===''){empty++;return}const good=Math.abs(parse(i.value)-x.sol[+i.dataset.r][+i.dataset.c])<=x.tol;i.classList.add(good?'ok':'no');if(good)ok++});
+ const m=document.getElementById('msg-'+k);
+ if(empty===ins.length){m.textContent='Escriban al menos un resultado antes de comprobar.';m.style.color='#954c34';return}
+ if(ok===ins.length){m.textContent=x.done;m.style.color='#236d43'}else{m.textContent=`${ok} de ${ins.length} correctos. Revisen las celdas en naranja${empty?` y las ${empty} vacías`:''}.`;m.style.color='#954c34'}
+}
+function solve(k){document.querySelectorAll(`input[data-ex="${k}"]`).forEach(i=>{const v=EX[k].sol[+i.dataset.r][+i.dataset.c];i.value=Number.isInteger(v)?v:v.toFixed(2)});check(k)}
+Object.keys(EX).forEach(buildEx);
+
+/* Hoja de control */
+document.getElementById('sheet').innerHTML=`<thead><tr><th>Semana</th><th class="n">Me pidieron</th><th class="n">D̂</th><th class="n">Inv. neto</th><th class="n">Línea</th><th class="n">Pedido calculado</th><th class="n">Pedido final</th></tr></thead><tbody>${Array.from({length:12},(_,i)=>`<tr><td>${i+1}</td>${'<td style="height:34px"></td>'.repeat(6)}</tr>`).join('')}</tbody>`;
+document.getElementById('printSheet').onclick=()=>{document.body.classList.add('print-one');print();setTimeout(()=>document.body.classList.remove('print-one'),500)};
+
+/* Repasos */
+const QUIZ={
+ quiz1:[{q:'El efecto látigo es…',o:['que la demanda del cliente varía mucho','que la variación de los pedidos crece al alejarse del cliente','que la fábrica produce menos de lo necesario'],a:1,e:'Es la amplificación de la variación aguas arriba, aunque la demanda final sea estable.'},
+  {q:'¿Cuál NO es una de las cuatro causas de Lee et al. (1997)?',o:['Pedidos por lotes','Variación de precios','Contratar más personal'],a:2,e:'Las cuatro son: pronósticos encadenados, lotes, precios y racionamiento.'},
+  {q:'En el juego, el mayorista ve…',o:['la demanda real del consumidor','solo los pedidos del minorista','el inventario de la fábrica'],a:1,e:'Solo el minorista ve al consumidor final (salvo que se comparta la demanda).'}],
+ quiz2:[{q:'La línea de suministro es…',o:['el inventario en almacén','lo pedido que aún no llega','lo que le debes a tu cliente'],a:1,e:'Es inventario “en camino”; olvidarla provoca pedir de más.'},
+  {q:'Con D̂ = 6, L = 4, inventario objetivo 12, inventario neto 12 y línea 24, ¿cuánto pides (α = 1)?',o:['6','12','0'],a:0,e:'6 + (12 − 12) + (6 × 4 − 24) = 6. Estás en equilibrio: repones lo que esperas vender.'},
+  {q:'Tienes 0 cajas en inventario y 5 pendientes. ¿Cuál es el costo de la semana?',o:['$2.50','$5.00','$0.00'],a:1,e:'0.50 × 0 + 1.00 × 5 = $5.00.'}]};
+Object.entries(QUIZ).forEach(([id,qs])=>{
+ document.getElementById(id).innerHTML=qs.map((x,i)=>`<div class="qblock"><p class="quiz-question" style="min-height:0;font-size:20px;margin:18px 0 10px">${i+1}. ${x.q}</p><div class="quiz-options" data-quiz="${id}-${i}">${x.o.map((o,j)=>`<button class="quiz-option" style="font-size:16px" data-opt="${j}">${o}</button>`).join('')}</div><div class="feedback" id="fb-${id}-${i}" hidden></div></div>`).join('');
+});
+const BEH={a:1,e:['Pedir de golpe es justo lo que provoca el látigo: de las 36 cajas que pediste solo han llegado 12; las otras 24 vienen en camino y llegarán casi juntas.','Bien: ya pediste 36 en 3 semanas y solo recibiste 12; vienen unas 24 en camino. Pide cerca de la demanda y deja que llegue lo que falta.','Dejar de pedir crea otra escasez dentro de 4 semanas. Lo correcto es contar lo que viene en camino y seguir pidiendo con moderación.']};
+document.addEventListener('click',e=>{
+ const op=e.target.closest('[data-opt]');if(!op)return;const box=op.parentElement,key=box.dataset.quiz;if(!key||box.dataset.done)return;
+ const j=+op.dataset.opt;let a,msg;
+ if(key==='beh'){a=BEH.a;msg=BEH.e[j]}else{const[id,i]=key.split('-');const x=QUIZ[id][+i];a=x.a;msg=(j===a?'Correcto. ':'No exactamente. ')+x.e}
+ box.dataset.done=1;box.querySelectorAll('[data-opt]').forEach(b=>{b.disabled=true;if(+b.dataset.opt===a)b.classList.add('correct');else if(b===op)b.classList.add('incorrect')});
+ const fb=document.getElementById('fb-'+key);fb.hidden=false;fb.textContent=msg;
+});
+
+/* Calculadora de calificación */
+function grade(){
+ const f=document.getElementById('grade'),v=n=>Number(f[n].value)||0;
+ const T=Math.max(2,Math.min(6,v('teams'))),rank=Math.max(1,Math.min(T,v('rank'))),place=Math.max(1,Math.min(T,v('place')));
+ const cost=15-(rank-1)*6/(T-1),amp=v('amp'),ampP=amp<=1.2?15:amp<=1.5?12:amp<=2?9:amp<=3?6:3;
+ const pct=v('weeks')>0?v('stock')/v('weeks'):1,serv=pct<=.1?10:pct<=.25?7:pct<=.4?4:2;
+ const plc=20-(place-1)*8/(T-1),beat=f.beat.checked?10:5,refl=['r1','r2','r3'].reduce((s,k)=>s+Math.max(0,Math.min(10,v(k))),0);
+ const rows=[['Costo frente a su eslabón',cost,15],['Amplificación',ampP,15],['Servicio (faltantes '+fmt(pct*100)+' %)',serv,10],['Lugar del equipo',plc,20],['Vencer a la computadora',beat,10],['Reflexión escrita',refl,30]];
+ const tot=rows.reduce((s,r)=>s+r[1],0);
+ document.getElementById('gradeOut').innerHTML=`<thead><tr><th>Criterio</th><th class="n">Puntos</th><th class="n">Máximo</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${r[0]}</td><td class="n">${fmt(r[1],r[1]%1?1:0)}</td><td class="n">${r[2]}</td></tr>`).join('')}<tr class="total"><td>Total</td><td class="n">${fmt(tot,tot%1?1:0)}</td><td class="n">100</td></tr></tbody>`;
+ document.getElementById('gradeTotal').textContent=`Calificación: ${fmt(tot/10,1)} / 10`;
+}
+document.getElementById('grade').addEventListener('input',grade);grade();
+
+/* Navegación (igual que las otras presentaciones del Toolkit) */
+const votes=[0,0,0];let current=1;const trail=[];
+function stage(n){return n<=13?'SESIÓN 1 · TEORÍA':n<=24?'SESIÓN 2 · TÉCNICA':'SESIÓN 3 · EXAMEN'}
+function showScreen(n,record=true,focus=true){n=Number(n);if(!Number.isInteger(n)||n<1||n>N)return;if(record&&n!==current)trail.push(current);current=n;slides.forEach(s=>{const a=Number(s.dataset.screen)===n;s.classList.toggle('active',a);s.hidden=!a});document.getElementById('counter').textContent=String(n).padStart(2,'0')+' / '+N;document.getElementById('progress').style.width=(n/N*100)+'%';document.getElementById('stage').textContent=stage(n);document.getElementById('back').disabled=!trail.length;history.replaceState(null,'','#pantalla-'+n);window.scrollTo({top:0,behavior:'instant'});if(focus)document.getElementById('title'+n).focus({preventScroll:true})}
+document.addEventListener('click',e=>{
+ const go=e.target.closest('[data-go]');if(go){document.querySelectorAll('dialog[open]').forEach(d=>d.close());showScreen(go.dataset.go)}
+ const c=e.target.closest('[data-close]');if(c)document.getElementById(c.dataset.close).close();
+ const ck=e.target.closest('[data-check]');if(ck)check(ck.dataset.check);
+ const sv=e.target.closest('[data-solve]');if(sv)solve(sv.dataset.solve);
+ const vt=e.target.closest('[data-vote]');if(vt){votes[+vt.dataset.vote]++;document.getElementById('v'+vt.dataset.vote).textContent=votes[+vt.dataset.vote]}
+});
+document.getElementById('resetVotes').onclick=()=>{votes.fill(0);[0,1,2].forEach(i=>document.getElementById('v'+i).textContent=0)};
+document.addEventListener('keydown',e=>{if(e.target.closest('input,textarea,dialog'))return;if(e.key==='ArrowRight'&&current<N)showScreen(current+1);if(e.key==='ArrowLeft'&&trail.length)showScreen(trail.pop(),false)});
+document.getElementById('back').onclick=()=>{if(trail.length)showScreen(trail.pop(),false)};
+document.getElementById('indexBtn').onclick=()=>document.getElementById('indexDialog').showModal();
+document.getElementById('indexGrid').innerHTML=TITLES.map((t,i)=>`<button data-go="${i+1}"><span>${String(i+1).padStart(2,'0')}</span>${t}</button>`).join('');
+document.getElementById('fullBtn').onclick=async()=>{try{if(document.fullscreenElement){await document.exitFullscreen()}else{await document.documentElement.requestFullscreen()}}catch(e){document.getElementById('fullBtn').textContent='Usa pantalla completa del navegador'}};
+document.addEventListener('fullscreenchange',()=>{document.getElementById('fullBtn').innerHTML=document.fullscreenElement?'⛶ Salir de pantalla completa':'⛶ Pantalla completa'});
+const initial=location.hash.match(/^#pantalla-(\d+)$/);showScreen(initial?Math.max(1,Math.min(N,Number(initial[1]))):1,false,false);
+</script></body></html>

@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#1F5FD1"><title>Juego de la cadena de suministro · Industrial Toolkit</title><meta name="description" content="Simulación de una cadena de suministro para vivir el efecto látigo: cada semana decides cuánto pedir sin ver el resto de la cadena. Juega solo o compitan por equipos desde el celular."><style>
+:root{--blue:#1F5FD1;--ink:#142844;--muted:#65748a;--line:#dae2ed;--paper:#f5f7fb;--light:#eaf0fc;--good:#236d43;--goodbg:#e8f4ed;--bad:#954c34;--badbg:#fff0e9;--gold:#b7791f;--goldbg:#fdf3df}
+*{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--paper);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,a,input,select{font:inherit}button,a{touch-action:manipulation}button{cursor:pointer;border:0}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,label:focus-within{outline:3px solid #f19f29;outline-offset:3px}
+header{height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 5vw;border-bottom:1px solid var(--line);background:#fff;gap:12px}
+.brand{display:flex;gap:12px;align-items:center;font-weight:800;font-size:15px;letter-spacing:-.4px;color:inherit;text-decoration:none}.mark{color:#fff;background:var(--blue);padding:9px;border-radius:9px;line-height:0}.brand small{display:block;font-size:10px;letter-spacing:1.7px;font-weight:600;color:var(--muted);margin-top:3px}
+.tools{display:flex;gap:10px}.quiet{background:transparent;border:1px solid var(--line);border-radius:8px;color:var(--ink);padding:10px 14px;font-size:13px;font-weight:600}.quiet:hover{background:var(--light)}
+main{max-width:1250px;margin:auto;padding:34px 5vw 40px}
+.screen{display:none;animation:appear .25s ease}.screen.active{display:block}@keyframes appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.eyebrow{color:var(--blue);font-size:11px;font-weight:750;letter-spacing:2px;text-transform:uppercase;margin:0 0 18px;display:flex;gap:12px;align-items:center}.eyebrow:before{content:"";width:25px;height:2px;background:var(--blue)}
+h1{font-size:clamp(40px,5.2vw,72px);line-height:1.06;letter-spacing:-2.6px;font-weight:760;margin:0 0 24px}h1 span{color:var(--blue)}
+h2{font-size:clamp(26px,3vw,40px);line-height:1.16;letter-spacing:-1.3px;margin:0 0 18px}h3{font-size:19px;letter-spacing:-.4px;margin:0 0 10px}
+p{font-size:16px;line-height:1.65;margin:0 0 14px}.muted{color:var(--muted)}.subtitle{font-size:21px;color:var(--muted)}
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:center;min-height:470px}
+.primary{display:inline-flex;gap:18px;align-items:center;justify-content:center;color:#fff;background:var(--blue);padding:15px 22px;border-radius:9px;font-weight:650;box-shadow:0 6px 18px #1f5fd11c}.primary:hover{background:#174dae}.primary:disabled{background:#9db3dc;cursor:default}
+.secondary{background:#fff;color:var(--ink);padding:14px 20px;border:1px solid var(--line);border-radius:9px;font-weight:600}.secondary:hover{border-color:var(--blue);color:var(--blue)}
+.actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:24px}
+.technical{padding:26px;border:1px solid var(--line);background:#fff;border-radius:16px;position:relative;overflow:hidden}.technical:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#dae2ed55 1px,transparent 1px),linear-gradient(90deg,#dae2ed55 1px,transparent 1px);background-size:24px 24px;pointer-events:none}.technical>*{position:relative}
+.chart-label{display:flex;justify-content:space-between;font-size:10px;letter-spacing:1.3px;font-weight:700;color:var(--muted);gap:10px}
+svg{max-width:100%;height:auto;display:block}
+.label{font-size:10px;letter-spacing:1.8px;font-weight:750;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px}
+.section-title{margin:34px 0 14px}
+/* Configuración */
+.cfg{display:grid;gap:26px;max-width:1000px}.cfg fieldset{border:0;padding:0;margin:0;min-width:0}.cfg legend{font-weight:700;font-size:15px;margin-bottom:10px;padding:0}
+.opts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.opts.two{grid-template-columns:repeat(2,1fr)}.opts.three{grid-template-columns:repeat(3,1fr)}
+.opt{position:relative;display:flex;flex-direction:column;gap:5px;background:#fff;border:1px solid var(--line);border-radius:11px;padding:15px 16px;cursor:pointer;transition:border .15s}
+.opt:hover{border-color:var(--blue)}.opt input{position:absolute;opacity:0;pointer-events:none}.opt strong{font-size:15px}.opt small{font-size:13px;color:var(--muted);line-height:1.45}
+.opt:has(input:checked){border-color:var(--blue);box-shadow:inset 0 0 0 1px var(--blue);background:#f7f9ff}
+.opt:has(input:checked) strong:after{content:" ✓";color:var(--blue)}
+button.opt{text-align:left;color:var(--ink);font:inherit}button.opt:disabled{opacity:.5;cursor:not-allowed}button.opt.mine{border-color:var(--blue);box-shadow:inset 0 0 0 1px var(--blue)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;vertical-align:1px}
+.switch{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:11px;padding:15px 16px;cursor:pointer}.switch input{margin-top:3px;width:18px;height:18px;accent-color:var(--blue)}.switch small{display:block;color:var(--muted);font-size:13px;margin-top:3px;line-height:1.45}
+.sel{padding:12px 14px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--ink);font-size:15px;min-width:200px}
+/* Juego */
+.topbar{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.week{font-size:clamp(30px,3.4vw,44px);font-weight:760;letter-spacing:-1.4px;line-height:1}.week small{display:block;font-size:12px;letter-spacing:1.6px;color:var(--muted);font-weight:700;text-transform:uppercase;margin-bottom:6px}
+.kpis{display:flex;gap:10px;flex-wrap:wrap}.kpi{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:120px}.kpi b{display:block;font-size:20px;letter-spacing:-.5px;font-variant-numeric:tabular-nums}.kpi span{font-size:11px;color:var(--muted);font-weight:650;letter-spacing:.4px}
+.chain-wrap{position:relative;overflow-x:auto;margin:0 -4px 22px;padding:12px 4px 4px}
+.chain{display:grid;align-items:stretch}
+.node{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;position:relative}
+.node .nm{font-weight:700;font-size:14px;display:flex;align-items:center}.node .nv{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;line-height:1.5}.node .nv b{color:var(--ink)}
+.node.me{border-color:var(--blue);box-shadow:inset 0 0 0 1px var(--blue),0 8px 22px #1f5fd118}.node.me:after{content:"TÚ";position:absolute;top:-9px;right:10px;background:var(--blue);color:#fff;font-size:10px;font-weight:750;letter-spacing:1px;padding:2px 7px;border-radius:5px}
+.node.client{background:transparent;border-style:dashed}
+.link{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:8px;font-size:11px;color:var(--muted)}
+.lane{display:flex;align-items:center;gap:3px}.lane i{font-style:normal;min-width:22px;height:20px;padding:0 4px;border-radius:4px;display:grid;place-items:center;font-size:11px;font-weight:700;font-variant-numeric:tabular-nums}
+.lane.goods i{background:#e3ebfb;color:#174587}.lane.orders i{background:#fdf0dc;color:#8a5410}.lane .ar{font-size:13px;color:#9aa8bb}
+.play{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:22px;align-items:start}
+.steps{display:grid;gap:0;margin:0 0 4px;padding:0;list-style:none}.steps li{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-top:1px solid var(--line);font-size:15px}.steps li:first-child{border-top:0}.steps li b{font-variant-numeric:tabular-nums;font-size:17px}.steps .n{color:var(--blue);font:600 12px ui-monospace,monospace;margin-right:10px}
+.steps li.alert b{color:var(--bad)}
+.order-box{margin-top:16px;padding:18px;background:var(--light);border-radius:12px}.order-box label{display:block;font-weight:700;margin-bottom:10px}
+.stepper{display:flex;gap:8px;align-items:center}.stepper input{width:110px;padding:12px;font-size:22px;font-weight:700;text-align:center;border:1px solid #aebcd0;border-radius:9px;color:var(--ink);background:#fff;font-variant-numeric:tabular-nums}
+.stepper .sm{width:44px;height:48px;border-radius:9px;background:#fff;border:1px solid var(--line);font-size:20px;font-weight:700;color:var(--ink)}.stepper .sm:hover{border-color:var(--blue)}
+.order-box .primary{margin-left:auto}.err{color:var(--bad);font-size:13px;margin:8px 0 0;min-height:1em}
+.pipe-note{font-size:13px;color:var(--muted);margin:12px 0 0;line-height:1.55}
+table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}th,td{padding:7px 8px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}th{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.3px}th:first-child,td:first-child{text-align:left}
+.ledger{max-height:300px;overflow:auto;margin-top:14px;border:1px solid var(--line);border-radius:10px;background:#fff}.ledger thead th{position:sticky;top:0;background:#fff}
+td.neg{color:var(--bad);font-weight:650}td.best{color:var(--good);font-weight:700}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--muted);margin-top:8px}.legend span{display:inline-flex;align-items:center;gap:6px}.legend i{width:16px;height:3px;border-radius:2px;display:inline-block}
+details.guide{margin-top:14px;font-size:14px}details.guide summary{cursor:pointer;font-weight:650;color:var(--blue)}
+/* Facilitador que captura */
+.fac{display:grid;gap:14px}.fac .card{padding:16px}.fac .steps li{font-size:13px;padding:8px 0}.fac .steps li b{font-size:15px}
+.fac .stepper input{width:80px;font-size:19px;padding:9px}.fac .stepper .sm{width:36px;height:42px}
+.fac .bot{background:var(--paper);border-radius:9px;padding:12px;font-size:13px;color:var(--muted);margin-top:12px}
+.demand-pill{display:inline-flex;gap:8px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:13px}
+/* Sala en red */
+.room{display:flex;gap:24px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.code-big{font:800 clamp(56px,8vw,96px)/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;color:var(--blue);margin:4px 0 12px}
+.qr{background:#fff;line-height:0;min-width:150px;min-height:150px}.qr img,.qr canvas{width:150px;height:150px}
+.net-status{background:#fff7e8;border:1px solid #f3d9a8;color:#7a4f0e;border-radius:9px;padding:10px 14px;font-size:14px;margin:12px 0}.net-status.ok{background:var(--goodbg);border-color:#b9dcc6;color:var(--good)}
+.tgrid-wrap{overflow-x:auto;margin:18px 0}
+.tgrid{display:grid;gap:10px;min-width:560px}.tgrid .th{font-size:11px;font-weight:750;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);padding:0 4px;align-self:end}
+.tgrid .team{font-weight:760;font-size:17px;align-self:center;padding:0 4px}.tgrid .team small{display:block;font-weight:600;font-size:12px;color:var(--muted);margin-top:2px}
+.cell{background:#fff;border:1px solid var(--line);border-radius:11px;padding:11px 13px;display:flex;flex-direction:column;gap:3px;align-items:flex-start;min-height:74px}
+.cell .who{font-weight:700;font-size:15px}.cell .st{font-size:13px;font-weight:650}.cell .free{color:var(--muted);font-size:13px}
+.on{display:inline-block;width:9px;height:9px;border-radius:50%;background:#2fa36b;margin-right:7px;vertical-align:1px}.on.off{background:#c3cbd6}
+.st.ok{color:var(--good)}.st.wait{color:#8a5410}.st.off{color:var(--bad)}.st.bot{color:var(--muted)}
+.link-btn{background:none;padding:4px 0;color:var(--blue);font-weight:650;font-size:13px}.link-btn:hover{text-decoration:underline}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.chip-st{font-size:12px;padding:4px 9px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--muted)}.chip-st.ok{color:var(--good);border-color:#b9dcc6}.chip-st.off{color:var(--bad)}
+.join{max-width:680px;display:grid;gap:14px}.join label{display:grid;gap:6px;font-weight:650;font-size:14px}.join input{padding:12px;border:1px solid #aebcd0;border-radius:9px;font-size:16px;color:var(--ink);width:100%}
+.join .code-in{font:700 30px ui-monospace,monospace;letter-spacing:.3em;text-transform:uppercase;max-width:220px}
+.teampick{display:grid;gap:8px}.teampick+.teampick{margin-top:6px}.teampick h4{margin:0;font-size:14px}
+.hostbar{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-top:6px}.hostbar label{display:flex;gap:8px;align-items:center;font-size:14px}.hostbar input{width:17px;height:17px;accent-color:var(--blue)}
+/* Guía de roles */
+.guides{display:grid;gap:14px}.guide-card h3{display:flex;align-items:center;font-size:18px}.guide-card dl{margin:0;display:grid;gap:8px;font-size:14px;line-height:1.5}.guide-card dt{font-size:10px;letter-spacing:1.5px;font-weight:750;text-transform:uppercase;color:var(--muted)}.guide-card dd{margin:0}
+.guide-card .tip{background:var(--light);border-radius:9px;padding:10px 12px;font-size:14px;margin-top:4px}
+/* Resultados */
+.big{font-size:clamp(38px,4.5vw,60px);font-weight:760;letter-spacing:-2px;color:var(--blue);line-height:1;margin:6px 0 10px;font-variant-numeric:tabular-nums}
+.compare{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:22px 0}.compare .card b{display:block;font-size:26px;letter-spacing:-.8px;margin:4px 0;font-variant-numeric:tabular-nums}.compare .card.you{border-color:var(--blue);box-shadow:inset 0 0 0 1px var(--blue)}
+.podium{display:grid;gap:14px;margin:6px 0 18px}.podium .card b{display:block;font-size:28px;letter-spacing:-.8px;margin:2px 0 4px;font-variant-numeric:tabular-nums}.podium .place{font-size:13px;font-weight:750;color:var(--muted);letter-spacing:1px}
+.podium .card.win{border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold);background:linear-gradient(180deg,var(--goldbg),#fff 70%)}.podium .card.win .place{color:var(--gold)}
+.podium .card.mine{border-color:var(--blue);box-shadow:inset 0 0 0 1px var(--blue)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 16px}.tab{background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 16px;font-weight:650;font-size:14px;color:var(--ink)}.tab[aria-pressed=true]{background:var(--blue);border-color:var(--blue);color:#fff}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}
+.members{display:grid;gap:14px}
+.member h3{margin:0 0 2px;font-size:20px}.member.me{border-color:var(--blue);box-shadow:inset 0 0 0 1px var(--blue)}
+.mstats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:14px 0}.mstats span{background:var(--paper);border-radius:9px;padding:9px 11px;font-size:12px;color:var(--muted);line-height:1.35}.mstats b{display:block;font-size:18px;color:var(--ink);font-variant-numeric:tabular-nums}
+.notes{list-style:none;margin:0;padding:0;display:grid;gap:8px}.notes li{font-size:14px;line-height:1.5;padding:9px 12px;border-radius:9px;border-left:3px solid}.notes li.bad{background:var(--badbg);border-color:#cf795b}.notes li.good{background:var(--goodbg);border-color:#338257}
+.lessons{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:10px}.lessons .card p{font-size:15px;margin:0}.lessons .card h3{font-size:17px}
+.amp{display:inline-block;padding:2px 8px;border-radius:5px;font-weight:700}.amp.hi{background:var(--badbg);color:var(--bad)}.amp.lo{background:var(--goodbg);color:var(--good)}
+dialog{border:1px solid var(--line);border-radius:15px;padding:28px;max-width:680px;width:calc(100% - 30px);max-height:86svh;box-shadow:0 25px 120px #14284430;color:var(--ink)}dialog::backdrop{background:#14284465;backdrop-filter:blur(3px)}
+.dialog-top{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:16px}.dialog-top h3{margin:0;font-size:22px}
+dialog ol{padding-left:20px;margin:0 0 14px}dialog li{margin-bottom:8px;line-height:1.55;font-size:15px}
+.license{font-size:12px;color:var(--muted);margin-top:40px}
+.play>*,.fac>*,.grid2>*,.members>*,.guides>*,.podium>*{min-width:0}
+[hidden]{display:none!important}
+@media(max-width:1000px){.play{grid-template-columns:minmax(0,1fr)}.opts{grid-template-columns:repeat(2,1fr)}.fac{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:750px){header{height:66px;padding:0 16px}.brand small{display:none}.tools button{padding:8px 10px;font-size:12px}.tools .fs-txt{display:none}main{padding:24px 16px 32px}.hero{grid-template-columns:1fr;gap:28px;min-height:0}.opts,.opts.two,.opts.three,.compare,.grid2,.lessons{grid-template-columns:1fr}.fac,.members,.guides,.podium{grid-template-columns:minmax(0,1fr)!important}.order-box .primary{margin-left:0;width:100%}.stepper{flex-wrap:wrap}.kpi{min-width:0;flex:1}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media print{header,.tools,button,dialog,.actions,.order-box,.tabs{display:none!important}body{background:#fff}.screen{display:none!important}#s-results{display:block!important}}
+</style></head><body>
+<header><a class="brand" href="index.html"><span class="mark" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 15V5M7 15V10M12 15V2M17 15V7" stroke="currentColor" stroke-width="2.3"/></svg></span><div>Industrial Toolkit<small>CADENA DE SUMINISTRO</small></div></a>
+<nav class="tools" aria-label="Herramientas"><button class="quiet" id="rulesBtn">Reglas</button><button class="quiet" id="fullBtn" aria-label="Pantalla completa">⛶ <span class="fs-txt">Pantalla completa</span></button></nav></header>
+<main id="main">
+
+<!-- Portada -->
+<section class="screen active" id="s-home" aria-labelledby="t-home"><div class="hero"><div>
+<p class="eyebrow">Simulación · 30 a 60 minutos</p>
+<h1 id="t-home">Juego de la<br><span>cadena de suministro</span></h1>
+<p class="subtitle">Una cadena, varias empresas. Cada semana decides cuánto pedir sin ver qué pasa en el resto. ¿Podrás evitar el efecto látigo?</p>
+<p class="muted" style="font-size:14px;max-width:480px">Juega solo contra la computadora, o pon a competir a varios equipos: cada equipo es una cadena y cada integrante juega un eslabón desde su celular.</p>
+<div class="actions"><button class="primary" id="goCfg">Preparar partida <span aria-hidden="true">→</span></button><button class="secondary" id="joinBtn">Entrar a una sala</button><button class="secondary" id="resumeBtn" hidden>Continuar partida</button><button class="secondary" id="reopenBtn" hidden>Reabrir sala</button></div>
+</div>
+<div><div class="technical"><div class="chart-label"><span>PEDIDOS POR ESLABÓN</span><span>EL EFECTO LÁTIGO</span></div>
+<div id="heroChart" style="margin-top:18px"></div>
+<p class="muted" style="font-size:12px;margin:8px 0 0;line-height:1.5">La demanda del cliente apenas cambia, pero los pedidos crecen y oscilan más cuanto más lejos está el eslabón del cliente. Partida simulada con la computadora en todos los roles.</p>
+</div></div></div></section>
+
+<!-- Configuración -->
+<section class="screen" id="s-cfg" aria-labelledby="t-cfg">
+<p class="eyebrow">Preparar partida</p><h2 id="t-cfg" tabindex="-1">¿Cómo quieren jugar?</h2>
+<form class="cfg" id="cfgForm">
+<fieldset><legend>Modo</legend><div class="opts three">
+<label class="opt"><input type="radio" name="mode" value="red" checked><strong>Competencia por equipos</strong><small>Cada equipo es una cadena y cada integrante juega un eslabón desde su celular. Todos enfrentan la misma demanda; gana la cadena con menor costo.</small></label>
+<label class="opt"><input type="radio" name="mode" value="solo"><strong>Individual</strong><small>Tomas un eslabón; la computadora juega los demás. Solo ves la información de tu empresa.</small></label>
+<label class="opt"><input type="radio" name="mode" value="aula"><strong>Una cadena, sin celulares</strong><small>Cada grupo dicta su pedido y el facilitador lo escribe en una sola pantalla.</small></label>
+</div></fieldset>
+<fieldset><legend>Eslabones de cada cadena</legend><div class="opts two">
+<label class="opt"><input type="radio" name="links" value="3" checked><strong>3 eslabones</strong><small>Fábrica → Mayorista → Minorista. Ideal para equipos de 3 personas.</small></label>
+<label class="opt"><input type="radio" name="links" value="4"><strong>4 eslabones</strong><small>Fábrica → Distribuidor → Mayorista → Minorista. La versión clásica; equipos de 4.</small></label>
+</div></fieldset>
+<fieldset id="teamsBox"><legend>Número de equipos</legend><select class="sel" name="teams"><option value="2">2 equipos</option><option value="3" selected>3 equipos</option><option value="4">4 equipos</option><option value="5">5 equipos</option><option value="6">6 equipos</option></select>
+<p class="muted" style="font-size:13px;margin:8px 0 0">Cada integrante entra con el código de la sala y elige su equipo y su eslabón. Si un lugar queda vacío, lo juega la computadora.</p></fieldset>
+<fieldset id="roleSolo" hidden><legend>Tu eslabón</legend><div class="opts" id="roleOpts"></div></fieldset>
+<fieldset id="roleAula" hidden><legend>¿Qué eslabones juegan personas? <span class="muted" style="font-weight:500;font-size:13px">Los demás los juega la computadora.</span></legend><div class="opts" id="teamOpts"></div></fieldset>
+<fieldset><legend>Demanda del cliente</legend><div class="opts three" id="demOpts"></div></fieldset>
+<div class="opts two">
+<fieldset><legend>Duración</legend><div class="opts three">
+<label class="opt"><input type="radio" name="weeks" value="24"><strong>24 semanas</strong><small>≈ 25 min</small></label>
+<label class="opt"><input type="radio" name="weeks" value="36" checked><strong>36 semanas</strong><small>≈ 40 min</small></label>
+<label class="opt"><input type="radio" name="weeks" value="50"><strong>50 semanas</strong><small>≈ 60 min</small></label>
+</div></fieldset>
+<fieldset><legend>Cómo decide la computadora</legend><div class="opts two">
+<label class="opt"><input type="radio" name="ai" value="tipico" checked><strong>Como una persona típica</strong><small>Reacciona a lo que ve y olvida parte de lo que ya pidió.</small></label>
+<label class="opt"><input type="radio" name="ai" value="sistemico"><strong>Con visión de sistema</strong><small>Cuenta todo lo que viene en camino antes de pedir.</small></label>
+</div></fieldset>
+</div>
+<label class="switch"><input type="checkbox" name="share"><span><strong>Compartir la demanda del cliente con toda la cadena</strong><small>Cada eslabón ve cuánto compró el consumidor final esta semana. Úsalo en una segunda ronda para comparar.</small></span></label>
+<div class="actions" style="margin-top:4px"><button class="secondary" type="button" data-go="s-home">← Volver</button><button class="primary" type="submit" id="cfgGo">Abrir sala <span aria-hidden="true">→</span></button></div>
+</form></section>
+
+<!-- Juego (individual, facilitador que captura y celular de cada integrante) -->
+<section class="screen" id="s-game" aria-labelledby="t-week">
+<p class="net-status" id="netBanner" role="status" hidden></p>
+<div class="topbar"><div class="week" id="t-week" tabindex="-1"><small id="weekRole">Minorista</small><span id="weekNum">Semana 1</span></div><div class="kpis" id="kpis"></div></div>
+<div class="chain-wrap"><div class="chain" id="chain"></div></div>
+<div id="playArea"></div>
+</section>
+
+<!-- Sala del facilitador -->
+<section class="screen" id="s-host" aria-labelledby="t-host"><p class="eyebrow">Competencia por equipos · facilitador</p><h2 id="t-host" tabindex="-1">Sala de juego</h2><div id="hostBody"></div></section>
+
+<!-- Entrada de un integrante -->
+<section class="screen" id="s-join" aria-labelledby="t-join"><p class="eyebrow">Competencia por equipos</p><h2 id="t-join" tabindex="-1">Entrar a la sala</h2><div id="joinBody"></div></section>
+
+<!-- Resultados -->
+<section class="screen" id="s-results" aria-labelledby="t-res">
+<p class="eyebrow">Fin de la partida</p><h2 id="t-res" tabindex="-1">Así se movió la cadena</h2>
+<div id="resBody"></div>
+<div class="actions"><button class="primary" id="againBtn">Jugar otra vez</button><button class="secondary" id="csvBtn">Descargar datos (CSV)</button><button class="secondary" onclick="print()">Imprimir</button></div>
+<p class="license">Industrial Toolkit · Mtro. Juan Manuel Valdivia Mendoza. Simulación inspirada en los juegos de distribución usados para enseñar dinámica de sistemas (Forrester, 1961; Sterman, 1989).</p>
+</section>
+</main>
+
+<dialog id="rulesDlg"><div class="dialog-top"><h3>Cómo se juega</h3><button class="quiet" data-close="rulesDlg" aria-label="Cerrar">✕</button></div>
+<p>La cadena va de la <b>Fábrica</b> al <b>Minorista</b>, que vende al <b>Cliente</b> (con 3 eslabones: Fábrica → Mayorista → Minorista; con 4 se agrega el Distribuidor). El producto son cajas de agua purificada. Cada semana, en cada eslabón:</p>
+<ol>
+<li><b>Llega mercancía</b> que pediste hace un tiempo y entra a tu inventario.</li>
+<li><b>Llega un pedido</b> de tu cliente (para el minorista, el consumidor final).</li>
+<li><b>Envías</b> todo lo que puedas: el pedido nuevo más lo que debías. Lo que no alcances queda como <b>pendiente</b>.</li>
+<li><b>Pagas costos:</b> $0.50 por caja en inventario y $1.00 por caja pendiente, por semana.</li>
+<li><b>Decides cuánto pedir</b> a tu proveedor. Es tu única decisión.</li>
+</ol>
+<p><b>Retrasos.</b> Tu pedido tarda 2 semanas en llegar a tu proveedor y su envío tarda otras 2 en llegar a ti. La fábrica tarda 3 semanas en producir lo que decide fabricar.</p>
+<p><b>Al inicio</b> cada eslabón tiene 12 cajas en inventario y la cadena está equilibrada.</p>
+<p><b>Competencia por equipos.</b> El facilitador abre una sala. Cada integrante escanea el QR o abre el enlace, escribe su nombre y elige su equipo y su eslabón. Todos los equipos enfrentan la misma demanda y la semana avanza cuando todos pidieron. Gana la cadena con menor costo total.</p>
+<p><b>Objetivo:</b> que el costo total de tu cadena sea el menor posible. No se vale hablar con los otros eslabones de tu cadena, y nadie sabe cuántas semanas dura el juego.</p>
+</dialog>
+
+<script>
+'use strict';
+/* ---------- Datos y modelo ---------- */
+const ROLES={
+ min:{k:'min',n:'Minorista',hex:'#1F5FD1',d:'Vende al consumidor final.',
+  risk:'Es el único que ve la demanda real. Si reacciona de más ante un cambio, inicia la ola que crece hacia la fábrica.',
+  tip:'Pide algo parecido a lo que vendes y cuenta lo que ya viene en camino antes de pedir más.'},
+ may:{k:'may',n:'Mayorista',hex:'#1f9a8a',d:'Surte a las tiendas.',
+  risk:'No ve la demanda real, solo los pedidos del minorista. Un pedido grande puede parecer una tendencia cuando solo es pánico.',
+  tip:'No persigas cada subida: espera a confirmar el cambio y recuerda lo que ya pediste.'},
+ dis:{k:'dis',n:'Distribuidor',hex:'#e08a1e',d:'Mueve producto a nivel regional.',
+  risk:'Lo que recibe ya viene amplificado dos veces. Es fácil acumular inventario cuando todo lo pedido llega junto.',
+  tip:'Lleva la cuenta de lo pedido y aún no recibido; esa es tu verdadera posición.'},
+ fab:{k:'fab',n:'Fábrica',hex:'#b8495a',d:'Produce; tarda 3 semanas.',
+  risk:'Recibe la señal más distorsionada y produce con 3 semanas de retraso. Suele sufrir la mayor oscilación: primero le falta y luego sobreproduce.',
+  tip:'Produce de forma pareja; no copies los picos de tu cliente.'}};
+const CHAINS={3:['min','may','fab'],4:['min','may','dis','fab']};
+const rolesOf=c=>((c&&c.chain)||CHAINS[4]).map(k=>ROLES[k]);
+const H=0.5, P=1, INV0=12, ORDER_DELAY=2, SHIP_DELAY=2, PROD_DELAY=3;
+const PROFILES={tipico:{theta:.36,alpha:.26,beta:.34,n:'Persona típica'},sistemico:{theta:.25,alpha:.3,beta:1,n:'Visión de sistema'}};
+const PATTERNS={
+ escalon:{n:'Escalón',d:'4 cajas por semana y, desde la semana 5, 8 cajas. El caso clásico.',base:4,gen:(t)=>t<=4?4:8},
+ aleatoria:{n:'Variable',d:'Alrededor de 8 cajas con variación aleatoria semana a semana.',base:8,gen:(t,r)=>Math.max(0,Math.round(8+2.2*gauss(r)))},
+ estacional:{n:'Estacional',d:'Sube y baja en ciclos de 12 semanas, entre 4 y 12 cajas.',base:8,gen:(t)=>Math.round(8+4*Math.sin(2*Math.PI*(t-1)/12))},
+ promocion:{n:'Promoción',d:'6 cajas estables con una promoción de 3 semanas (semanas 8 a 10) que dispara las ventas.',base:6,gen:(t)=>t>=8&&t<=10?14:6},
+ sorpresa:{n:'Sorpréndeme',d:'Se elige uno al azar y se revela al final.',base:0}};
+function rng(seed){let a=seed>>>0;return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function gauss(r){let u=0,v=0;while(!u)u=r();while(!v)v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}
+function makeDemand(pat,weeks,seed){const r=rng(seed);const p=PATTERNS[pat];return Array.from({length:weeks},(_,i)=>p.gen(i+1,r))}
+const leadOf=(j,n)=>j===n-1?PROD_DELAY:ORDER_DELAY+SHIP_DELAY;
+
+function newSim(cfg){
+ if(!cfg.chain)cfg.chain=CHAINS[4];
+ const B=cfg.base,n=cfg.chain.length;
+ const S=cfg.chain.map((_,j)=>({inv:INV0,back:0,cost:0,E:B,
+   ship:Array(j===n-1?PROD_DELAY:SHIP_DELAY).fill(B),
+   ordIn:j?Array(ORDER_DELAY).fill(B):null,
+   onOrder:B*leadOf(j,n),log:[]}));
+ const sim={cfg,S,week:0,done:false,humanOrders:[]};
+ startWeek(sim);return sim;
+}
+function startWeek(sim){
+ const t=++sim.week,S=sim.S,d=sim.cfg.demand[t-1],th=PROFILES[sim.cfg.ai].theta;
+ const rec=S.map(s=>s.ship.shift());
+ S.forEach((s,j)=>{s.inv+=rec[j];s.onOrder-=rec[j]});
+ const inc=S.map((s,j)=>j?s.ordIn.shift():d);
+ const sent=S.map((s,j)=>{const want=s.back+inc[j],x=Math.min(s.inv,want);s.inv-=x;s.back=want-x;return x});
+ sent.forEach((x,j)=>{if(j)S[j-1].ship.push(x)});
+ S.forEach((s,j)=>{s.E+=th*(inc[j]-s.E);const c=s.inv*H+s.back*P;s.cost+=c;s.cur={week:t,demand:d,rec:rec[j],inc:inc[j],sent:sent[j],inv:s.inv,back:s.back,pipe:s.onOrder,cost:c,order:null};s.log.push(s.cur)});
+}
+function aiOrder(sim,j){
+ const s=sim.S[j],p=PROFILES[sim.cfg.ai],L=leadOf(j,sim.S.length);
+ return Math.max(0,Math.round(s.E+p.alpha*(INV0-(s.inv-s.back))+p.alpha*p.beta*(s.E*L-s.onOrder)));
+}
+function submitWeek(sim,human){ // human: un número = pedido de una persona; cualquier otro valor = decide la computadora
+ const S=sim.S,last=S.length-1,own=j=>typeof human[j]==='number';
+ const q=S.map((_,j)=>own(j)?human[j]:aiOrder(sim,j));
+ sim.humanOrders.push(S.map((_,j)=>own(j)?q[j]:null));
+ S.forEach((s,j)=>{s.cur.order=q[j];s.onOrder+=q[j];if(j<last)S[j+1].ordIn.push(q[j]);else s.ship.push(q[j])});
+ if(sim.week>=sim.cfg.weeks)sim.done=true;else startWeek(sim);
+}
+function autoRun(cfg,ai){const c={...cfg,ai,humans:cfg.chain.map(()=>false)};const sim=newSim(c);while(!sim.done)submitWeek(sim,[]);return sim}
+function cutEarly(sim){sim.S.forEach(s=>{if(s.log.length&&s.log[s.log.length-1].order==null)s.cost-=s.log.pop().cost});sim.cfg={...sim.cfg,weeks:sim.S[0].log.length};sim.done=true}
+
+/* ---------- Utilidades ---------- */
+const $=s=>document.querySelector(s);
+const money=v=>'$'+v.toLocaleString('es-MX',{minimumFractionDigits:2,maximumFractionDigits:2});
+const num=v=>v.toLocaleString('es-MX');
+const sum=a=>a.reduce((x,y)=>x+y,0);
+const mean=a=>a.length?sum(a)/a.length:0;
+const sd=a=>{const m=mean(a);return Math.sqrt(sum(a.map(x=>(x-m)**2))/Math.max(1,a.length-1))};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+const SAVE='itk-cadena-partida';
+const TEAM_NAMES=['Equipo A','Equipo B','Equipo C','Equipo D','Equipo E','Equipo F'];
+const fmtAmp=a=>a==null?'—':`<span class="amp ${a>1.5?'hi':'lo'}">×${a.toFixed(1)}</span>`;
+
+function niceStep(r){const p=10**Math.floor(Math.log10(r||1)),f=r/p;return(f<=1?1:f<=2?2:f<=5?5:10)*p}
+function lineChart(series,{h=250,label='',compact=false}={}){
+ const w=760,l=40,r=12,t=12,b=compact?20:30,n=Math.max(2,...series.map(s=>s.data.length));
+ const all=series.flatMap(s=>s.data);let lo=Math.min(0,...all),hi=Math.max(4,...all);
+ const st=niceStep((hi-lo)/5);lo=Math.floor(lo/st)*st;hi=Math.ceil(hi/st)*st;
+ const X=i=>l+i/(n-1)*(w-l-r),Y=v=>t+(hi-v)/(hi-lo)*(h-t-b);
+ let g='';
+ for(let v=lo;v<=hi+1e-9;v+=st)g+=`<line x1="${l}" x2="${w-r}" y1="${Y(v)}" y2="${Y(v)}" stroke="${v===0?'#9aa8bb':'#e6ebf2'}"/><text x="${l-6}" y="${Y(v)+4}" text-anchor="end">${num(v)}</text>`;
+ const every=n>30?10:5;
+ if(!compact)for(let i=0;i<n;i++)if((i+1)%every===0||i===0)g+=`<text x="${X(i)}" y="${h-8}" text-anchor="middle">${i+1}</text>`;
+ const lines=series.map(s=>`<path d="${s.data.map((v,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)).join('')}" fill="none" stroke="${s.color}" stroke-width="${s.w||2.2}" ${s.dash?'stroke-dasharray="5 4"':''} stroke-linejoin="round" stroke-linecap="round"><title>${esc(s.name)}</title></path>`).join('');
+ const leg=`<div class="legend">${series.map(s=>`<span><i style="background:${s.color}${s.dash?';opacity:.6':''}"></i>${esc(s.name)}</span>`).join('')}${compact?'':'<span style="margin-left:auto">Eje horizontal: semana</span>'}</div>`;
+ return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(label)}"><g font-size="11" fill="#65748a" font-family="ui-sans-serif,system-ui,sans-serif">${g}</g>${lines}</svg>${leg}`;
+}
+
+/* ---------- Guía de cada eslabón ---------- */
+function guideCard(R,j,who){
+ const r=R[j],n=R.length,from=j===0?'el consumidor final':R[j-1].n.toLowerCase(),to=j===n-1?'su propia planta (decide cuánto producir)':R[j+1].n.toLowerCase();
+ const delay=j===n-1?`Lo que decide producir sale de la planta en ${PROD_DELAY} semanas.`:`Su pedido tarda ${ORDER_DELAY} semanas en llegar a ${R[j+1].n.toLowerCase()} y el envío ${SHIP_DELAY} más: unas ${ORDER_DELAY+SHIP_DELAY} semanas en total.`;
+ return `<div class="card guide-card"><h3><span class="dot" style="background:${r.hex}"></span>${r.n}${who?` <span class="muted" style="font-weight:500;font-size:14px;margin-left:8px">${esc(who)}</span>`:''}</h3><dl>
+ <div><dt>Recibe pedidos de</dt><dd>${from}</dd></div><div><dt>Le pide a</dt><dd>${to}</dd></div>
+ <div><dt>Tiempo de reposición</dt><dd>${delay}</dd></div><div><dt>Su riesgo</dt><dd>${r.risk}</dd></div></dl>
+ <div class="tip"><b>Consejo:</b> ${r.tip}</div></div>`;
+}
+function guidesHTML(R,whoArr){return `<div class="guides" style="grid-template-columns:repeat(${R.length},minmax(0,1fr))">${R.map((_,j)=>guideCard(R,j,whoArr?whoArr[j]:'')).join('')}</div>`}
+
+/* ---------- Análisis de cada integrante ---------- */
+function analyze(sim,j){
+ const R=rolesOf(sim.cfg),n=R.length,log=sim.S[j].log.filter(x=>x.order!=null);
+ if(!log.length)return{role:j,cost:0,notes:[],W:0};
+ const W=log.length,inc=log.map(x=>x.inc),ord=log.map(x=>x.order),inv=log.map(x=>x.inv);
+ const invCost=sum(inv)*H,backCost=sum(log.map(x=>x.back))*P,cost=invCost+backCost;
+ const stockWeeks=log.filter(x=>x.back>0).length,avgInv=mean(inv),avgInc=mean(inc);
+ const maxOrder=Math.max(...ord),maxWeek=log[ord.indexOf(maxOrder)].week,maxInc=Math.max(...inc);
+ const amp=sd(inc)>0.01?sd(ord)/sd(inc):null,last=log[W-1],endNet=last.inv-last.back;
+ const L=leadOf(j,n),over=log.filter(x=>x.order>x.inc&&x.pipe>1.5*L*Math.max(avgInc,1)).length;
+ const pctBack=cost>0?Math.round(backCost/cost*100):0;
+ const notes=[];
+ if(amp!=null&&amp>1.5)notes.push({t:'bad',m:`Tus pedidos variaron ${amp.toFixed(1)} veces más que lo que te pidieron: amplificaste la señal que recibiste.`});
+ else if(amp!=null&&amp<=1.2)notes.push({t:'good',m:`Pediste de forma estable: tus pedidos variaron casi igual que lo que te pidieron (×${amp.toFixed(1)}).`});
+ if(maxOrder>=2*maxInc&&maxOrder>=8)notes.push({t:'bad',m:`En la semana ${maxWeek} pediste ${maxOrder} cajas, más del doble de lo máximo que te pidieron en una semana (${maxInc}).`});
+ if(over>=3)notes.push({t:'bad',m:`En ${over} semanas pediste más de lo que te pidieron aunque ya tenías mucho en camino. Antes de pedir, cuenta lo que viene en camino.`});
+ if(stockWeeks/W>=.3)notes.push({t:'bad',m:`Dejaste pedidos sin surtir en ${stockWeeks} de ${W} semanas; los faltantes fueron el ${pctBack}% de tu costo.`});
+ else if(stockWeeks===0)notes.push({t:'good',m:'Nunca dejaste pedidos sin surtir.'});
+ if(avgInv>3*Math.max(avgInc,1)&&avgInv>15)notes.push({t:'bad',m:`Cargaste mucho inventario: ${Math.round(avgInv)} cajas en promedio, más de 3 semanas de lo que te pedían.`});
+ if(endNet>3*Math.max(mean(inc.slice(-4)),1)+INV0)notes.push({t:'bad',m:stockWeeks?`Terminaste con ${endNet} cajas: llegó tarde lo que pediste durante la escasez.`:`Terminaste con ${endNet} cajas: pediste más de lo que tu cliente necesitaba.`});
+ if(!notes.some(x=>x.t==='bad'))notes.push({t:'good',m:'Operación equilibrada: sin señales fuertes de exceso ni de escasez.'});
+ return{role:j,W,cost,invCost,backCost,pctBack,stockWeeks,avgInv,maxOrder,maxWeek,maxInc,amp,endNet,notes};
+}
+function memberCard(a,R,name,{me=false,rank=null,of=null}={}){
+ const r=R[a.role];
+ if(!a.W)return '';
+ return `<div class="card member${me?' me':''}"><div class="label" style="color:${r.hex}">${r.n}</div><h3>${esc(name)}</h3>
+ <div class="mstats"><span><b>${money(a.cost)}</b>costo${rank?` · ${rank}.º de ${of} ${r.n.toLowerCase()}s`:''}</span><span><b>${a.amp==null?'—':'×'+a.amp.toFixed(1)}</b>amplificación de lo que le pidieron</span>
+ <span><b>${a.stockWeeks} de ${a.W}</b>semanas con faltantes</span><span><b>${Math.round(a.avgInv)}</b>cajas de inventario promedio</span></div>
+ <ul class="notes">${a.notes.map(x=>`<li class="${x.t}">${x.m}</li>`).join('')}</ul></div>`;
+}
+function lessonsHTML(){return `<h3 class="section-title">Para la discusión</h3>
+ <div class="lessons">
+  <div class="card"><h3>1. Los retrasos engañan</h3><p>Entre pedir y recibir pasan 4 semanas. Si no llega nada, se pide otra vez… y luego llega todo junto. Revisen en la gráfica cuándo empezó a subir el inventario.</p></div>
+  <div class="card"><h3>2. Lo que viene en camino también cuenta</h3><p>La computadora con visión de sistema resta lo que ya pidió antes de pedir más. Comparen su costo con el de la persona típica: la diferencia es solo esa regla.</p></div>
+  <div class="card"><h3>3. Nadie ve la demanda real</h3><p>Solo el minorista conoce al consumidor. Los demás leen pedidos, que ya traen el pánico de los eslabones de abajo. Prueben otra ronda compartiendo la demanda del cliente.</p></div>
+  <div class="card"><h3>4. La culpa es de la estructura</h3><p>Casi todos creen que los demás pidieron mal. Pero el patrón se repite con cualquier persona: lo genera la estructura de la cadena (retrasos e información local), no la torpeza de alguien.</p></div>
+ </div>
+ <details style="margin-top:18px;font-size:14px;color:var(--muted)"><summary style="cursor:pointer;font-weight:650">¿Cómo se reduce el efecto látigo en la vida real?</summary><p style="font-size:14px;margin-top:10px">Compartir datos de punto de venta con toda la cadena, inventario administrado por el proveedor (VMI), planeación colaborativa (CPFR), lotes más pequeños y frecuentes, precios estables en lugar de promociones, y reducir los tiempos de entrega y de procesamiento de pedidos.</p></details>`}
+
+/* ---------- Navegación ---------- */
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id===id));scrollTo({top:0});const h=document.querySelector('#'+id+' [tabindex="-1"]');if(h)h.focus({preventScroll:true})}
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)show(g.dataset.go);const o=e.target.closest('[data-open]');if(o)$('#'+o.dataset.open).showModal();const c=e.target.closest('[data-close]');if(c)$('#'+c.dataset.close).close()});
+$('#rulesBtn').onclick=()=>$('#rulesDlg').showModal();
+$('#fullBtn').onclick=()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen?.().catch(()=>{});else document.exitFullscreen?.()};
+
+/* ---------- Portada ---------- */
+(function hero(){
+ const sim=autoRun({weeks:36,demand:makeDemand('escalon',36,1),base:4,chain:CHAINS[4]},'tipico'),R=rolesOf(sim.cfg);
+ $('#heroChart').innerHTML=lineChart([{name:'Cliente',color:'#142844',data:sim.cfg.demand,dash:1},...R.map((r,j)=>({name:r.n,color:r.hex,data:sim.S[j].log.map(x=>x.order)}))],{h:230,label:'Pedidos de cada eslabón frente a la demanda del cliente',compact:true});
+})();
+
+/* ---------- Configuración ---------- */
+$('#demOpts').innerHTML=Object.entries(PATTERNS).map(([k,p])=>`<label class="opt"><input type="radio" name="dem" value="${k}" ${k==='sorpresa'?'checked':''}><strong>${p.n}</strong><small>${p.d}</small></label>`).join('');
+function syncCfg(){
+ const f=$('#cfgForm'),m=f.mode.value,R=rolesOf({chain:CHAINS[f.links.value]});
+ const prevRole=f.role?f.role.value:'0';
+ $('#roleOpts').innerHTML=R.map((r,j)=>`<label class="opt"><input type="radio" name="role" value="${j}" ${String(j)===prevRole||(j===0&&+prevRole>=R.length)?'checked':''}><strong><span class="dot" style="background:${r.hex}"></span>${r.n}</strong><small>${r.d}</small></label>`).join('');
+ $('#teamOpts').innerHTML=R.map((r,j)=>`<label class="opt"><input type="checkbox" name="team" value="${j}" checked><strong><span class="dot" style="background:${r.hex}"></span>${r.n}</strong><small>${r.d}</small></label>`).join('');
+ $('#roleSolo').hidden=m!=='solo';$('#roleAula').hidden=m!=='aula';$('#teamsBox').hidden=m!=='red';
+ $('#cfgGo').innerHTML=m==='red'?'Abrir sala <span aria-hidden="true">→</span>':'Empezar semana 1 <span aria-hidden="true">→</span>';
+}
+$('#cfgForm').addEventListener('change',e=>{if(e.target.name==='mode'||e.target.name==='links')syncCfg()});
+$('#goCfg').onclick=()=>{show('s-cfg');syncCfg()};
+$('#cfgForm').addEventListener('submit',e=>{
+ e.preventDefault();const f=e.target,mode=f.mode.value,chain=CHAINS[f.links.value];
+ let humans=chain.map(()=>false);
+ if(mode==='solo')humans[+f.role.value]=true;else if(mode==='aula')f.querySelectorAll('[name=team]:checked').forEach(x=>humans[+x.value]=true);
+ if(mode==='aula'&&!humans.some(Boolean)){alert('Elige al menos un eslabón para las personas.');return}
+ let pat=f.dem.value;const keys=['escalon','aleatoria','estacional','promocion'];
+ const hidden=pat==='sorpresa';if(hidden)pat=keys[Math.floor(Math.random()*keys.length)];
+ const weeks=+f.weeks.value,seed=Math.floor(Math.random()*1e9);
+ const cfg={mode,chain,humans,pattern:pat,hiddenPattern:hidden,weeks,seed,demand:makeDemand(pat,weeks,seed),base:PATTERNS[pat].base,ai:f.ai.value,share:f.share.checked,teams:+f.teams.value};
+ if(mode==='red'){game=null;closeNet();hostCreate(cfg);return}
+ game=newSim(cfg);save();show('s-game');render();
+});
+
+/* ---------- Partida local (individual y facilitador que captura) ---------- */
+let game=null;
+function save(){if(!game)return;if(!game.done)store.set(SAVE,{cfg:game.cfg,orders:game.humanOrders});else store.del(SAVE)}
+function restore(){const d=store.get(SAVE);if(!d||!d.cfg)return null;try{const sim=newSim(d.cfg);d.orders.forEach(o=>submitWeek(sim,o));return sim.done?null:sim}catch(e){return null}}
+{const sv=restore();if(sv){const b=$('#resumeBtn');b.hidden=false;b.textContent=`Continuar partida (semana ${sv.week})`;b.onclick=()=>{game=sv;show('s-game');render()}}}
+
+/* Lo que un eslabón puede ver. Sirve igual para el juego individual y para cada integrante en red. */
+function roleView(sim,j,who){const s=sim.S[j];return{week:sim.week,role:j,chain:sim.cfg.chain,who,demand:(sim.cfg.share||j===0)?s.cur.demand:null,inv:s.inv,back:s.back,cost:s.cost,onOrder:s.onOrder,ship:s.ship.slice(),ordIn:j?s.ordIn.slice():null,log:s.log.map(x=>({...x}))}}
+function nodesFromView(v){return v.chain.map((_,k)=>k===v.role?{visible:true,inv:v.inv,back:v.back,ship:v.ship,ordIn:v.ordIn,who:v.who[k]}:{visible:false,who:v.who[k]})}
+function nodesFull(sim,who){return sim.S.map((s,k)=>({visible:true,inv:s.inv,back:s.back,ship:s.ship,ordIn:s.ordIn,who:who[k]}))}
+function paintChain(R,nodes,me,demand){
+ const n=R.length,el=$('#chain');
+ el.style.gridTemplateColumns=`repeat(${n},minmax(120px,1fr) 64px) minmax(90px,.7fr)`;el.style.minWidth=(n*200+100)+'px';
+ let h='';
+ for(let i=n-1;i>=0;i--){const nd=nodes[i],d=nodes[i-1];
+  h+=`<div class="node${i===me?' me':''}"><div class="nm"><span class="dot" style="background:${R[i].hex}"></span>${R[i].n}</div>
+  <div class="nv">Inventario <b>${nd.visible?num(nd.inv):'?'}</b><br>Pendientes <b>${nd.visible?num(nd.back):'?'}</b></div>
+  <div class="nv" style="font-size:11px">${esc(nd.who)}</div></div>`;
+  const goods=d?(d.ship||[0,0]).map(x=>`<i title="Envío en camino">${d.ship?x:'·'}</i>`).reverse().join(''):'';
+  const orders=d?(nd.ordIn||[0,0]).map(x=>`<i title="Pedido en camino">${nd.ordIn?x:'·'}</i>`).join(''):'';
+  h+=`<div class="link" aria-hidden="true"><div class="lane goods">${goods}<span class="ar">→</span></div><div class="lane orders"><span class="ar">←</span>${orders}</div></div>`;
+ }
+ el.innerHTML=h+`<div class="node client"><div class="nm">Cliente</div><div class="nv">Demanda<br><b>${demand==null?'?':num(demand)}</b> cajas</div></div>`;
+}
+function chainLegend(nodes){const f=nodes[nodes.length-1];return `<div class="legend" style="margin-top:-12px;margin-bottom:18px"><span><i style="background:#c9d7f2;height:10px;width:10px"></i>Cajas en camino (hacia la derecha)</span><span><i style="background:#f7dcb1;height:10px;width:10px"></i>Pedidos en camino (hacia la izquierda)</span><span>La fábrica tiene ${PROD_DELAY} semanas de producción en proceso: ${f.ship?f.ship.join(' · '):'?'}</span></div>`}
+function stepsHTML(c,j,R,compact){
+ const n=R.length,cli=j===0?'tu cliente (consumidor)':'tu cliente ('+R[j-1].n.toLowerCase()+')';
+ return `<ol class="steps">
+ <li><span><span class="n">1</span>Llegó de ${j===n-1?'producción':R[j+1].n.toLowerCase()}</span><b>${num(c.rec)}</b></li>
+ <li><span><span class="n">2</span>${compact?'Le pidieron':'Te pidió '+cli}</span><b>${num(c.inc)}</b></li>
+ <li class="${c.back>0?'alert':''}"><span><span class="n">3</span>${compact?'Envió':'Enviaste'}</span><b>${num(c.sent)}</b></li>
+ <li><span><span class="n">4</span>Inventario</span><b>${num(c.inv)}</b></li>
+ <li class="${c.back>0?'alert':''}"><span><span class="n">5</span>Pendientes por surtir</span><b>${num(c.back)}</b></li>
+ <li><span><span class="n">6</span>Costo de la semana</span><b>${money(c.cost)}</b></li></ol>`;
+}
+function orderInput(label,id){
+ return `<div class="stepper"><button type="button" class="sm" data-step="-1" data-for="${id}" aria-label="Menos">−</button><input id="${id}" type="number" inputmode="numeric" min="0" max="999" step="1" placeholder="0" aria-label="${esc(label)}"><button type="button" class="sm" data-step="1" data-for="${id}" aria-label="Más">+</button></div>`;
+}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-step]');if(!b)return;const inp=$('#'+b.dataset.for);if(!inp)return;inp.value=Math.max(0,(+inp.value||0)+ +b.dataset.step);inp.focus()});
+const ST_TXT={ok:'ya pidió',wait:'pensando…',bot:'computadora',off:'sin conexión'};
+function kpiRole(v){return `<div class="kpi"><span>Costo acumulado</span><b>${money(v.cost)}</b></div><div class="kpi"><span>Inventario neto</span><b>${num(v.inv-v.back)}</b></div><div class="kpi"><span>Pedido sin llegar</span><b>${num(v.onOrder)}</b></div>`}
+function rolePanel(v,o={}){
+ const R=rolesOf(v),j=v.role,n=R.length,log=v.log,c=log[log.length-1],up=j===n-1?'producción':R[j+1].n.toLowerCase();
+ const pipe=`<p class="pipe-note">En camino hacia ti: <b>${v.ship.join(' y ')}</b> cajas (llegan en ${v.ship.map((_,k)=>k+1).join(' y ')} semana${v.ship.length>1?'s':''}). En total te deben <b>${num(v.onOrder)}</b> cajas de pedidos anteriores.</p>`;
+ const chips=o.status?`<div class="chips">${o.status.map((st,k)=>`<span class="chip-st ${st}">${R[k].n}: ${ST_TXT[st]}</span>`).join('')}</div>`:'';
+ const box=o.submitted!=null
+  ?`<div class="order-box" role="status"><b>${o.submitted==='ai'?'El facilitador pidió con la computadora por ti esta semana.':`Pedido enviado: ${num(o.submitted)} cajas.`}</b><p class="pipe-note" style="margin-top:6px">Esperando a que pidan todos los equipos…</p>${chips}${pipe}</div>`
+  :`<form class="order-box" id="orderForm"><label for="ord-${j}">¿Cuántas cajas ${j===n-1?'mandas producir':'pides a '+up}?</label>
+  <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">${orderInput('Pedido de '+R[j].n,'ord-'+j)}<button class="primary" type="submit">Hacer pedido <span aria-hidden="true">→</span></button></div><p class="err" id="err" role="alert"></p>${chips}${pipe}</form>`;
+ return `<div class="play"><div class="card"><div class="label">Esta semana</div>${stepsHTML(c,j,R)}${box}
+ <details class="guide"><summary>¿Cómo opera mi eslabón?</summary><div style="margin-top:12px">${guideCard(R,j)}</div></details></div>
+ <div><div class="card"><div class="label">Tu historial</div>${log.length>1?lineChart([{name:'Te pidieron',color:'#142844',data:log.map(x=>x.inc),dash:1},{name:'Pediste',color:R[j].hex,data:log.slice(0,-1).map(x=>x.order)},{name:'Inventario neto',color:'#9aa8bb',data:log.map(x=>x.inv-x.back),w:1.6}],{h:200,label:'Tu historial'}):'<p class="muted" style="font-size:14px">Aquí verás tus pedidos e inventario semana a semana.</p>'}
+ <div class="ledger"><table><thead><tr><th>Sem.</th><th>Llegó</th><th>Te pidieron</th><th>Enviaste</th><th>Inv.</th><th>Pend.</th><th>Pediste</th><th>Costo</th></tr></thead><tbody>${log.slice().reverse().map(x=>`<tr><td>${x.week}</td><td>${x.rec}</td><td>${x.inc}</td><td>${x.sent}</td><td>${x.inv}</td><td class="${x.back?'neg':''}">${x.back}</td><td>${x.order??'—'}</td><td>${money(x.cost)}</td></tr>`).join('')}</tbody></table></div></div></div></div>`;
+}
+function paintRole(v,roleTxt,o){
+ $('#weekNum').textContent=`Semana ${v.week}`;$('#weekRole').textContent=roleTxt;$('#kpis').innerHTML=kpiRole(v);
+ const R=rolesOf(v),nodes=nodesFromView(v);paintChain(R,nodes,v.role,v.demand);
+ $('#playArea').innerHTML=chainLegend(nodes)+rolePanel(v,o);
+ const w=$('.chain-wrap'),m=$('#chain .node.me');if(w&&m)w.scrollLeft=Math.max(0,m.offsetLeft-(w.clientWidth-m.offsetWidth)/2);
+ const inp=$('#playArea input[type=number]');if(inp)inp.focus({preventScroll:true});
+}
+function render(){
+ const cfg=game.cfg,R=rolesOf(cfg);$('#netBanner').hidden=true;
+ if(cfg.mode==='solo'){
+  const me=cfg.humans.indexOf(true);
+  paintRole(roleView(game,me,R.map((_,k)=>k===me?'Tú':'Computadora')),`Juegas como ${R[me].n}`,{});
+  $('#orderForm').addEventListener('submit',onOrder);return;
+ }
+ const who=R.map((_,k)=>cfg.humans[k]?'Personas':'Computadora'),nodes=nodesFull(game,who);
+ $('#weekNum').textContent=`Semana ${game.week} de ${cfg.weeks}`;$('#weekRole').textContent='Una cadena · el facilitador captura';
+ $('#kpis').innerHTML=`<div class="kpi"><span>Costo de la cadena</span><b>${money(sum(game.S.map(s=>s.cost)))}</b></div><div class="kpi"><span>Demanda del cliente</span><b>${num(game.S[0].cur.demand)}</b></div>`;
+ paintChain(R,nodes,-1,game.S[0].cur.demand);
+ $('#playArea').innerHTML=`${chainLegend(nodes)}<form id="orderForm"><div class="fac" style="grid-template-columns:repeat(${R.length},minmax(0,1fr))">${R.map((r,j)=>`<div class="card"><div class="label" style="color:${r.hex}">${r.n}</div>${stepsHTML(game.S[j].cur,j,R,true)}${cfg.humans[j]?`<label for="ord-${j}" style="display:block;font-weight:700;font-size:13px;margin:12px 0 8px">Pedido de esta semana</label>${orderInput('Pedido de '+r.n,'ord-'+j)}`:`<div class="bot">Lo decide la computadora al registrar la semana.</div>`}</div>`).join('')}</div>
+ <p class="err" id="err" role="alert"></p><div class="actions" style="margin-top:6px"><button class="primary" type="submit">${game.week>=cfg.weeks?'Registrar pedidos y ver resultados':`Registrar pedidos y pasar a la semana ${game.week+1}`} <span aria-hidden="true">→</span></button><button class="secondary" type="button" id="endEarly">Terminar ahora</button></div></form>`;
+ $('#endEarly').onclick=()=>{if(confirm('¿Terminar la partida y ver resultados con las semanas jugadas?')){cutEarly(game);finishLocal()}};
+ const first=$('#playArea input[type=number]');if(first)first.focus({preventScroll:true});
+ $('#orderForm').addEventListener('submit',onOrder);
+}
+function onOrder(e){
+ e.preventDefault();const cfg=game.cfg,R=rolesOf(cfg),vals=R.map(()=>null);
+ for(let j=0;j<R.length;j++){if(!cfg.humans[j])continue;const inp=$('#ord-'+j),raw=inp.value.trim(),v=raw===''?NaN:Number(raw);
+  if(!Number.isInteger(v)||v<0||v>999){$('#err').textContent=`Escribe un pedido entero entre 0 y 999${cfg.mode==='solo'?'':' para '+R[j].n}.`;inp.focus();return}vals[j]=v}
+ submitWeek(game,vals);save();
+ if(game.done)finishLocal();else{render();$('#t-week').focus({preventScroll:true});scrollTo({top:0,behavior:'smooth'})}
+}
+function finishLocal(){
+ store.del(SAVE);const R=rolesOf(game.cfg),solo=game.cfg.mode==='solo';
+ showResults([{name:'Su cadena',sim:game,members:R.map((r,j)=>game.cfg.humans[j]?(solo?'Tú':'Grupo '+r.n):null)}]);
+}
+
+/* ---------- Resultados (una cadena o varios equipos) ---------- */
+let RES=null;
+function showResults(list){
+ const cfg=list[0].sim.cfg,R=rolesOf(cfg),W=list[0].sim.S[0].log.length,dem=cfg.demand.slice(0,W);
+ const bc={...cfg,demand:dem,weeks:W};
+ const an=list.map(x=>x.sim.S.map((_,j)=>analyze(x.sim,j)));
+ if(list.length>1)R.forEach((_,j)=>{list.map((_,t)=>t).sort((a,b)=>an[a][j].cost-an[b][j].cost).forEach((t,r)=>{an[t][j].rank=r+1;an[t][j].of=list.length})});
+ RES={list,an,R,dem,W,cfg,bTip:autoRun(bc,'tipico'),bSys:autoRun(bc,'sistemico'),sel:0};
+ $('#csvBtn').hidden=false;$('#againBtn').textContent='Jugar otra vez';
+ renderResults();show('s-results');return an;
+}
+const chainCost=sim=>sum(sim.S.map(s=>s.cost));
+function teamCharts(R,dem,orders,nets,name){
+ return `<div class="card" style="margin-bottom:18px"><div class="chart-label"><span>PEDIDOS DE CADA ESLABÓN${name?' · '+esc(name).toUpperCase():''}</span><span>CAJAS POR SEMANA</span></div><div style="margin-top:12px">${lineChart([{name:'Demanda del cliente',color:'#142844',data:dem,dash:1,w:2.6},...R.map((r,j)=>({name:r.n,color:r.hex,data:orders[j]}))],{h:270,label:'Pedidos de cada eslabón por semana frente a la demanda del cliente'})}</div></div>
+ <div class="card" style="margin-bottom:18px"><div class="chart-label"><span>INVENTARIO NETO (INVENTARIO − PENDIENTES)</span><span>BAJO CERO = CLIENTES SIN SURTIR</span></div><div style="margin-top:12px">${lineChart(R.map((r,j)=>({name:r.n,color:r.hex,data:nets[j]})),{h:240,label:'Inventario neto de cada eslabón por semana'})}</div></div>`;
+}
+function renderResults(){
+ const {list,an,R,dem,W,cfg,bTip,bSys}=RES,multi=list.length>1,pat=PATTERNS[cfg.pattern],sdD=sd(dem);
+ const famp=sim=>{const o=sim.S[sim.S.length-1].log.map(x=>x.order);return sdD>0.01?sd(o)/sdD:null};
+ let h='';
+ if(multi){
+  const order=list.map((_,t)=>t).sort((a,b)=>chainCost(list[a].sim)-chainCost(list[b].sim));
+  $('#t-res').textContent=`Ganó el ${list[order[0]].name}`;
+  h+=`<div class="label">Clasificación · ${W} semanas · misma demanda para todos</div><div class="podium" style="grid-template-columns:repeat(${Math.min(list.length,3)},minmax(0,1fr))">${order.map((t,r)=>`<div class="card${r===0?' win':''}"><div class="place">${r+1}.º LUGAR</div><h3 style="margin:4px 0 0">${esc(list[t].name)}</h3><b>${money(chainCost(list[t].sim))}</b><span class="muted" style="font-size:13px">Amplificación en la fábrica: ${fmtAmp(famp(list[t].sim))}</span></div>`).join('')}</div>
+  <div class="card" style="overflow-x:auto;margin-bottom:18px"><div class="label">Costo por eslabón · el mejor de cada eslabón en verde</div><table><thead><tr><th>Eslabón</th>${list.map(x=>`<th>${esc(x.name)}</th>`).join('')}</tr></thead><tbody>
+  ${R.map((r,j)=>`<tr><td><span class="dot" style="background:${r.hex}"></span>${r.n}</td>${list.map((x,t)=>`<td class="${an[t][j].rank===1?'best':''}">${money(an[t][j].cost)}<br><span class="muted" style="font-size:11px">${esc(x.members[j]||'Computadora')}</span></td>`).join('')}</tr>`).join('')}
+  <tr><td><b>Cadena</b></td>${list.map(x=>`<td><b>${money(chainCost(x.sim))}</b></td>`).join('')}</tr></tbody></table></div>`;
+ }else{
+  $('#t-res').textContent='Así se movió la cadena';
+  h+=`<div class="label">Costo total de la cadena · ${W} semanas</div><div class="big">${money(chainCost(list[0].sim))}</div>`;
+ }
+ h+=`<p class="muted">Demanda del cliente: <b style="color:var(--ink)">${pat.n.toLowerCase()}</b>${cfg.hiddenPattern?' (elegida al azar)':''}. ${pat.d}</p>
+ <div class="compare">
+  <div class="card you"><div class="label">${multi?'Mejor equipo':'Su partida'}</div><b>${money(Math.min(...list.map(x=>chainCost(x.sim))))}</b><span class="muted" style="font-size:13px">${multi?'El costo más bajo de la competencia.':'Personas más la computadora.'}</span></div>
+  <div class="card"><div class="label">Computadora · persona típica</div><b>${money(chainCost(bTip))}</b><span class="muted" style="font-size:13px">Misma demanda; reacciona sin contar lo que viene en camino.</span></div>
+  <div class="card"><div class="label">Computadora · visión de sistema</div><b>${money(chainCost(bSys))}</b><span class="muted" style="font-size:13px">Misma demanda; descuenta lo que ya pidió antes de pedir más.</span></div>
+ </div>`;
+ const t=RES.sel,x=list[t];
+ if(multi)h+=`<h3 class="section-title">Detalle por equipo</h3><div class="tabs" role="group" aria-label="Elegir equipo">${list.map((y,k)=>`<button class="tab" data-team="${k}" aria-pressed="${k===t}">${esc(y.name)}</button>`).join('')}</div>`;
+ h+=teamCharts(R,dem,x.sim.S.map(s=>s.log.map(l=>l.order)),x.sim.S.map(s=>s.log.map(l=>l.inv-l.back)),multi?x.name:'');
+ const cards=R.map((_,j)=>x.members[j]?memberCard(an[t][j],R,x.members[j],{rank:an[t][j].rank,of:an[t][j].of}):'').join('');
+ if(cards)h+=`<h3 class="section-title">Cómo operó cada integrante${multi?' · '+esc(x.name):''}</h3><div class="members" style="grid-template-columns:repeat(${R.length},minmax(0,1fr))">${cards}</div>`;
+ h+=`<h3 class="section-title">Cómo opera cada eslabón</h3>${guidesHTML(R)}${lessonsHTML()}`;
+ $('#resBody').innerHTML=h;
+}
+$('#resBody').addEventListener('click',e=>{const b=e.target.closest('[data-team]');if(b&&RES){RES.sel=+b.dataset.team;renderResults()}});
+$('#againBtn').onclick=()=>{if(pl){plLeave();show('s-home');return}closeNet();game=null;RES=null;$('#resumeBtn').hidden=true;show('s-cfg');syncCfg()};
+$('#csvBtn').onclick=()=>{
+ if(!RES)return;const {list,R}=RES,head=['semana','demanda_cliente'];
+ list.forEach(x=>R.forEach(r=>['llego','le_pidieron','envio','inventario','pendientes','pedido','costo'].forEach(c=>head.push(`${x.name.replace(/\s+/g,'_')}_${r.k}_${c}`))));
+ const lines=[head.join(',')];
+ for(let w=0;w<RES.W;w++){const row=[w+1,RES.dem[w]];list.forEach(x=>x.sim.S.forEach(s=>{const l=s.log[w];row.push(l.rec,l.inc,l.sent,l.inv,l.back,l.order??'',l.cost)}));lines.push(row.join(','))}
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+lines.join('\n')],{type:'text/csv'}));a.download='cadena-de-suministro.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+};
+
+/* ---------- Competencia en red: el navegador del facilitador lleva todas las cadenas; cada integrante se conecta con un código ---------- */
+const NET='itk-cadena-v2-',HOSTSAVE='itk-cadena-sala2',PLSAVE='itk-cadena-jugador2';
+const PEER_JS='https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js',QR_JS='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+const scripts={};
+function loadScript(src){return scripts[src]||(scripts[src]=new Promise((ok,no)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=()=>{delete scripts[src];no(new Error(src))};document.head.appendChild(s)}))}
+const newCode=()=>Array.from({length:4},()=>'ABCDEFGHJKLMNPQRSTUVWXYZ'[Math.floor(Math.random()*24)]).join('');
+const newToken=()=>Math.random().toString(36).slice(2)+Date.now().toString(36);
+const cleanName=s=>String(s||'').replace(/\s+/g,' ').trim().slice(0,24);
+const joinURL=code=>location.href.split(/[?#]/)[0]+'?sala='+code;
+const sendTo=(c,m)=>{try{if(c&&c.open)c.send(m)}catch(e){}};
+let net=null,pl=null;
+
+/* --- Facilitador --- */
+function hostCreate(cfg,r){
+ const T=cfg.teams||3,n=cfg.chain.length,empty=()=>({token:null,name:'',conn:null});
+ net={cfg,T,n,code:r?.code||newCode(),slots:Array.from({length:T},(_,t)=>Array.from({length:n},(_,j)=>{const s=r?.slots?.[t]?.[j];return s?{token:s.token,name:s.name,conn:null}:empty()})),
+  pending:r?.pending||Array.from({length:T},()=>Array(n).fill(null)),games:null,auto:r?.auto??true,detail:false,status:'Abriendo la sala…',restored:!!r,opened:false,conns:new Set(),final:null};
+ if(r&&r.started){net.games=Array.from({length:T},(_,t)=>{const sim=newSim({...cfg,humans:r.humans[t].slice()});(r.orders[t]||[]).forEach(o=>submitWeek(sim,o));return sim})}
+ show('s-host');renderHost();
+ loadScript(PEER_JS).then(hostOpen).catch(()=>{if(net){net.status='No se pudo cargar la conexión. Revisa el internet y recarga la página.';renderHost()}});
+ loadScript(QR_JS).then(renderHost).catch(()=>{});
+}
+function hostOpen(){
+ if(!net)return;const peer=new Peer(NET+net.code);net.peer=peer;
+ peer.on('open',()=>{if(net&&net.peer===peer){net.opened=true;net.status='';renderHost();saveHost()}});
+ peer.on('connection',conn=>{
+  conn.on('open',()=>{if(!net)return;net.conns.add(conn);sendTo(conn,lobbyMsg())});
+  conn.on('data',d=>hostMsg(conn,d));
+  conn.on('close',()=>{if(!net)return;net.conns.delete(conn);forSlots(s=>{if(s.conn===conn)s.conn=null});renderHost();broadcastViews()});
+ });
+ peer.on('disconnected',()=>{if(net&&net.peer===peer&&!peer.destroyed){net.status='Se perdió la conexión con el servidor de salas. Reconectando…';renderHost();setTimeout(()=>{try{if(!peer.destroyed)peer.reconnect()}catch(e){}},2000)}});
+ peer.on('error',e=>{
+  if(!net||net.peer!==peer)return;
+  if(e.type==='unavailable-id'){
+   if(!net.opened&&!net.restored&&!net.games){net.code=newCode();net.status='Abriendo la sala…'}else net.status=`Recuperando la sala ${net.code}… (puede tardar un minuto)`;
+   peer.destroy();setTimeout(()=>{if(net)hostOpen()},3000);
+  }else if(e.type!=='peer-unavailable')net.status='Problema de conexión. Reintentando…';
+  renderHost();
+ });
+}
+const forSlots=f=>net.slots.forEach((row,t)=>row.forEach((s,j)=>f(s,t,j)));
+function closeNet(){if(net&&net.peer){try{net.peer.destroy()}catch(e){}}net=null}
+function saveHost(){
+ if(!net)return;if(net.final){store.del(HOSTSAVE);return}
+ store.set(HOSTSAVE,{cfg:net.cfg,started:!!net.games,orders:net.games?net.games.map(g=>g.humanOrders):[],humans:net.games?net.games.map(g=>g.cfg.humans):null,code:net.code,slots:net.slots.map(r=>r.map(s=>({token:s.token,name:s.name}))),pending:net.pending,auto:net.auto});
+}
+const teamName=t=>TEAM_NAMES[t];
+const lobbyMsg=()=>({t:'lobby',chain:net.cfg.chain,teams:net.T,taken:net.slots.map(r=>r.map(s=>!!s.token)),names:net.slots.map(r=>r.map(s=>s.name)),started:!!net.games});
+const whoFor=(t,j)=>net.cfg.chain.map((_,k)=>k===j?'Tú':(net.games[t].cfg.humans[k]?(net.slots[t][k].name||'Integrante'):'Computadora'));
+const statusArr=t=>net.cfg.chain.map((_,k)=>!net.games[t].cfg.humans[k]?'bot':net.pending[t][k]!=null?'ok':(net.slots[t][k].conn?'wait':'off'));
+function sendView(t,j){
+ const s=net.slots[t][j];if(!s.conn||!net.games)return;
+ if(net.final){sendTo(s.conn,{t:'end',r:{...net.final.base,team:t,role:j,an:net.final.an[t],members:net.final.members[t]}});return}
+ sendTo(s.conn,{t:'view',team:t,v:roleView(net.games[t],j,whoFor(t,j)),submitted:net.pending[t][j],status:statusArr(t)});
+}
+function broadcastViews(){if(net&&net.games)forSlots((_,t,j)=>sendView(t,j))}
+function broadcastLobby(){if(net)net.conns.forEach(c=>sendTo(c,lobbyMsg()))}
+function bindSlot(t,j,conn){forSlots(s=>{if(s.conn===conn)s.conn=null});const s=net.slots[t][j];s.conn=conn;sendTo(conn,{t:'assigned',team:t,role:j,name:s.name,started:!!net.games});sendView(t,j)}
+function hostMsg(conn,d){
+ if(!net||!d||typeof d!=='object'||typeof d.t!=='string')return;
+ const token=typeof d.token==='string'?d.token.slice(0,64):'';
+ if(d.t==='hello'){let hit=null;if(token)forSlots((s,t,j)=>{if(s.token===token)hit=[t,j]});if(hit)bindSlot(hit[0],hit[1],conn);else sendTo(conn,lobbyMsg());renderHost();return}
+ if(d.t==='claim'){
+  const t=d.team,j=d.role;if(!Number.isInteger(t)||t<0||t>=net.T||!Number.isInteger(j)||j<0||j>=net.n||!token)return;
+  const s=net.slots[t][j];
+  if(s.token&&s.token!==token){sendTo(conn,{t:'taken'});sendTo(conn,lobbyMsg());return}
+  forSlots((o,tt,jj)=>{if((tt!==t||jj!==j)&&o.token===token){o.token=null;o.name='';o.conn=null}}); // una persona, un lugar
+  s.token=token;s.name=cleanName(d.name)||'Integrante';
+  if(net.games&&!net.games[t].cfg.humans[j]){net.games[t].cfg.humans[j]=true;net.pending[t][j]=null}
+  bindSlot(t,j,conn);broadcastLobby();broadcastViews();saveHost();renderHost();return;
+ }
+ let me=null;forSlots((s,t,j)=>{if(s.conn===conn)me=[t,j]});if(!me)return;const[t,j]=me;
+ if(d.t==='order'&&net.games&&!net.final){
+  const q=d.q;if(d.week!==net.games[t].week||!Number.isInteger(q)||q<0||q>999||net.pending[t][j]!=null)return;
+  net.pending[t][j]=q;saveHost();broadcastViews();renderHost();maybeAdvance();
+ }
+}
+const allReady=()=>net&&net.games&&net.games.every((g,t)=>g.cfg.humans.every((h,j)=>!h||net.pending[t][j]!=null));
+function maybeAdvance(){if(net&&net.auto&&allReady()){clearTimeout(net.advT);net.advT=setTimeout(advanceWeek,700)}}
+function advanceWeek(){
+ if(!net||!net.games||net.final||!allReady())return;
+ net.games.forEach((g,t)=>submitWeek(g,net.pending[t].map(p=>typeof p==='number'?p:null)));
+ net.pending=net.games.map(g=>g.cfg.chain.map(()=>null));
+ if(net.games[0].done)endNet(false);else{saveHost();broadcastViews();renderHost()}
+}
+function endNet(early){
+ if(early)net.games.forEach(cutEarly);
+ const R=rolesOf(net.cfg);
+ const list=net.games.map((g,t)=>({name:teamName(t),sim:g,members:R.map((_,j)=>g.cfg.humans[j]?(net.slots[t][j].name||'Integrante'):null)}));
+ const an=showResults(list);
+ const sim0=net.games[0],W=sim0.S[0].log.length;
+ net.final={an,members:list.map(x=>x.members),base:{chain:net.cfg.chain,pattern:PATTERNS[net.cfg.pattern].n,W,demand:net.cfg.demand.slice(0,W),
+  teams:list.map(x=>({name:x.name,cost:chainCost(x.sim),orders:x.sim.S.map(s=>s.log.map(l=>l.order??0)),nets:x.sim.S.map(s=>s.log.map(l=>l.inv-l.back))}))}};
+ store.del(HOSTSAVE);broadcastViews();
+}
+function hostAction(act,t,j){
+ if(!net)return;
+ if(act==='start'){let any=false;forSlots(s=>{if(s.token)any=true});if(!any){alert('Todavía no entra nadie a la sala.');return}
+  net.games=Array.from({length:net.T},(_,tt)=>newSim({...net.cfg,humans:net.slots[tt].map(s=>!!s.token)}));
+  net.pending=net.games.map(g=>g.cfg.chain.map(()=>null));saveHost();broadcastLobby();broadcastViews();renderHost();$('#t-host').focus({preventScroll:true})}
+ else if(act==='free'){const s=net.slots[t][j];sendTo(s.conn,{t:'freed'});s.token=null;s.name='';s.conn=null;if(net.games){net.games[t].cfg.humans[j]=false;net.pending[t][j]=null}saveHost();broadcastLobby();broadcastViews();renderHost();maybeAdvance()}
+ else if(act==='bot'){if(net.games&&net.pending[t][j]==null){net.pending[t][j]='ai';saveHost();broadcastViews();renderHost();maybeAdvance()}}
+ else if(act==='botall'){if(net.games){net.games.forEach((g,tt)=>g.cfg.humans.forEach((h,jj)=>{if(h&&net.pending[tt][jj]==null)net.pending[tt][jj]='ai'}));saveHost();broadcastViews();renderHost();maybeAdvance()}}
+ else if(act==='advance')advanceWeek();
+ else if(act==='end'){if(confirm('¿Terminar la partida y mostrar resultados a todos?'))endNet(true)}
+ else if(act==='cancel'){if(confirm('¿Cerrar la sala? Todos se desconectarán.')){closeNet();store.del(HOSTSAVE);$('#reopenBtn').hidden=true;show('s-home')}}
+}
+$('#hostBody').addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(b)hostAction(b.dataset.act,+b.dataset.t,+b.dataset.j)});
+$('#hostBody').addEventListener('change',e=>{if(!net)return;if(e.target.id==='autoAdv'){net.auto=e.target.checked;saveHost();maybeAdvance()}if(e.target.id==='showNums'){net.detail=e.target.checked;renderHost()}});
+function renderHost(){
+ if(!net||!$('#s-host').classList.contains('active'))return;
+ const R=rolesOf(net.cfg),url=joinURL(net.code),st=net.status?`<p class="net-status">${esc(net.status)}</p>`:(net.opened?'<p class="net-status ok">Sala abierta: ya pueden entrar.</p>':'');
+ const room=`<div class="card room"><div><div class="label">Código de la sala</div><div class="code-big">${net.code}</div><p class="muted" style="font-size:14px;margin:0;overflow-wrap:anywhere">Entren a <b style="color:var(--ink)">${esc(url.replace(/^https?:\/\//,''))}</b><br>o abran el juego, toquen <b style="color:var(--ink)">Entrar a una sala</b> y escriban el código.</p></div><div class="qr" id="qr" aria-label="Código QR para entrar a la sala"></div></div>`;
+ const cols=`grid-template-columns:110px repeat(${R.length},minmax(140px,1fr))`;
+ const head=`<div></div>${R.map(r=>`<div class="th"><span class="dot" style="background:${r.hex}"></span>${r.n}</div>`).join('')}`;
+ let h;
+ if(!net.games){
+  $('#t-host').textContent='Esperando a los equipos';
+  let c=0;forSlots(s=>{if(s.token)c++});
+  h=`${room}${st}<div class="tgrid-wrap"><div class="tgrid" style="${cols}">${head}${net.slots.map((row,t)=>`<div class="team">${teamName(t)}<small>${row.filter(s=>s.token).length} de ${R.length}</small></div>${row.map((s,j)=>`<div class="cell">${s.token?`<div class="who"><span class="on${s.conn?'':' off'}"></span>${esc(s.name)}</div><button class="link-btn" data-act="free" data-t="${t}" data-j="${j}">Liberar lugar</button>`:'<span class="free">Libre</span>'}</div>`).join('')}`).join('')}</div></div>
+  <div class="actions"><button class="primary" data-act="start" ${c?'':'disabled'}>Empezar partida con ${c} persona${c===1?'':'s'} <span aria-hidden="true">→</span></button><button class="secondary" data-act="cancel">Cerrar sala</button></div>
+  <p class="muted" style="font-size:13px;margin-top:14px">Los lugares vacíos los juega la computadora. Demanda: ${net.cfg.hiddenPattern?'sorpresa':PATTERNS[net.cfg.pattern].n.toLowerCase()} · ${net.cfg.weeks} semanas (los jugadores no lo saben) · computadora: ${PROFILES[net.cfg.ai].n.toLowerCase()}${net.cfg.share?' · demanda del cliente compartida':''}.</p>
+  <h3 class="section-title">Explícales cómo opera cada eslabón</h3><p class="muted" style="font-size:14px">Proyecta esta parte antes de empezar. Cada integrante también la ve en su celular.</p>${guidesHTML(R)}`;
+ }else{
+  const g0=net.games[0];$('#t-host').textContent=`Semana ${g0.week} de ${g0.cfg.weeks}`;
+  const ready=allReady();let left=0;net.games.forEach((g,t)=>statusArr(t).forEach(x=>{if(x==='wait'||x==='off')left++}));
+  h=`<div class="hostbar" style="margin-bottom:6px"><span class="demand-pill">Sala <b>${net.code}</b></span><span class="demand-pill">${ready?'Todos pidieron':`Faltan ${left} persona${left===1?'':'s'}`}</span></div>${st}
+  <div class="tgrid-wrap"><div class="tgrid" style="${cols}">${head}${net.games.map((g,t)=>{const sts=statusArr(t);return `<div class="team">${teamName(t)}${net.detail?`<small>${money(chainCost(g))}</small>`:''}</div>${R.map((r,j)=>{const s=net.slots[t][j],S=g.S[j],p=net.pending[t][j];return `<div class="cell">
+   <div class="who">${g.cfg.humans[j]?`<span class="on${s.conn?'':' off'}"></span>${esc(s.name||'Integrante')}`:'Computadora'}</div>
+   <div class="st ${sts[j]}">${sts[j]==='ok'?(p==='ai'?'✓ Pidió la computadora':'✓ Ya pidió'):sts[j]==='wait'?'Pensando…':sts[j]==='off'?'Sin conexión':'Decide al avanzar'}</div>
+   ${net.detail?`<div class="muted" style="font-size:12px;line-height:1.5">Inv. ${num(S.inv)} · Pend. ${num(S.back)} · ${money(S.cost)}${typeof p==='number'?` · Pidió ${p}`:''}</div>`:''}
+   ${g.cfg.humans[j]&&p==null?`<button class="link-btn" data-act="bot" data-t="${t}" data-j="${j}">Que pida la computadora</button>`:''}</div>`}).join('')}`}).join('')}</div></div>
+  <div class="hostbar"><button class="primary" data-act="advance" ${ready?'':'disabled'}>${g0.week>=g0.cfg.weeks?'Ver resultados':`Avanzar a la semana ${g0.week+1}`} <span aria-hidden="true">→</span></button>
+  ${ready?'':'<button class="secondary" data-act="botall">La computadora pide por los que faltan</button>'}
+  <label><input type="checkbox" id="autoAdv" ${net.auto?'checked':''}> Avanzar en cuanto todos pidan</label>
+  <label><input type="checkbox" id="showNums" ${net.detail?'checked':''}> Mostrar números (no proyectar)</label>
+  <button class="secondary" data-act="end">Terminar ahora</button></div>
+  <details style="margin-top:22px"><summary style="cursor:pointer;font-weight:650;font-size:14px">Mostrar el código para alguien que llega tarde</summary><div style="margin-top:12px">${room}</div></details>`;
+ }
+ $('#hostBody').innerHTML=h;
+ const q=$('#qr');if(q&&window.QRCode){try{new QRCode(q,{text:url,width:150,height:150,correctLevel:QRCode.CorrectLevel.M})}catch(e){}}
+}
+
+/* --- Integrante --- */
+function playerStart(code,name){
+ code=String(code).toUpperCase().replace(/[^A-Z]/g,'').slice(0,4);
+ const sv=store.get(PLSAVE)||{};
+ pl={code,name:cleanName(name)||(sv.code===code?sv.name:'')||'',token:(sv.code===code&&sv.token)||newToken(),team:null,role:null,lobby:null,status:'Conectando…',msg:'',lastKey:''};
+ store.set(PLSAVE,{code,token:pl.token,name:pl.name});
+ show('s-join');renderJoin();
+ loadScript(PEER_JS).then(()=>{
+  if(!pl)return;const peer=new Peer();pl.peer=peer;
+  peer.on('open',plConnect);
+  peer.on('error',e=>{if(!pl||pl.peer!==peer)return;pl.status=e.type==='peer-unavailable'?`No encontramos la sala ${pl.code}. Revisa el código o espera a que el facilitador la abra. Reintentando…`:'Problema de conexión. Reintentando…';plStatus();plRetry()});
+  peer.on('disconnected',()=>{if(pl&&pl.peer===peer&&!peer.destroyed)setTimeout(()=>{try{if(!peer.destroyed)peer.reconnect()}catch(e){}},2000)});
+ }).catch(()=>{if(pl){pl.status='No se pudo cargar la conexión. Revisa el internet y recarga la página.';plStatus()}});
+}
+function plRetry(){clearTimeout(pl.timer);pl.timer=setTimeout(plConnect,4000)}
+function plConnect(){
+ if(!pl||!pl.peer||pl.peer.destroyed||!pl.peer.open)return;if(pl.conn&&pl.conn.open)return;
+ const c=pl.peer.connect(NET+pl.code,{reliable:true});pl.conn=c;
+ c.on('open',()=>{if(!pl||pl.conn!==c)return;pl.status='';plStatus();c.send({t:'hello',token:pl.token})});
+ c.on('data',plMsg);
+ c.on('close',()=>{if(pl&&pl.conn===c){pl.status='Se perdió la conexión con el facilitador. Reconectando…';plStatus();plRetry()}});
+}
+function plLeave(){if(!pl)return;clearTimeout(pl.timer);try{pl.peer&&pl.peer.destroy()}catch(e){}pl=null;$('#csvBtn').hidden=false;$('#againBtn').textContent='Jugar otra vez';$('#netBanner').hidden=true;try{history.replaceState(null,'',location.href.split(/[?#]/)[0])}catch(e){}}
+function plStatus(){if($('#s-join').classList.contains('active'))renderJoin();else{const b=$('#netBanner');b.hidden=!pl.status;b.textContent=pl.status}}
+const okIdx=(x,n)=>Number.isInteger(x)&&x>=0&&x<n;
+function plMsg(d){
+ if(!pl||!d||typeof d!=='object')return;
+ if(d.t==='lobby'&&Array.isArray(d.chain)&&d.chain.every(k=>ROLES[k])){
+  const T=Math.min(6,+d.teams||0),n=d.chain.length;
+  pl.lobby={chain:d.chain,T,taken:Array.from({length:T},(_,t)=>Array.from({length:n},(_,j)=>!!(d.taken?.[t]?.[j]))),names:Array.from({length:T},(_,t)=>Array.from({length:n},(_,j)=>cleanName(d.names?.[t]?.[j]))),started:!!d.started};
+  if($('#s-join').classList.contains('active'))renderJoin();
+ }
+ else if(d.t==='assigned'&&pl.lobby&&okIdx(d.team,pl.lobby.T)&&okIdx(d.role,pl.lobby.chain.length)){pl.team=d.team;pl.role=d.role;pl.name=cleanName(d.name);pl.msg='';store.set(PLSAVE,{code:pl.code,token:pl.token,name:pl.name});if(!d.started)renderJoin()}
+ else if(d.t==='taken'){pl.msg='Ese lugar ya lo tomó otra persona. Elige otro.';renderJoin()}
+ else if(d.t==='freed'){pl.team=pl.role=null;pl.lastKey='';pl.msg='El facilitador liberó tu lugar. Elige uno de nuevo.';show('s-join');renderJoin()}
+ else if(d.t==='view'&&d.v&&Array.isArray(d.v.chain)&&d.v.chain.every(k=>ROLES[k]))paintPlayer(d);
+ else if(d.t==='end'&&d.r&&Array.isArray(d.r.chain)&&d.r.chain.every(k=>ROLES[k]))playerResults(d.r);
+}
+function renderJoin(){
+ const el=$('#joinBody');
+ if(!pl){el.innerHTML=`<form class="card join" id="joinForm"><label>Código de la sala<input name="code" class="code-in" maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" required></label><label>Tu nombre<input name="name" maxlength="24" autocomplete="off" required></label><button class="primary" type="submit">Conectar <span aria-hidden="true">→</span></button></form>`;
+  $('#joinForm').onsubmit=e=>{e.preventDefault();const f=e.target;if(f.code.value.replace(/[^a-z]/gi,'').length!==4){f.code.focus();return}playerStart(f.code.value,f.name.value)};return}
+ const st=pl.status?`<p class="net-status">${esc(pl.status)}</p>`:'',msg=pl.msg?`<p class="err" style="font-size:14px">${esc(pl.msg)}</p>`:'';
+ let h=`<div class="card join"><div class="label">Sala ${esc(pl.code)}</div>`;
+ if(pl.role!=null&&pl.lobby){
+  const L=pl.lobby,R=rolesOf(L),mates=R.map((r,j)=>j===pl.role?'':(L.names[pl.team][j]||''));
+  h+=`<h3 style="font-size:24px;margin:0">${esc(TEAM_NAMES[pl.team])} · ${R[pl.role].n}</h3><p style="margin:0">${esc(pl.name)}. ${L.started?'Cargando la semana…':'Espera a que el facilitador empiece la partida.'}</p>
+  <p class="muted" style="font-size:14px;margin:0">Tu equipo: ${R.map((r,j)=>j===pl.role?`<b style="color:var(--ink)">tú (${r.n.toLowerCase()})</b>`:`${mates[j]?esc(mates[j]):'lugar libre'} (${r.n.toLowerCase()})`).join(' · ')}</p>${st}${msg}
+  ${guideCard(R,pl.role)}<button class="link-btn" type="button" id="chgRole" style="justify-self:start">Cambiar de lugar</button>`;
+ }
+ else if(!pl.lobby){h+=st||'<p>Conectando…</p>'}
+ else{const L=pl.lobby,R=rolesOf(L);
+  h+=`<label>Tu nombre<input id="plName" maxlength="24" autocomplete="off" value="${esc(pl.name)}"></label><p style="font-weight:700;margin:4px 0 0">Elige tu equipo y tu eslabón</p>${msg}${st}
+  ${Array.from({length:L.T},(_,t)=>`<div class="teampick"><h4>${TEAM_NAMES[t]}</h4><div class="opts" style="grid-template-columns:repeat(${R.length},minmax(0,1fr))">${R.map((r,j)=>`<button type="button" class="opt" data-claim="${t},${j}" ${L.taken[t][j]?'disabled':''}><strong><span class="dot" style="background:${r.hex}"></span>${r.n}</strong><small>${L.taken[t][j]?esc(L.names[t][j]):'Libre'}</small></button>`).join('')}</div></div>`).join('')}`}
+ el.innerHTML=h+`</div><button class="link-btn" type="button" id="plExit" style="margin-top:14px">Salir de la sala</button>`;
+ const c=$('#chgRole');if(c)c.onclick=()=>{pl.role=pl.team=null;pl.msg='';renderJoin()};
+ $('#plExit').onclick=()=>{plLeave();renderJoin()};
+}
+$('#joinBody').addEventListener('click',e=>{const b=e.target.closest('[data-claim]');if(!b||!pl)return;
+ const nm=$('#plName');pl.name=cleanName(nm?nm.value:pl.name);
+ if(!pl.name){pl.msg='Escribe tu nombre para que el facilitador sepa quién jugó cada eslabón.';renderJoin();$('#plName')?.focus();return}
+ if(!pl.conn||!pl.conn.open){pl.msg='Sin conexión con el facilitador todavía. Espera unos segundos.';renderJoin();return}
+ store.set(PLSAVE,{code:pl.code,token:pl.token,name:pl.name});
+ const [t,j]=b.dataset.claim.split(',').map(Number);pl.conn.send({t:'claim',team:t,role:j,name:pl.name,token:pl.token})});
+function paintPlayer(d){
+ const v=d.v,R=rolesOf(v);if(!okIdx(v.role,R.length))return;pl.role=v.role;if(Number.isInteger(d.team))pl.team=d.team;
+ const key=v.week+'|'+d.submitted,newWeek=!pl.lastKey.startsWith(v.week+'|');
+ if(!$('#s-game').classList.contains('active')){show('s-game');pl.lastKey=''}
+ $('#netBanner').hidden=!pl.status;$('#netBanner').textContent=pl.status;
+ if(key===pl.lastKey&&d.submitted==null)return; // no borrar lo que la persona está escribiendo
+ pl.lastKey=key;
+ paintRole(v,`${pl.name||'Tú'} · ${TEAM_NAMES[pl.team]||''} · ${R[v.role].n}`,{submitted:d.submitted,status:d.status});
+ if(newWeek)scrollTo({top:0});
+ const f=$('#orderForm');if(f)f.addEventListener('submit',e=>{e.preventDefault();const inp=$('#ord-'+v.role),raw=inp.value.trim(),q=raw===''?NaN:Number(raw);
+  if(!Number.isInteger(q)||q<0||q>999){$('#err').textContent='Escribe un pedido entero entre 0 y 999.';inp.focus();return}
+  if(!pl.conn||!pl.conn.open){$('#err').textContent='Sin conexión con el facilitador. Espera unos segundos e intenta de nuevo.';return}
+  pl.conn.send({t:'order',week:v.week,q});f.querySelector('button[type=submit]').disabled=true;$('#err').textContent='Enviando…'});
+}
+function playerResults(r){
+ const R=rolesOf(r),me=r.role,T=r.teams.length,mine=r.teams[r.team];if(!mine||!okIdx(me,R.length))return;
+ const order=r.teams.map((_,t)=>t).sort((a,b)=>r.teams[a].cost-r.teams[b].cost),place=order.indexOf(r.team)+1;
+ show('s-results');$('#csvBtn').hidden=true;$('#againBtn').textContent='Salir';$('#netBanner').hidden=true;
+ $('#t-res').textContent=T>1?(place===1?`¡${mine.name} ganó!`:`${mine.name}: ${place}.º lugar de ${T}`):'Así se movió la cadena';
+ const a=r.an||[],mem=r.members||[];
+ $('#resBody').innerHTML=`${T>1?`<div class="label">Clasificación · ${r.W} semanas · misma demanda para todos</div><div class="podium" style="grid-template-columns:repeat(${Math.min(T,3)},minmax(0,1fr))">${order.map((t,k)=>`<div class="card${k===0?' win':''}${t===r.team?' mine':''}"><div class="place">${k+1}.º LUGAR</div><h3 style="margin:4px 0 0">${esc(r.teams[t].name)}${t===r.team?' · tu equipo':''}</h3><b>${money(r.teams[t].cost)}</b></div>`).join('')}</div>`
+  :`<div class="label">Costo total de la cadena · ${r.W} semanas</div><div class="big">${money(mine.cost)}</div>`}
+ <p class="muted">Demanda del cliente: <b style="color:var(--ink)">${esc(String(r.pattern).toLowerCase())}</b>. Ahora sí pueden ver toda la cadena: busquen en qué semana empezó cada eslabón a pedir de más.</p>
+ <h3 class="section-title">Cómo operaste</h3><div class="members" style="grid-template-columns:minmax(0,1fr)">${a[me]?memberCard(a[me],R,pl?.name||'Tú',{me:true,rank:a[me].rank,of:a[me].of}):''}</div>
+ <h3 class="section-title">Tu equipo</h3>${teamCharts(R,r.demand,mine.orders,mine.nets,mine.name)}
+ <div class="members" style="grid-template-columns:repeat(${Math.max(1,R.length-1)},minmax(0,1fr))">${R.map((_,j)=>j!==me&&mem[j]&&a[j]?memberCard(a[j],R,mem[j],{rank:a[j].rank,of:a[j].of}):'').join('')}</div>
+ <h3 class="section-title">Cómo opera tu eslabón</h3>${guideCard(R,me)}${lessonsHTML()}`;
+}
+
+/* --- Arranque: enlace con ?sala=CODIGO o sala guardada --- */
+$('#joinBtn').onclick=()=>{show('s-join');renderJoin()};
+{const hs=store.get(HOSTSAVE);if(hs&&hs.code&&hs.cfg){const b=$('#reopenBtn');b.hidden=false;b.textContent=`Reabrir sala ${hs.code}${hs.started?` (semana ${(hs.orders[0]||[]).length+1})`:''}`;b.onclick=()=>{try{hostCreate(hs.cfg,hs)}catch(e){store.del(HOSTSAVE);b.hidden=true;alert('No se pudo recuperar la sala.')}}}}
+{const sala=new URLSearchParams(location.search).get('sala');if(sala&&/^[a-z]{4}$/i.test(sala))playerStart(sala,'')}
+</script>
+</body>
+</html>
