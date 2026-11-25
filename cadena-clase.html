@@ -39,6 +39,7 @@ a.primary,a.secondary{text-decoration:none}
 .calc-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}.calc-form label{display:grid;gap:6px;font-size:13px;font-weight:650}.calc-form input[type=number]{padding:10px 12px;border:1px solid #aebcd0;border-radius:8px;font:inherit;color:var(--ink)}
 .calc-form .chkline{grid-column:1/-1;display:flex;gap:10px;align-items:center;font-size:14px}.calc-form .chkline input{width:18px;height:18px;accent-color:var(--blue)}
 #ex1 th,#ex2 th,#ex3 th,#ex4 th,#sheet th{text-transform:none;letter-spacing:.2px;font-size:13px}
+.calc-sub{grid-column:1/-1;font-weight:700;font-size:14px;color:var(--blue);margin:10px 0 0}.calc-wide{grid-column:1/-1}
 .qblock+.qblock{border-top:1px solid var(--line);margin-top:18px}
 .quiz-option.correct,.quiz-option.incorrect{opacity:1}
 @media(max-width:750px){.calc-form{grid-template-columns:1fr}}
@@ -54,7 +55,7 @@ a.primary,a.secondary{text-decoration:none}
 <section class="slide" data-screen="2" aria-labelledby="title2"><p class="eyebrow">Ruta del curso</p><h2 id="title2" tabindex="-1">Tres sesiones, un objetivo: operar una cadena sin provocar el látigo</h2>
 <div class="grid3"><div class="box"><span class="tag">Sesión 1 · 100 min</span><h3>Teoría</h3><p>Qué es una cadena de suministro, sus flujos, sus eslabones y por qué aparece el efecto látigo.</p></div>
 <div class="box"><span class="tag">Sesión 2 · 100 min</span><h3>Técnica</h3><p>Las ecuaciones de cada semana, la línea de suministro, cómo calcular un pedido y cómo medir la amplificación.</p></div>
-<div class="box"><span class="tag">Sesión 3 · 90 min</span><h3>Examen: el juego</h3><p>Equipos de 3 compiten; cada integrante opera un eslabón. Se califica el desempeño y una reflexión escrita.</p></div></div>
+<div class="box"><span class="tag">Sesión 3 · 90 min</span><h3>Examen: el juego</h3><p>Equipos de 3 compiten en dos rondas; cada integrante opera un eslabón y guarda su evidencia.</p></div></div>
 <p class="golden">Al terminar podrán: (1) explicar los flujos y eslabones de una cadena, (2) identificar las causas del efecto látigo, (3) calcular un pedido con una política de inventario y (4) medir y justificar su desempeño con datos.</p>
 <div class="actions"><button class="primary" data-go="3">Continuar <span aria-hidden="true">→</span></button></div></section>
 
@@ -241,47 +242,27 @@ a.primary,a.secondary{text-decoration:none}
 <div class="actions"><a class="primary" href="cadena.html" target="_blank" rel="noopener">Abrir el juego ↗</a><button class="secondary" data-go="25">Ir al examen <span aria-hidden="true">→</span></button></div></section>
 
 <!-- ================= SESIÓN 3 · EXAMEN ================= -->
-<section class="slide" data-screen="25" aria-labelledby="title25"><p class="eyebrow">Sesión 3 · Examen · 90 minutos</p><h2 id="title25" tabindex="-1">Instrucciones del examen</h2>
+<section class="slide" data-screen="25" aria-labelledby="title25"><p class="eyebrow">Sesión 3 · Examen · 2 rondas</p><h2 id="title25" tabindex="-1">Instrucciones del examen</h2>
 <div class="grid2"><div class="intro-list" style="margin-top:0">
-<div class="intro-item"><span class="step-no">01</span><p style="font-size:18px">Equipos de 3. Cada equipo es una cadena; cada integrante opera un eslabón con su celular y su <b>nombre real</b>.</p></div>
-<div class="intro-item"><span class="step-no">02</span><p style="font-size:18px">Siéntense lejos de su propio equipo. <b>No se vale hablar</b> con los otros eslabones de su cadena.</p></div>
-<div class="intro-item"><span class="step-no">03</span><p style="font-size:18px">Todos los equipos enfrentan la <b>misma demanda</b>. Nadie sabe cuántas semanas dura.</p></div>
-<div class="intro-item"><span class="step-no">04</span><p style="font-size:18px">Pueden usar su hoja de control y calculadora. Al terminar, contestan la reflexión escrita (20 min).</p></div></div>
-<div class="box"><span class="tag">Configuración para el facilitador</span><p>Modo: <b>Competencia por equipos</b><br>Eslabones: <b>3</b><br>Equipos: según el grupo<br>Demanda: <b>Sorpréndeme</b><br>Duración: <b>36 semanas</b> (≈ 40 min)<br>Computadora: persona típica<br>Compartir demanda: <b>no</b></p></div></div>
-<div class="actions"><a class="primary" href="cadena.html" target="_blank" rel="noopener">Abrir la sala ↗</a><button class="secondary" data-go="26">Ver la rúbrica <span aria-hidden="true">→</span></button></div></section>
+<div class="intro-item"><span class="step-no">01</span><p style="font-size:18px">Equipos de 3. Cada equipo es una cadena y cada integrante opera un eslabón con su celular y su <b>nombre real</b>.</p></div>
+<div class="intro-item"><span class="step-no">02</span><p style="font-size:18px"><b>Ronda 1:</b> cada quien decide solo. <b>No se habla</b> con nadie de su cadena.</p></div>
+<div class="intro-item"><span class="step-no">03</span><p style="font-size:18px"><b>Ronda 2:</b> un caso nuevo. En las <b>semanas de junta</b> pueden hablar con su equipo y ven la información de toda su cadena.</p></div>
+<div class="intro-item"><span class="step-no">04</span><p style="font-size:18px">Al terminar cada ronda, <b>guarden su evidencia</b>: el PDF de su pantalla de resultados.</p></div></div>
+<div class="box"><span class="tag">Para el facilitador</span><p>En “Preparar partida”, escribe tu código en <b>Modo examen</b> y elige el caso de cada ronda: primero el que no tiene juntas. Cada ronda dura 24 semanas (≈ 25 min).</p>
+<table class="tbl" style="margin-top:14px;font-size:14px"><tbody><tr><td>Lectura del caso y reglas</td><td class="n">5 min</td></tr><tr><td>Ronda 1</td><td class="n">25 min</td></tr><tr><td>Pausa: revisar resultados</td><td class="n">10 min</td></tr><tr><td>Ronda 2</td><td class="n">25 min</td></tr><tr><td>Guardar evidencia</td><td class="n">5 min</td></tr></tbody></table></div></div>
+<div class="actions"><a class="primary" href="cadena.html" target="_blank" rel="noopener">Abrir la sala ↗</a><button class="secondary" data-go="26">Su evidencia <span aria-hidden="true">→</span></button></div></section>
 
-<section class="slide" data-screen="26" aria-labelledby="title26"><p class="eyebrow">Sesión 3 · Evaluación mixta · 100 puntos</p><h2 id="title26" tabindex="-1">Rúbrica del examen</h2>
-<div class="grid3">
-<div class="box"><span class="tag">Individual · 40 pts</span><h3>Cómo operó su eslabón</h3><p><b>Costo (15):</b> lugar frente al mismo eslabón de los otros equipos. Con 3 equipos: 15 / 12 / 9.<br><b>Amplificación (15):</b> ≤ 1.2 → 15 · ≤ 1.5 → 12 · ≤ 2.0 → 9 · ≤ 3.0 → 6 · más → 3.<br><b>Servicio (10):</b> semanas con faltantes ≤ 10 % → 10 · ≤ 25 % → 7 · ≤ 40 % → 4 · más → 2.</p></div>
-<div class="box"><span class="tag">Equipo · 30 pts</span><h3>Resultado de la cadena</h3><p><b>Lugar (20):</b> con 3 equipos: 20 / 16 / 12.<br><b>Vencer a la computadora (10):</b> 10 si el costo de su cadena es menor que el de la computadora “persona típica” con la misma demanda; 5 si no.</p></div>
-<div class="box"><span class="tag">Reflexión · 30 pts</span><h3>Explicar con teoría</h3><p>Tres preguntas de 10 puntos.<br><b>10:</b> correcta, con datos de su partida y conceptos del curso.<br><b>7:</b> correcta pero sin datos, o con un error menor.<br><b>4:</b> solo describe lo que pasó, sin teoría.<br><b>0:</b> no contesta.</p></div></div>
-<p class="hint">Todos los datos individuales y de equipo aparecen en la pantalla de resultados del juego: “Cómo operó cada integrante” y la clasificación.</p>
-<div class="actions"><button class="primary" data-go="27">Continuar <span aria-hidden="true">→</span></button></div></section>
+<section class="slide" data-screen="26" aria-labelledby="title26"><p class="eyebrow">Sesión 3 · Al terminar cada ronda</p><h2 id="title26" tabindex="-1">Su evidencia</h2>
+<div class="grid2"><div class="intro-list" style="margin-top:0">
+<div class="intro-item"><span class="step-no">01</span><p style="font-size:18px">Al terminar la ronda, su celular muestra los resultados: lugar, costo, índice contra la computadora y el análisis de cada integrante.</p></div>
+<div class="intro-item"><span class="step-no">02</span><p style="font-size:18px">Toquen <b>Imprimir</b> y elijan <b>Guardar como PDF</b>. Pónganle de nombre: <i>equipo-ronda-nombre</i>.</p></div>
+<div class="intro-item"><span class="step-no">03</span><p style="font-size:18px">Si se les pasa, no pasa nada: el juego también lo guardó en <b>Mis resultados</b>, en la portada.</p></div>
+<div class="intro-item"><span class="step-no">04</span><p style="font-size:18px">Entreguen el PDF de <b>cada ronda</b> por el medio que indique el profesor.</p></div></div>
+<div class="box"><span class="tag">Qué entrega cada alumno</span><p>· PDF de resultados de la ronda 1<br>· PDF de resultados de la ronda 2<br>· Opcional: los datos en CSV (<b>Descargar datos</b>)</p>
+<p class="hint" style="margin-top:12px">Consejo: guarden la evidencia antes de cerrar la página o entrar a la siguiente sala.</p></div></div>
+<div class="actions"><button class="primary" data-go="27">Cierre <span aria-hidden="true">→</span></button></div></section>
 
-<section class="slide" data-screen="27" aria-labelledby="title27"><p class="eyebrow">Sesión 3 · Reflexión escrita · 20 minutos</p><h2 id="title27" tabindex="-1">Contesten de forma individual</h2>
-<div class="intro-list" style="margin-top:10px">
-<div class="intro-item"><span class="step-no">01</span><p style="font-size:20px">Ubiquen la semana de su pedido más alto. ¿Por qué pidieron esa cantidad? Explíquenlo con los conceptos de <b>tiempo de entrega</b> y <b>línea de suministro</b>. <span class="muted">(10 pts)</span></p></div>
-<div class="intro-item"><span class="step-no">02</span><p style="font-size:20px">Escriban su amplificación y la de los otros eslabones de su cadena. ¿Quién amplificó más y cuál de las causas vistas en clase lo explica? <span class="muted">(10 pts)</span></p></div>
-<div class="intro-item"><span class="step-no">03</span><p style="font-size:20px">Propongan dos mecanismos para reducir el efecto látigo en su cadena y digan qué causa ataca cada uno. <span class="muted">(10 pts)</span></p></div></div>
-<div class="actions"><button class="primary" data-go="28">Calculadora de calificación <span aria-hidden="true">→</span></button></div></section>
-
-<section class="slide" data-screen="28" aria-labelledby="title28"><p class="eyebrow">Sesión 3 · Para el docente</p><h2 id="title28" tabindex="-1">Calculadora de calificación</h2><p class="muted">Copien los datos de la pantalla de resultados del juego. La calificación se actualiza sola.</p>
-<div class="grid2"><form class="calc-form" id="grade" onsubmit="return false">
-<label>Número de equipos<input type="number" name="teams" min="2" max="6" value="3"></label>
-<label>Lugar del integrante en su eslabón<input type="number" name="rank" min="1" max="6" value="1"></label>
-<label>Amplificación del integrante (×)<input type="number" name="amp" min="0" step="0.1" value="1.4"></label>
-<label>Semanas con faltantes<input type="number" name="stock" min="0" value="6"></label>
-<label>Semanas jugadas<input type="number" name="weeks" min="1" value="36"></label>
-<label>Lugar del equipo<input type="number" name="place" min="1" max="6" value="2"></label>
-<label class="chkline"><input type="checkbox" name="beat" checked> La cadena le ganó a la computadora “persona típica”</label>
-<label>Reflexión 1 (0, 4, 7 o 10)<input type="number" name="r1" min="0" max="10" value="7"></label>
-<label>Reflexión 2 (0, 4, 7 o 10)<input type="number" name="r2" min="0" max="10" value="10"></label>
-<label>Reflexión 3 (0, 4, 7 o 10)<input type="number" name="r3" min="0" max="10" value="7"></label>
-</form>
-<div><div class="tscroll"><table class="tbl" id="gradeOut"></table></div><p class="big" id="gradeTotal" style="margin-top:16px">—</p></div></div>
-<div class="actions"><button class="primary" data-go="29">Cierre <span aria-hidden="true">→</span></button></div></section>
-
-<section class="slide" data-screen="29" aria-labelledby="title29"><p class="eyebrow">Cierre del curso</p><h2 id="title29" tabindex="-1">Lo que el juego enseña</h2>
+<section class="slide" data-screen="27" aria-labelledby="title27"><p class="eyebrow">Cierre del curso</p><h2 id="title27" tabindex="-1">Lo que el juego enseña</h2>
 <p class="close-quote">El látigo no lo causa una mala persona: lo causan <strong>los retrasos, la información local y olvidar lo que viene en camino</strong>. Por eso se resuelve con mejores reglas y más información compartida.</p>
 <div class="actions"><a class="primary" href="cadena.html" target="_blank" rel="noopener">Abrir el juego ↗</a><button class="secondary" data-go="1">Volver al inicio</button></div>
 <p class="license"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" target="_blank" rel="noopener">Licencia CC BY-NC-SA 4.0</a> · Mtro. Juan Manuel Valdivia Mendoza</p>
@@ -291,7 +272,7 @@ a.primary,a.secondary{text-decoration:none}
 <dialog id="indexDialog"><div class="dialog-top"><h3>Explora el curso</h3><button class="quiet" data-close="indexDialog" aria-label="Cerrar índice">✕</button></div><div class="index-grid" id="indexGrid"></div></dialog>
 <script>
 'use strict';
-const TITLES=['Portada','Ruta del curso','Discusión: papel de baño','Tres flujos','Los eslabones','Vocabulario','Costos','El efecto látigo','Cuatro causas','Causa conductual','Soluciones','Repaso sesión 1','Cierre y tarea','Sesión 2: portada','Balance semanal','Ejercicio 1','Tiempo de entrega','Pronóstico · Ejercicio 2','Política de pedido','Ejercicio 3','Medir · Ejercicio 4','Ficha técnica','Hoja de control','Repaso y práctica','Examen: instrucciones','Rúbrica','Reflexión escrita','Calculadora de calificación','Cierre'];
+const TITLES=['Portada','Ruta del curso','Discusión: papel de baño','Tres flujos','Los eslabones','Vocabulario','Costos','El efecto látigo','Cuatro causas','Causa conductual','Soluciones','Repaso sesión 1','Cierre y tarea','Sesión 2: portada','Balance semanal','Ejercicio 1','Tiempo de entrega','Pronóstico · Ejercicio 2','Política de pedido','Ejercicio 3','Medir · Ejercicio 4','Ficha técnica','Hoja de control','Repaso y práctica','Examen: instrucciones','Su evidencia','Cierre'];
 const slides=[...document.querySelectorAll('.slide')],N=slides.length;
 const fmt=(v,d=0)=>Number(v).toLocaleString('es-MX',{minimumFractionDigits:d,maximumFractionDigits:d});
 const sdv=a=>{const m=a.reduce((x,y)=>x+y,0)/a.length;return Math.sqrt(a.reduce((s,x)=>s+(x-m)**2,0)/Math.max(1,a.length-1))};
@@ -388,20 +369,6 @@ document.addEventListener('click',e=>{
  box.dataset.done=1;box.querySelectorAll('[data-opt]').forEach(b=>{b.disabled=true;if(+b.dataset.opt===a)b.classList.add('correct');else if(b===op)b.classList.add('incorrect')});
  const fb=document.getElementById('fb-'+key);fb.hidden=false;fb.textContent=msg;
 });
-
-/* Calculadora de calificación */
-function grade(){
- const f=document.getElementById('grade'),v=n=>Number(f[n].value)||0;
- const T=Math.max(2,Math.min(6,v('teams'))),rank=Math.max(1,Math.min(T,v('rank'))),place=Math.max(1,Math.min(T,v('place')));
- const cost=15-(rank-1)*6/(T-1),amp=v('amp'),ampP=amp<=1.2?15:amp<=1.5?12:amp<=2?9:amp<=3?6:3;
- const pct=v('weeks')>0?v('stock')/v('weeks'):1,serv=pct<=.1?10:pct<=.25?7:pct<=.4?4:2;
- const plc=20-(place-1)*8/(T-1),beat=f.beat.checked?10:5,refl=['r1','r2','r3'].reduce((s,k)=>s+Math.max(0,Math.min(10,v(k))),0);
- const rows=[['Costo frente a su eslabón',cost,15],['Amplificación',ampP,15],['Servicio (faltantes '+fmt(pct*100)+' %)',serv,10],['Lugar del equipo',plc,20],['Vencer a la computadora',beat,10],['Reflexión escrita',refl,30]];
- const tot=rows.reduce((s,r)=>s+r[1],0);
- document.getElementById('gradeOut').innerHTML=`<thead><tr><th>Criterio</th><th class="n">Puntos</th><th class="n">Máximo</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${r[0]}</td><td class="n">${fmt(r[1],r[1]%1?1:0)}</td><td class="n">${r[2]}</td></tr>`).join('')}<tr class="total"><td>Total</td><td class="n">${fmt(tot,tot%1?1:0)}</td><td class="n">100</td></tr></tbody>`;
- document.getElementById('gradeTotal').textContent=`Calificación: ${fmt(tot/10,1)} / 10`;
-}
-document.getElementById('grade').addEventListener('input',grade);grade();
 
 /* Navegación (igual que las otras presentaciones del Toolkit) */
 const votes=[0,0,0];let current=1;const trail=[];

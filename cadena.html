@@ -106,6 +106,15 @@ dialog{border:1px solid var(--line);border-radius:15px;padding:28px;max-width:68
 dialog ol{padding-left:20px;margin:0 0 14px}dialog li{margin-bottom:8px;line-height:1.55;font-size:15px}
 .license{font-size:12px;color:var(--muted);margin-top:40px}
 .play>*,.fac>*,.grid2>*,.members>*,.guides>*,.podium>*{min-width:0}
+.case-card{border-color:#b9cdf3;background:linear-gradient(180deg,#f4f8ff,#fff 60%)}.case-card summary{cursor:pointer;display:grid;gap:2px;list-style:none}.case-card summary::-webkit-details-marker{display:none}.case-card summary b{font-size:19px;letter-spacing:-.3px}.case-card summary:after{content:"Ver historia ▾";font-size:12px;color:var(--blue);font-weight:650}.case-card[open] summary:after{content:"Ocultar ▴"}
+.hitos{margin:0;padding-left:18px;font-size:14px;line-height:1.7}.case-card .tip{background:var(--light);border-radius:9px;padding:10px 12px;font-size:14px}
+.news{background:#fff8e6;border:1px solid #f1d79a;border-left:4px solid #e0a21e;border-radius:0 10px 10px 0;padding:10px 14px;margin:0 0 16px}.news p{margin:2px 0 0;font-size:15px;color:#5f4207}.news .label{color:#8a5410;margin:0}
+.idx{display:block;font-size:13px;color:var(--ink);margin:2px 0 4px}.saved-note{background:var(--light);border-radius:10px;padding:12px 14px;font-size:14px;line-height:1.55}
+.mine-card{display:grid;gap:4px;text-align:left;color:var(--ink);font:inherit;cursor:pointer}.mine-card:hover{border-color:var(--blue)}.mine-card b{font-size:17px}
+.junta{background:#eaf6ef;border:1px solid #b9dcc6;border-left:4px solid #338257;border-radius:0 10px 10px 0;padding:10px 14px;margin:0 0 16px}.junta p{margin:2px 0 0;font-size:15px;color:#1d5a37}.junta .label{color:#236d43;margin:0}
+.rule{font-size:13px;color:var(--muted);margin:-6px 0 14px}
+.exam-box input{padding:10px 12px;border:1px solid #aebcd0;border-radius:9px;font:inherit;min-width:200px}
+.exam-box{background:#fff;border:1px dashed var(--blue);border-radius:12px;padding:16px 18px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}.exam-box b{margin-right:auto}
 [hidden]{display:none!important}
 @media(max-width:1000px){.play{grid-template-columns:minmax(0,1fr)}.opts{grid-template-columns:repeat(2,1fr)}.fac{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 @media(max-width:750px){header{height:66px;padding:0 16px}.brand small{display:none}.tools button{padding:8px 10px;font-size:12px}.tools .fs-txt{display:none}main{padding:24px 16px 32px}.hero{grid-template-columns:1fr;gap:28px;min-height:0}.opts,.opts.two,.opts.three,.compare,.grid2,.lessons{grid-template-columns:1fr}.fac,.members,.guides,.podium{grid-template-columns:minmax(0,1fr)!important}.order-box .primary{margin-left:0;width:100%}.stepper{flex-wrap:wrap}.kpi{min-width:0;flex:1}}
@@ -122,7 +131,7 @@ dialog ol{padding-left:20px;margin:0 0 14px}dialog li{margin-bottom:8px;line-hei
 <h1 id="t-home">Juego de la<br><span>cadena de suministro</span></h1>
 <p class="subtitle">Una cadena, varias empresas. Cada semana decides cuánto pedir sin ver qué pasa en el resto. ¿Podrás evitar el efecto látigo?</p>
 <p class="muted" style="font-size:14px;max-width:480px">Juega solo contra la computadora, o pon a competir a varios equipos: cada equipo es una cadena y cada integrante juega un eslabón desde su celular.</p>
-<div class="actions"><button class="primary" id="goCfg">Preparar partida <span aria-hidden="true">→</span></button><button class="secondary" id="joinBtn">Entrar a una sala</button><button class="secondary" id="resumeBtn" hidden>Continuar partida</button><button class="secondary" id="reopenBtn" hidden>Reabrir sala</button></div>
+<div class="actions"><button class="primary" id="goCfg">Preparar partida <span aria-hidden="true">→</span></button><button class="secondary" id="joinBtn">Entrar a una sala</button><button class="secondary" id="mineBtn" hidden>Mis resultados</button><button class="secondary" id="resumeBtn" hidden>Continuar partida</button><button class="secondary" id="reopenBtn" hidden>Reabrir sala</button></div>
 </div>
 <div><div class="technical"><div class="chart-label"><span>PEDIDOS POR ESLABÓN</span><span>EL EFECTO LÁTIGO</span></div>
 <div id="heroChart" style="margin-top:18px"></div>
@@ -133,6 +142,7 @@ dialog ol{padding-left:20px;margin:0 0 14px}dialog li{margin-bottom:8px;line-hei
 <section class="screen" id="s-cfg" aria-labelledby="t-cfg">
 <p class="eyebrow">Preparar partida</p><h2 id="t-cfg" tabindex="-1">¿Cómo quieren jugar?</h2>
 <form class="cfg" id="cfgForm">
+<div class="exam-box"><b>Modo examen</b><input type="password" id="examCode" placeholder="Código del docente" autocomplete="off" aria-label="Código del docente"><button type="button" class="secondary" id="examUnlock">Desbloquear</button><div id="examCases" style="flex-basis:100%;display:flex;gap:10px;flex-wrap:wrap" hidden></div><p class="muted" id="examNote" style="flex-basis:100%;font-size:13px;margin:0">Los casos de examen están cifrados: solo aparecen con el código del docente.</p></div>
 <fieldset><legend>Modo</legend><div class="opts three">
 <label class="opt"><input type="radio" name="mode" value="red" checked><strong>Competencia por equipos</strong><small>Cada equipo es una cadena y cada integrante juega un eslabón desde su celular. Todos enfrentan la misma demanda; gana la cadena con menor costo.</small></label>
 <label class="opt"><input type="radio" name="mode" value="solo"><strong>Individual</strong><small>Tomas un eslabón; la computadora juega los demás. Solo ves la información de tu empresa.</small></label>
@@ -166,6 +176,7 @@ dialog ol{padding-left:20px;margin:0 0 14px}dialog li{margin-bottom:8px;line-hei
 <section class="screen" id="s-game" aria-labelledby="t-week">
 <p class="net-status" id="netBanner" role="status" hidden></p>
 <div class="topbar"><div class="week" id="t-week" tabindex="-1"><small id="weekRole">Minorista</small><span id="weekNum">Semana 1</span></div><div class="kpis" id="kpis"></div></div>
+<div id="newsBar"></div>
 <div class="chain-wrap"><div class="chain" id="chain"></div></div>
 <div id="playArea"></div>
 </section>
@@ -175,6 +186,9 @@ dialog ol{padding-left:20px;margin:0 0 14px}dialog li{margin-bottom:8px;line-hei
 
 <!-- Entrada de un integrante -->
 <section class="screen" id="s-join" aria-labelledby="t-join"><p class="eyebrow">Competencia por equipos</p><h2 id="t-join" tabindex="-1">Entrar a la sala</h2><div id="joinBody"></div></section>
+
+<!-- Mis resultados (guardados en este dispositivo) -->
+<section class="screen" id="s-mine" aria-labelledby="t-mine"><p class="eyebrow">Su evidencia</p><h2 id="t-mine" tabindex="-1">Mis resultados</h2><p class="muted">Las partidas que jugaste en este dispositivo. Abre una para ver gráficas, tu análisis y descargar los datos.</p><div id="mineBody"></div><div class="actions"><button class="secondary" data-go="s-home">← Volver</button></div></section>
 
 <!-- Resultados -->
 <section class="screen" id="s-results" aria-labelledby="t-res">
@@ -226,6 +240,38 @@ const PATTERNS={
  estacional:{n:'Estacional',d:'Sube y baja en ciclos de 12 semanas, entre 4 y 12 cajas.',base:8,gen:(t)=>Math.round(8+4*Math.sin(2*Math.PI*(t-1)/12))},
  promocion:{n:'Promoción',d:'6 cajas estables con una promoción de 3 semanas (semanas 8 a 10) que dispara las ventas.',base:6,gen:(t)=>t>=8&&t<=10?14:6},
  sorpresa:{n:'Sorpréndeme',d:'Se elige uno al azar y se revela al final.',base:0}};
+/* Casos de examen: van cifrados (AES-GCM). Solo se leen con el código del docente; sin él, ni el código fuente revela la historia ni la demanda. */
+const EXAM={salt:'Nxu6kNWmKMBZrDgD07GFuw==',iv:'TqWAVDng3hBOBYJY',data:'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'};
+async function unlockExam(code){
+ const b=x=>Uint8Array.from(atob(x),c=>c.charCodeAt(0)),enc=new TextEncoder();
+ const k0=await crypto.subtle.importKey('raw',enc.encode(String(code).trim().toUpperCase()),'PBKDF2',false,['deriveKey']);
+ const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b(EXAM.salt),iterations:200000,hash:'SHA-256'},k0,{name:'AES-GCM',length:256},false,['decrypt']);
+ return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:b(EXAM.iv)},key,b(EXAM.data))));
+}
+/* El caso viaja dentro de la configuración de la partida (sin la demanda futura) y se manda a cada eslabón */
+let UNIT='cajas',CUR_T=null;
+const okT=T=>T&&typeof T==='object'&&typeof T.title==='string'?T:null;
+function setTheme(T){CUR_T=okT(T);UNIT=esc(CUR_T&&cleanName(CUR_T.unit)||'cajas')}
+const themeOf=cfg=>cfg&&okT(cfg.caseData)||null;
+const patOf=cfg=>cfg&&cfg.caseData?{n:cfg.caseData.title,d:cfg.caseData.short||''}:(PATTERNS[cfg.pattern]||{n:'',d:''});
+const listOf=x=>Array.isArray(x)?x:(x&&typeof x==='object'?Object.values(x):[]);
+function weekDates(T,w){T=okT(T);if(!T||typeof T.start!=='string')return '';const d=new Date(T.start+'T12:00:00');if(isNaN(d))return '';d.setDate(d.getDate()+7*(w-1));const e=new Date(d);e.setDate(e.getDate()+6);const f=x=>x.toLocaleDateString('es-MX',{day:'numeric',month:'short'}).replace('.','');return `${f(d)} – ${f(e)}`}
+function weekLabel(T,w,total){T=okT(T);let s=`Semana ${w}${total?' de '+total:''}`;if(!T)return s;const h=listOf(T.hitos).find(x=>x&&+x[0]===w);return `${s} · ${weekDates(T,w)}${h?' · '+String(h[1]).split(' (')[0]:''}${isJunta(T,w)?' · Junta':''}`}
+const isJunta=(T,w)=>!!(okT(T)&&T.comms==='juntas'&&listOf(T.juntas).map(Number).includes(w));
+const juntasTxt=T=>listOf(T&&T.juntas).map(Number).filter(Number.isFinite).join(', ');
+function commsHTML(T,w){T=okT(T);if(!T)return '';
+ if(isJunta(T,w))return `<div class="junta" role="status"><span class="label">Semana de junta · planeación colaborativa</span><p>Pueden hablar con su equipo. Esta semana ven la información de toda su cadena: inventarios, pendientes y lo que viene en camino.</p></div>`;
+ if(T.comms==='none')return `<p class="rule"><b>Regla:</b> no se habla con nadie de su cadena durante toda la operación.</p>`;
+ if(T.comms==='juntas')return `<p class="rule"><b>Regla:</b> solo se habla con su equipo en las semanas de junta (${juntasTxt(T)}).</p>`;return ''}
+function newsFor(T,w){T=okT(T);const n=T&&T.news&&T.news[w];return typeof n==='string'?n:''}
+function newsHTML(T,w){const n=newsFor(T,w);return n?`<div class="news" role="status"><span class="label">Noticias de la semana ${w}</span><p>${esc(n)}</p></div>`:''}
+function caseCard(T,open,chain){T=okT(T);if(!T)return '';const R=rolesOf({chain:Array.isArray(chain)&&chain.every(k=>ROLES[k])?chain:CHAINS[3]});
+ return `<details class="card case-card"${open?' open':''}><summary><span class="label" style="color:var(--blue)">Caso de examen · ${esc(T.company||'')}</span><b>${esc(T.title)}</b></summary>
+ <p style="margin:12px 0 10px">${esc(T.story||'')}</p>
+ ${T.roles?`<div class="label">Quién es quién en la cadena</div><ul class="hitos">${R.slice().reverse().map(r=>T.roles[r.k]?`<li><b>${r.n}:</b> ${esc(T.roles[r.k])}</li>`:'').join('')}<li><b>Producto:</b> ${esc(T.product||'')}</li></ul>`:''}
+ <div class="label" style="margin-top:10px">Fechas clave</div><ul class="hitos">${listOf(T.hitos).map(h=>`<li><b>Semana ${+h[0]}</b> · ${weekDates(T,+h[0])}: ${esc(h[1])}</li>`).join('')}</ul>
+ ${T.comms==='none'?'<p style="margin:10px 0 0"><b>Comunicación:</b> prohibida entre eslabones durante toda la operación.</p>':T.comms==='juntas'?`<p style="margin:10px 0 0"><b>Comunicación:</b> solo en las juntas de las semanas ${juntasTxt(T)}.</p>`:''}
+ <p class="tip" style="margin:12px 0 0"><b>Reto:</b> ${esc(T.reto||'')}</p></details>`}
 function rng(seed){let a=seed>>>0;return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 function gauss(r){let u=0,v=0;while(!u)u=r();while(!v)v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}
 function makeDemand(pat,weeks,seed){const r=rng(seed);const p=PATTERNS[pat];return Array.from({length:weeks},(_,i)=>p.gen(i+1,r))}
@@ -275,6 +321,7 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
 const SAVE='itk-cadena-partida';
 const TEAM_NAMES=['Equipo A','Equipo B','Equipo C','Equipo D','Equipo E','Equipo F'];
+const fmtIdx=v=>v==null||!Number.isFinite(v)?'—':v.toFixed(2);
 const fmtAmp=a=>a==null?'—':`<span class="amp ${a>1.5?'hi':'lo'}">×${a.toFixed(1)}</span>`;
 
 function niceStep(r){const p=10**Math.floor(Math.log10(r||1)),f=r/p;return(f<=1?1:f<=2?2:f<=5?5:10)*p}
@@ -317,12 +364,12 @@ function analyze(sim,j){
  const notes=[];
  if(amp!=null&&amp>1.5)notes.push({t:'bad',m:`Tus pedidos variaron ${amp.toFixed(1)} veces más que lo que te pidieron: amplificaste la señal que recibiste.`});
  else if(amp!=null&&amp<=1.2)notes.push({t:'good',m:`Pediste de forma estable: tus pedidos variaron casi igual que lo que te pidieron (×${amp.toFixed(1)}).`});
- if(maxOrder>=2*maxInc&&maxOrder>=8)notes.push({t:'bad',m:`En la semana ${maxWeek} pediste ${maxOrder} cajas, más del doble de lo máximo que te pidieron en una semana (${maxInc}).`});
+ if(maxOrder>=2*maxInc&&maxOrder>=8)notes.push({t:'bad',m:`En la semana ${maxWeek} pediste ${maxOrder} ${UNIT}, más del doble de lo máximo que te pidieron en una semana (${maxInc}).`});
  if(over>=3)notes.push({t:'bad',m:`En ${over} semanas pediste más de lo que te pidieron aunque ya tenías mucho en camino. Antes de pedir, cuenta lo que viene en camino.`});
  if(stockWeeks/W>=.3)notes.push({t:'bad',m:`Dejaste pedidos sin surtir en ${stockWeeks} de ${W} semanas; los faltantes fueron el ${pctBack}% de tu costo.`});
  else if(stockWeeks===0)notes.push({t:'good',m:'Nunca dejaste pedidos sin surtir.'});
- if(avgInv>3*Math.max(avgInc,1)&&avgInv>15)notes.push({t:'bad',m:`Cargaste mucho inventario: ${Math.round(avgInv)} cajas en promedio, más de 3 semanas de lo que te pedían.`});
- if(endNet>3*Math.max(mean(inc.slice(-4)),1)+INV0)notes.push({t:'bad',m:stockWeeks?`Terminaste con ${endNet} cajas: llegó tarde lo que pediste durante la escasez.`:`Terminaste con ${endNet} cajas: pediste más de lo que tu cliente necesitaba.`});
+ if(avgInv>3*Math.max(avgInc,1)&&avgInv>15)notes.push({t:'bad',m:`Cargaste mucho inventario: ${Math.round(avgInv)} ${UNIT} en promedio, más de 3 semanas de lo que te pedían.`});
+ if(endNet>3*Math.max(mean(inc.slice(-4)),1)+INV0)notes.push({t:'bad',m:stockWeeks?`Terminaste con ${endNet} ${UNIT}: llegó tarde lo que pediste durante la escasez.`:`Terminaste con ${endNet} ${UNIT}: pediste más de lo que tu cliente necesitaba.`});
  if(!notes.some(x=>x.t==='bad'))notes.push({t:'good',m:'Operación equilibrada: sin señales fuertes de exceso ni de escasez.'});
  return{role:j,W,cost,invCost,backCost,pctBack,stockWeeks,avgInv,maxOrder,maxWeek,maxInc,amp,endNet,notes};
 }
@@ -331,8 +378,8 @@ function memberCard(a,R,name,{me=false,rank=null,of=null}={}){
  if(!a.W)return '';
  return `<div class="card member${me?' me':''}"><div class="label" style="color:${r.hex}">${r.n}</div><h3>${esc(name)}</h3>
  <div class="mstats"><span><b>${money(a.cost)}</b>costo${rank?` · ${rank}.º de ${of} ${r.n.toLowerCase()}s`:''}</span><span><b>${a.amp==null?'—':'×'+a.amp.toFixed(1)}</b>amplificación de lo que le pidieron</span>
- <span><b>${a.stockWeeks} de ${a.W}</b>semanas con faltantes</span><span><b>${Math.round(a.avgInv)}</b>cajas de inventario promedio</span></div>
- <ul class="notes">${a.notes.map(x=>`<li class="${x.t}">${x.m}</li>`).join('')}</ul></div>`;
+ <span><b>${a.stockWeeks} de ${a.W}</b>semanas con faltantes</span><span><b>${Math.round(a.avgInv)}</b>${UNIT} de inventario promedio</span></div>
+ <ul class="notes">${a.notes.map(x=>`<li class="${x.t==='good'?'good':'bad'}">${esc(x.m)}</li>`).join('')}</ul></div>`;
 }
 function lessonsHTML(){return `<h3 class="section-title">Para la discusión</h3>
  <div class="lessons">
@@ -367,15 +414,34 @@ function syncCfg(){
 }
 $('#cfgForm').addEventListener('change',e=>{if(e.target.name==='mode'||e.target.name==='links')syncCfg()});
 $('#goCfg').onclick=()=>{show('s-cfg');syncCfg()};
+let EXAM_CASES=null,examChoice=null;
+async function doUnlock(){
+ const code=$('#examCode').value;if(!code.trim()){$('#examCode').focus();return}
+ $('#examNote').textContent='Revisando el código…';
+ try{EXAM_CASES=(await unlockExam(code)).cases}catch(e){EXAM_CASES=null;$('#examNote').innerHTML='<b style="color:var(--bad)">Código incorrecto.</b> Revisa mayúsculas, guiones y números.';return}
+ $('#examCode').value='';$('#examCases').hidden=false;
+ $('#examCases').innerHTML=Object.values(EXAM_CASES).map(c=>`<button type="button" class="secondary" data-exam="${esc(c.id)}">${esc(c.title)}</button>`).join('');
+ $('#examNote').innerHTML='<b style="color:var(--good)">Casos desbloqueados.</b> Elige uno.';
+}
+$('#examUnlock').onclick=doUnlock;
+$('#examCode').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();doUnlock()}});
+$('#cfgForm').addEventListener('click',e=>{const b=e.target.closest('[data-exam]');if(!b||!EXAM_CASES)return;const f=$('#cfgForm'),C=EXAM_CASES[b.dataset.exam];if(!C)return;
+ examChoice=C.id;f.mode.value='red';f.links.value='3';f.weeks.value='24';f.ai.value='tipico';f.share.checked=false;f.querySelectorAll('[name=dem]').forEach(x=>x.checked=false);syncCfg();
+ f.querySelectorAll('[data-exam]').forEach(x=>{x.classList.toggle('primary',x===b);x.classList.toggle('secondary',x!==b)});
+ $('#examNote').innerHTML=`<b style="color:var(--good)">Listo: ${esc(C.title)}.</b> Competencia por equipos, 3 eslabones, 24 semanas, sin compartir la demanda. Revisa el número de equipos y presiona <b>Abrir sala</b>.`;
+ $('#cfgGo').scrollIntoView({block:'center',behavior:'smooth'})});
+$('#cfgForm').addEventListener('change',e=>{if(e.target.name==='dem'&&examChoice){examChoice=null;$('#cfgForm').querySelectorAll('[data-exam]').forEach(x=>{x.classList.remove('primary');x.classList.add('secondary')});$('#examNote').innerHTML='Elegiste una demanda de práctica; el caso de examen quedó desactivado.'}});
 $('#cfgForm').addEventListener('submit',e=>{
  e.preventDefault();const f=e.target,mode=f.mode.value,chain=CHAINS[f.links.value];
  let humans=chain.map(()=>false);
  if(mode==='solo')humans[+f.role.value]=true;else if(mode==='aula')f.querySelectorAll('[name=team]:checked').forEach(x=>humans[+x.value]=true);
  if(mode==='aula'&&!humans.some(Boolean)){alert('Elige al menos un eslabón para las personas.');return}
- let pat=f.dem.value;const keys=['escalon','aleatoria','estacional','promocion'];
+ const EX=examChoice&&EXAM_CASES&&EXAM_CASES[examChoice];
+ let pat=EX?'escalon':(f.dem.value||'sorpresa');const keys=['escalon','aleatoria','estacional','promocion'];
  const hidden=pat==='sorpresa';if(hidden)pat=keys[Math.floor(Math.random()*keys.length)];
  const weeks=+f.weeks.value,seed=Math.floor(Math.random()*1e9);
  const cfg={mode,chain,humans,pattern:pat,hiddenPattern:hidden,weeks,seed,demand:makeDemand(pat,weeks,seed),base:PATTERNS[pat].base,ai:f.ai.value,share:f.share.checked,teams:+f.teams.value};
+ if(EX){const{demand:dd,tail,base,...meta}=EX;Object.assign(cfg,{pattern:'examen',hiddenPattern:false,demand:Array.from({length:weeks},(_,i)=>dd[i]??tail),base,caseData:meta})}
  if(mode==='red'){game=null;closeNet();hostCreate(cfg);return}
  game=newSim(cfg);save();show('s-game');render();
 });
@@ -387,7 +453,8 @@ function restore(){const d=store.get(SAVE);if(!d||!d.cfg)return null;try{const s
 {const sv=restore();if(sv){const b=$('#resumeBtn');b.hidden=false;b.textContent=`Continuar partida (semana ${sv.week})`;b.onclick=()=>{game=sv;show('s-game');render()}}}
 
 /* Lo que un eslabón puede ver. Sirve igual para el juego individual y para cada integrante en red. */
-function roleView(sim,j,who){const s=sim.S[j];return{week:sim.week,role:j,chain:sim.cfg.chain,who,demand:(sim.cfg.share||j===0)?s.cur.demand:null,inv:s.inv,back:s.back,cost:s.cost,onOrder:s.onOrder,ship:s.ship.slice(),ordIn:j?s.ordIn.slice():null,log:s.log.map(x=>({...x}))}}
+function roleView(sim,j,who){const s=sim.S[j];return{week:sim.week,role:j,chain:sim.cfg.chain,theme:themeOf(sim.cfg),who,demand:(sim.cfg.share||j===0)?s.cur.demand:null,inv:s.inv,back:s.back,cost:s.cost,onOrder:s.onOrder,ship:s.ship.slice(),ordIn:j?s.ordIn.slice():null,log:s.log.map(x=>({...x})),shared:sharedOf(sim)}}
+function sharedOf(sim){if(!isJunta(themeOf(sim.cfg),sim.week))return null;return{demand:sim.S[0].cur.demand,nodes:sim.S.map(x=>({inv:x.inv,back:x.back,ship:x.ship.slice(),ordIn:x.ordIn?x.ordIn.slice():null}))}}
 function nodesFromView(v){return v.chain.map((_,k)=>k===v.role?{visible:true,inv:v.inv,back:v.back,ship:v.ship,ordIn:v.ordIn,who:v.who[k]}:{visible:false,who:v.who[k]})}
 function nodesFull(sim,who){return sim.S.map((s,k)=>({visible:true,inv:s.inv,back:s.back,ship:s.ship,ordIn:s.ordIn,who:who[k]}))}
 function paintChain(R,nodes,me,demand){
@@ -397,14 +464,14 @@ function paintChain(R,nodes,me,demand){
  for(let i=n-1;i>=0;i--){const nd=nodes[i],d=nodes[i-1];
   h+=`<div class="node${i===me?' me':''}"><div class="nm"><span class="dot" style="background:${R[i].hex}"></span>${R[i].n}</div>
   <div class="nv">Inventario <b>${nd.visible?num(nd.inv):'?'}</b><br>Pendientes <b>${nd.visible?num(nd.back):'?'}</b></div>
-  <div class="nv" style="font-size:11px">${esc(nd.who)}</div></div>`;
+  ${CUR_T&&CUR_T.roles&&typeof CUR_T.roles[R[i].k]==='string'?`<div class="nv" style="font-size:11px;color:var(--blue)">${esc(CUR_T.roles[R[i].k])}</div>`:''}<div class="nv" style="font-size:11px">${esc(nd.who)}</div></div>`;
   const goods=d?(d.ship||[0,0]).map(x=>`<i title="Envío en camino">${d.ship?x:'·'}</i>`).reverse().join(''):'';
   const orders=d?(nd.ordIn||[0,0]).map(x=>`<i title="Pedido en camino">${nd.ordIn?x:'·'}</i>`).join(''):'';
   h+=`<div class="link" aria-hidden="true"><div class="lane goods">${goods}<span class="ar">→</span></div><div class="lane orders"><span class="ar">←</span>${orders}</div></div>`;
  }
- el.innerHTML=h+`<div class="node client"><div class="nm">Cliente</div><div class="nv">Demanda<br><b>${demand==null?'?':num(demand)}</b> cajas</div></div>`;
+ el.innerHTML=h+`<div class="node client"><div class="nm">Cliente</div><div class="nv">Demanda<br><b>${demand==null?'?':num(demand)}</b> ${UNIT}</div></div>`;
 }
-function chainLegend(nodes){const f=nodes[nodes.length-1];return `<div class="legend" style="margin-top:-12px;margin-bottom:18px"><span><i style="background:#c9d7f2;height:10px;width:10px"></i>Cajas en camino (hacia la derecha)</span><span><i style="background:#f7dcb1;height:10px;width:10px"></i>Pedidos en camino (hacia la izquierda)</span><span>La fábrica tiene ${PROD_DELAY} semanas de producción en proceso: ${f.ship?f.ship.join(' · '):'?'}</span></div>`}
+function chainLegend(nodes){const f=nodes[nodes.length-1];return `<div class="legend" style="margin-top:-12px;margin-bottom:18px"><span><i style="background:#c9d7f2;height:10px;width:10px"></i>${UNIT.charAt(0).toUpperCase()+UNIT.slice(1)} en camino (hacia la derecha)</span><span><i style="background:#f7dcb1;height:10px;width:10px"></i>Pedidos en camino (hacia la izquierda)</span><span>La fábrica tiene ${PROD_DELAY} semanas de producción en proceso: ${f.ship?f.ship.join(' · '):'?'}</span></div>`}
 function stepsHTML(c,j,R,compact){
  const n=R.length,cli=j===0?'tu cliente (consumidor)':'tu cliente ('+R[j-1].n.toLowerCase()+')';
  return `<ol class="steps">
@@ -423,36 +490,37 @@ const ST_TXT={ok:'ya pidió',wait:'pensando…',bot:'computadora',off:'sin conex
 function kpiRole(v){return `<div class="kpi"><span>Costo acumulado</span><b>${money(v.cost)}</b></div><div class="kpi"><span>Inventario neto</span><b>${num(v.inv-v.back)}</b></div><div class="kpi"><span>Pedido sin llegar</span><b>${num(v.onOrder)}</b></div>`}
 function rolePanel(v,o={}){
  const R=rolesOf(v),j=v.role,n=R.length,log=v.log,c=log[log.length-1],up=j===n-1?'producción':R[j+1].n.toLowerCase();
- const pipe=`<p class="pipe-note">En camino hacia ti: <b>${v.ship.join(' y ')}</b> cajas (llegan en ${v.ship.map((_,k)=>k+1).join(' y ')} semana${v.ship.length>1?'s':''}). En total te deben <b>${num(v.onOrder)}</b> cajas de pedidos anteriores.</p>`;
+ const pipe=`<p class="pipe-note">En camino hacia ti: <b>${v.ship.join(' y ')}</b> ${UNIT} (llegan en ${v.ship.map((_,k)=>k+1).join(' y ')} semana${v.ship.length>1?'s':''}). En total te deben <b>${num(v.onOrder)}</b> ${UNIT} de pedidos anteriores.</p>`;
  const chips=o.status?`<div class="chips">${o.status.map((st,k)=>`<span class="chip-st ${st}">${R[k].n}: ${ST_TXT[st]}</span>`).join('')}</div>`:'';
  const box=o.submitted!=null
-  ?`<div class="order-box" role="status"><b>${o.submitted==='ai'?'El facilitador pidió con la computadora por ti esta semana.':`Pedido enviado: ${num(o.submitted)} cajas.`}</b><p class="pipe-note" style="margin-top:6px">Esperando a que pidan todos los equipos…</p>${chips}${pipe}</div>`
-  :`<form class="order-box" id="orderForm"><label for="ord-${j}">¿Cuántas cajas ${j===n-1?'mandas producir':'pides a '+up}?</label>
+  ?`<div class="order-box" role="status"><b>${o.submitted==='ai'?'El facilitador pidió con la computadora por ti esta semana.':`Pedido enviado: ${num(o.submitted)} ${UNIT}.`}</b><p class="pipe-note" style="margin-top:6px">Esperando a que pidan todos los equipos…</p>${chips}${pipe}</div>`
+  :`<form class="order-box" id="orderForm"><label for="ord-${j}">¿Cuántas ${UNIT} ${j===n-1?'mandas producir':'pides a '+up}?</label>
   <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">${orderInput('Pedido de '+R[j].n,'ord-'+j)}<button class="primary" type="submit">Hacer pedido <span aria-hidden="true">→</span></button></div><p class="err" id="err" role="alert"></p>${chips}${pipe}</form>`;
  return `<div class="play"><div class="card"><div class="label">Esta semana</div>${stepsHTML(c,j,R)}${box}
- <details class="guide"><summary>¿Cómo opera mi eslabón?</summary><div style="margin-top:12px">${guideCard(R,j)}</div></details></div>
+ ${v.theme?`<div style="margin-top:14px">${caseCard(v.theme,false,v.chain)}</div>`:''}<details class="guide"><summary>¿Cómo opera mi eslabón?</summary><div style="margin-top:12px">${guideCard(R,j)}</div></details></div>
  <div><div class="card"><div class="label">Tu historial</div>${log.length>1?lineChart([{name:'Te pidieron',color:'#142844',data:log.map(x=>x.inc),dash:1},{name:'Pediste',color:R[j].hex,data:log.slice(0,-1).map(x=>x.order)},{name:'Inventario neto',color:'#9aa8bb',data:log.map(x=>x.inv-x.back),w:1.6}],{h:200,label:'Tu historial'}):'<p class="muted" style="font-size:14px">Aquí verás tus pedidos e inventario semana a semana.</p>'}
  <div class="ledger"><table><thead><tr><th>Sem.</th><th>Llegó</th><th>Te pidieron</th><th>Enviaste</th><th>Inv.</th><th>Pend.</th><th>Pediste</th><th>Costo</th></tr></thead><tbody>${log.slice().reverse().map(x=>`<tr><td>${x.week}</td><td>${x.rec}</td><td>${x.inc}</td><td>${x.sent}</td><td>${x.inv}</td><td class="${x.back?'neg':''}">${x.back}</td><td>${x.order??'—'}</td><td>${money(x.cost)}</td></tr>`).join('')}</tbody></table></div></div></div></div>`;
 }
 function paintRole(v,roleTxt,o){
- $('#weekNum').textContent=`Semana ${v.week}`;$('#weekRole').textContent=roleTxt;$('#kpis').innerHTML=kpiRole(v);
- const R=rolesOf(v),nodes=nodesFromView(v);paintChain(R,nodes,v.role,v.demand);
+ setTheme(v.theme);$('#weekNum').textContent=weekLabel(v.theme,v.week);$('#newsBar').innerHTML=commsHTML(v.theme,v.week)+newsHTML(v.theme,v.week);$('#weekRole').textContent=roleTxt;$('#kpis').innerHTML=kpiRole(v);
+ const R=rolesOf(v),sh=v.shared&&Array.isArray(v.shared.nodes)&&v.shared.nodes.length===R.length?v.shared:null;
+ const nodes=sh?sh.nodes.map((n,k)=>({visible:true,inv:n.inv,back:n.back,ship:n.ship,ordIn:n.ordIn,who:v.who[k]})):nodesFromView(v);paintChain(R,nodes,v.role,sh?sh.demand:v.demand);
  $('#playArea').innerHTML=chainLegend(nodes)+rolePanel(v,o);
  const w=$('.chain-wrap'),m=$('#chain .node.me');if(w&&m)w.scrollLeft=Math.max(0,m.offsetLeft-(w.clientWidth-m.offsetWidth)/2);
  const inp=$('#playArea input[type=number]');if(inp)inp.focus({preventScroll:true});
 }
 function render(){
- const cfg=game.cfg,R=rolesOf(cfg);$('#netBanner').hidden=true;
+ const cfg=game.cfg,R=rolesOf(cfg);$('#netBanner').hidden=true;setTheme(themeOf(cfg));
  if(cfg.mode==='solo'){
   const me=cfg.humans.indexOf(true);
   paintRole(roleView(game,me,R.map((_,k)=>k===me?'Tú':'Computadora')),`Juegas como ${R[me].n}`,{});
   $('#orderForm').addEventListener('submit',onOrder);return;
  }
  const who=R.map((_,k)=>cfg.humans[k]?'Personas':'Computadora'),nodes=nodesFull(game,who);
- $('#weekNum').textContent=`Semana ${game.week} de ${cfg.weeks}`;$('#weekRole').textContent='Una cadena · el facilitador captura';
+ $('#weekNum').textContent=weekLabel(themeOf(cfg),game.week,cfg.weeks);$('#newsBar').innerHTML=commsHTML(themeOf(cfg),game.week)+newsHTML(themeOf(cfg),game.week);$('#weekRole').textContent='Una cadena · el facilitador captura';
  $('#kpis').innerHTML=`<div class="kpi"><span>Costo de la cadena</span><b>${money(sum(game.S.map(s=>s.cost)))}</b></div><div class="kpi"><span>Demanda del cliente</span><b>${num(game.S[0].cur.demand)}</b></div>`;
  paintChain(R,nodes,-1,game.S[0].cur.demand);
- $('#playArea').innerHTML=`${chainLegend(nodes)}<form id="orderForm"><div class="fac" style="grid-template-columns:repeat(${R.length},minmax(0,1fr))">${R.map((r,j)=>`<div class="card"><div class="label" style="color:${r.hex}">${r.n}</div>${stepsHTML(game.S[j].cur,j,R,true)}${cfg.humans[j]?`<label for="ord-${j}" style="display:block;font-weight:700;font-size:13px;margin:12px 0 8px">Pedido de esta semana</label>${orderInput('Pedido de '+r.n,'ord-'+j)}`:`<div class="bot">Lo decide la computadora al registrar la semana.</div>`}</div>`).join('')}</div>
+ $('#playArea').innerHTML=`${chainLegend(nodes)}${themeOf(cfg)?`<div style="margin-bottom:16px">${caseCard(themeOf(cfg),false,cfg.chain)}</div>`:''}<form id="orderForm"><div class="fac" style="grid-template-columns:repeat(${R.length},minmax(0,1fr))">${R.map((r,j)=>`<div class="card"><div class="label" style="color:${r.hex}">${r.n}</div>${stepsHTML(game.S[j].cur,j,R,true)}${cfg.humans[j]?`<label for="ord-${j}" style="display:block;font-weight:700;font-size:13px;margin:12px 0 8px">Pedido de esta semana</label>${orderInput('Pedido de '+r.n,'ord-'+j)}`:`<div class="bot">Lo decide la computadora al registrar la semana.</div>`}</div>`).join('')}</div>
  <p class="err" id="err" role="alert"></p><div class="actions" style="margin-top:6px"><button class="primary" type="submit">${game.week>=cfg.weeks?'Registrar pedidos y ver resultados':`Registrar pedidos y pasar a la semana ${game.week+1}`} <span aria-hidden="true">→</span></button><button class="secondary" type="button" id="endEarly">Terminar ahora</button></div></form>`;
  $('#endEarly').onclick=()=>{if(confirm('¿Terminar la partida y ver resultados con las semanas jugadas?')){cutEarly(game);finishLocal()}};
  const first=$('#playArea input[type=number]');if(first)first.focus({preventScroll:true});
@@ -473,7 +541,7 @@ function finishLocal(){
 /* ---------- Resultados (una cadena o varios equipos) ---------- */
 let RES=null;
 function showResults(list){
- const cfg=list[0].sim.cfg,R=rolesOf(cfg),W=list[0].sim.S[0].log.length,dem=cfg.demand.slice(0,W);
+ PR=null; setTheme(themeOf(list[0].sim.cfg));const cfg=list[0].sim.cfg,R=rolesOf(cfg),W=list[0].sim.S[0].log.length,dem=cfg.demand.slice(0,W);
  const bc={...cfg,demand:dem,weeks:W};
  const an=list.map(x=>x.sim.S.map((_,j)=>analyze(x.sim,j)));
  if(list.length>1)R.forEach((_,j)=>{list.map((_,t)=>t).sort((a,b)=>an[a][j].cost-an[b][j].cost).forEach((t,r)=>{an[t][j].rank=r+1;an[t][j].of=list.length})});
@@ -483,23 +551,25 @@ function showResults(list){
 }
 const chainCost=sim=>sum(sim.S.map(s=>s.cost));
 function teamCharts(R,dem,orders,nets,name){
- return `<div class="card" style="margin-bottom:18px"><div class="chart-label"><span>PEDIDOS DE CADA ESLABÓN${name?' · '+esc(name).toUpperCase():''}</span><span>CAJAS POR SEMANA</span></div><div style="margin-top:12px">${lineChart([{name:'Demanda del cliente',color:'#142844',data:dem,dash:1,w:2.6},...R.map((r,j)=>({name:r.n,color:r.hex,data:orders[j]}))],{h:270,label:'Pedidos de cada eslabón por semana frente a la demanda del cliente'})}</div></div>
+ return `<div class="card" style="margin-bottom:18px"><div class="chart-label"><span>PEDIDOS DE CADA ESLABÓN${name?' · '+esc(name).toUpperCase():''}</span><span>${UNIT.toUpperCase()} POR SEMANA</span></div><div style="margin-top:12px">${lineChart([{name:'Demanda del cliente',color:'#142844',data:dem,dash:1,w:2.6},...R.map((r,j)=>({name:r.n,color:r.hex,data:orders[j]}))],{h:270,label:'Pedidos de cada eslabón por semana frente a la demanda del cliente'})}</div></div>
  <div class="card" style="margin-bottom:18px"><div class="chart-label"><span>INVENTARIO NETO (INVENTARIO − PENDIENTES)</span><span>BAJO CERO = CLIENTES SIN SURTIR</span></div><div style="margin-top:12px">${lineChart(R.map((r,j)=>({name:r.n,color:r.hex,data:nets[j]})),{h:240,label:'Inventario neto de cada eslabón por semana'})}</div></div>`;
 }
 function renderResults(){
- const {list,an,R,dem,W,cfg,bTip,bSys}=RES,multi=list.length>1,pat=PATTERNS[cfg.pattern],sdD=sd(dem);
+ const {list,an,R,dem,W,cfg,bTip,bSys}=RES,multi=list.length>1,pat=patOf(cfg),sdD=sd(dem);
  const famp=sim=>{const o=sim.S[sim.S.length-1].log.map(x=>x.order);return sdD>0.01?sd(o)/sdD:null};
+ const ref=chainCost(bTip),idx=sim=>ref>0?chainCost(sim)/ref:null;
  let h='';
  if(multi){
   const order=list.map((_,t)=>t).sort((a,b)=>chainCost(list[a].sim)-chainCost(list[b].sim));
   $('#t-res').textContent=`Ganó el ${list[order[0]].name}`;
-  h+=`<div class="label">Clasificación · ${W} semanas · misma demanda para todos</div><div class="podium" style="grid-template-columns:repeat(${Math.min(list.length,3)},minmax(0,1fr))">${order.map((t,r)=>`<div class="card${r===0?' win':''}"><div class="place">${r+1}.º LUGAR</div><h3 style="margin:4px 0 0">${esc(list[t].name)}</h3><b>${money(chainCost(list[t].sim))}</b><span class="muted" style="font-size:13px">Amplificación en la fábrica: ${fmtAmp(famp(list[t].sim))}</span></div>`).join('')}</div>
+  h+=`<div class="label">Clasificación · ${W} semanas · misma demanda para todos</div><div class="podium" style="grid-template-columns:repeat(${Math.min(list.length,3)},minmax(0,1fr))">${order.map((t,r)=>`<div class="card${r===0?' win':''}"><div class="place">${r+1}.º LUGAR</div><h3 style="margin:4px 0 0">${esc(list[t].name)}</h3><b>${money(chainCost(list[t].sim))}</b><span class="idx">Índice vs. computadora: <b>${fmtIdx(idx(list[t].sim))}</b></span><span class="muted" style="font-size:13px">Amplificación en la fábrica: ${fmtAmp(famp(list[t].sim))}</span></div>`).join('')}</div>
   <div class="card" style="overflow-x:auto;margin-bottom:18px"><div class="label">Costo por eslabón · el mejor de cada eslabón en verde</div><table><thead><tr><th>Eslabón</th>${list.map(x=>`<th>${esc(x.name)}</th>`).join('')}</tr></thead><tbody>
   ${R.map((r,j)=>`<tr><td><span class="dot" style="background:${r.hex}"></span>${r.n}</td>${list.map((x,t)=>`<td class="${an[t][j].rank===1?'best':''}">${money(an[t][j].cost)}<br><span class="muted" style="font-size:11px">${esc(x.members[j]||'Computadora')}</span></td>`).join('')}</tr>`).join('')}
-  <tr><td><b>Cadena</b></td>${list.map(x=>`<td><b>${money(chainCost(x.sim))}</b></td>`).join('')}</tr></tbody></table></div>`;
+  <tr><td><b>Cadena</b></td>${list.map(x=>`<td><b>${money(chainCost(x.sim))}</b></td>`).join('')}</tr>
+  <tr><td><b>Índice vs. computadora</b></td>${list.map(x=>`<td><b>${fmtIdx(idx(x.sim))}</b></td>`).join('')}</tr></tbody></table></div>`;
  }else{
   $('#t-res').textContent='Así se movió la cadena';
-  h+=`<div class="label">Costo total de la cadena · ${W} semanas</div><div class="big">${money(chainCost(list[0].sim))}</div>`;
+  h+=`<div class="label">Costo total de la cadena · ${W} semanas</div><div class="big">${money(chainCost(list[0].sim))}</div><p class="idx" style="margin:0 0 12px">Índice vs. computadora: <b>${fmtIdx(idx(list[0].sim))}</b> <span class="muted">(costo de su cadena ÷ costo de la computadora “persona típica” con la misma demanda; menos de 1 = mejor que la computadora)</span></p>`;
  }
  h+=`<p class="muted">Demanda del cliente: <b style="color:var(--ink)">${pat.n.toLowerCase()}</b>${cfg.hiddenPattern?' (elegida al azar)':''}. ${pat.d}</p>
  <div class="compare">
@@ -516,8 +586,9 @@ function renderResults(){
  $('#resBody').innerHTML=h;
 }
 $('#resBody').addEventListener('click',e=>{const b=e.target.closest('[data-team]');if(b&&RES){RES.sel=+b.dataset.team;renderResults()}});
-$('#againBtn').onclick=()=>{if(pl){plLeave();show('s-home');return}closeNet(false);game=null;RES=null;$('#resumeBtn').hidden=true;show('s-cfg');syncCfg()};
+$('#againBtn').onclick=()=>{if(PR&&!pl){PR=null;showMine();return}if(pl){PR=null;plLeave();show('s-home');return}PR=null;closeNet(false);game=null;RES=null;$('#resumeBtn').hidden=true;show('s-cfg');syncCfg()};
 $('#csvBtn').onclick=()=>{
+ if(PR){playerCSV(PR.r,PR.name);return}
  if(!RES)return;const {list,R}=RES,head=['semana','demanda_cliente'];
  list.forEach(x=>R.forEach(r=>['llego','le_pidieron','envio','inventario','pendientes','pedido','costo'].forEach(c=>head.push(`${x.name.replace(/\s+/g,'_')}_${r.k}_${c}`))));
  const lines=[head.join(',')];
@@ -590,7 +661,7 @@ function saveHost(){
  store.set(HOSTSAVE,{cfg:net.cfg,started:!!net.games,orders:net.games?net.games.map(g=>g.humanOrders):[],humans:net.games?net.games.map(g=>g.cfg.humans):null,code:net.code,slots:net.slots.map(r=>r.map(s=>({token:s.token,name:s.name}))),pending:net.pending,auto:net.auto});
 }
 const teamName=t=>TEAM_NAMES[t];
-const lobbyMsg=()=>({t:'lobby',chain:net.cfg.chain,teams:net.T,taken:net.slots.map(r=>r.map(s=>!!s.token)),names:net.slots.map(r=>r.map(s=>s.name||'')),started:!!net.games});
+const lobbyMsg=()=>({t:'lobby',theme:themeOf(net.cfg),chain:net.cfg.chain,teams:net.T,taken:net.slots.map(r=>r.map(s=>!!s.token)),names:net.slots.map(r=>r.map(s=>s.name||'')),started:!!net.games});
 function publishLobby(){if(net&&net.ref)net.ref.child('lobby').set(lobbyMsg())}
 function sendTo(token,msg){if(net&&net.ref&&token)net.ref.child('out/'+token).set(clean(msg)).catch(()=>{})}
 const whoFor=(t,j)=>net.cfg.chain.map((_,k)=>k===j?'Tú':(net.games[t].cfg.humans[k]?(net.slots[t][k].name||'Integrante'):'Computadora'));
@@ -625,7 +696,7 @@ function hostMsg(d){
 const allReady=()=>net&&net.games&&net.games.every((g,t)=>g.cfg.humans.every((h,j)=>!h||net.pending[t][j]!=null));
 function maybeAdvance(){if(net&&net.auto&&allReady()){clearTimeout(net.advT);net.advT=setTimeout(advanceWeek,700)}}
 function advanceWeek(){
- if(!net||!net.games||net.final||!allReady())return;
+ if(!net||!net.games||net.final||!allReady())return;net.weekStart=Date.now();
  net.games.forEach((g,t)=>submitWeek(g,net.pending[t].map(p=>typeof p==='number'?p:null)));
  net.pending=net.games.map(g=>g.cfg.chain.map(()=>null));
  if(net.games[0].done)endNet(false);else{saveHost();broadcastViews();renderHost()}
@@ -636,7 +707,7 @@ function endNet(early){
  const list=net.games.map((g,t)=>({name:teamName(t),sim:g,members:R.map((_,j)=>g.cfg.humans[j]?(net.slots[t][j].name||'Integrante'):null)}));
  const an=showResults(list);
  const W=net.games[0].S[0].log.length;
- net.final={an,members:list.map(x=>x.members),base:{chain:net.cfg.chain,pattern:PATTERNS[net.cfg.pattern].n,W,demand:net.cfg.demand.slice(0,W),
+ net.final={an,members:list.map(x=>x.members),base:{ref:chainCost(RES.bTip),theme:themeOf(net.cfg),chain:net.cfg.chain,pattern:patOf(net.cfg).n,W,demand:net.cfg.demand.slice(0,W),
   teams:list.map(x=>({name:x.name,cost:chainCost(x.sim),orders:x.sim.S.map(s=>s.log.map(l=>l.order??0)),nets:x.sim.S.map(s=>s.log.map(l=>l.inv-l.back))}))}};
  store.del(HOSTSAVE);broadcastViews();
 }
@@ -644,7 +715,7 @@ function hostAction(act,t,j){
  if(!net)return;
  if(act==='start'){let any=false;forSlots(s=>{if(s.token)any=true});if(!any){alert('Todavía no entra nadie a la sala.');return}
   net.games=Array.from({length:net.T},(_,tt)=>newSim({...net.cfg,humans:net.slots[tt].map(s=>!!s.token)}));
-  net.pending=net.games.map(g=>g.cfg.chain.map(()=>null));saveHost();publishLobby();broadcastViews();renderHost();$('#t-host').focus({preventScroll:true})}
+  net.pending=net.games.map(g=>g.cfg.chain.map(()=>null));net.weekStart=Date.now();saveHost();publishLobby();broadcastViews();renderHost();$('#t-host').focus({preventScroll:true})}
  else if(act==='free'){const s=net.slots[t][j];sendTo(s.token,{t:'freed',at:Date.now()});s.token=null;s.name='';if(net.games){net.games[t].cfg.humans[j]=false;net.pending[t][j]=null}saveHost();publishLobby();scheduleViews();renderHost();maybeAdvance()}
  else if(act==='bot'){if(net.games&&net.pending[t][j]==null){net.pending[t][j]='ai';saveHost();scheduleViews();renderHost();maybeAdvance()}}
  else if(act==='botall'){if(net.games){net.games.forEach((g,tt)=>g.cfg.humans.forEach((h,jj)=>{if(h&&net.pending[tt][jj]==null)net.pending[tt][jj]='ai'}));saveHost();scheduleViews();renderHost();maybeAdvance()}}
@@ -655,6 +726,7 @@ function hostAction(act,t,j){
  else if(act==='copyall'){const R=rolesOf(net.cfg);const txt=net.slots.map((row,tt)=>row.map((_,jj)=>`${teamName(tt)} · ${R[jj].n}: ${seatURL(net.code,tt,jj)}`).join('\n')).join('\n\n');navigator.clipboard?.writeText(txt).then(()=>flash('Enlaces copiados')).catch(()=>{})}
 }
 const e2text=(t,j)=>seatURL(net.code,t,j);
+setInterval(()=>{const c=document.getElementById('juntaClock');if(c&&net&&net.weekStart){const t=Math.floor((Date.now()-net.weekStart)/1000);c.textContent=`${Math.floor(t/60)}:${String(t%60).padStart(2,'0')}`;c.style.color=t>=180?'var(--bad)':''}},1000);
 function flash(m){const b=$('#hostFlash');if(b){b.textContent=m;b.hidden=false;clearTimeout(flash.t);flash.t=setTimeout(()=>b.hidden=true,1800)}}
 $('#hostBody').addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(b)hostAction(b.dataset.act,+b.dataset.t,+b.dataset.j)});
 $('#hostBody').addEventListener('change',e=>{if(!net)return;if(e.target.id==='autoAdv'){net.auto=e.target.checked;saveHost();maybeAdvance()}if(e.target.id==='showNums'){net.detail=e.target.checked;renderHost()}});
@@ -666,6 +738,7 @@ function seatLinks(R){
 }
 function renderHost(){
  if(!net||!$('#s-host').classList.contains('active'))return;
+ setTheme(themeOf(net.cfg));const TH=themeOf(net.cfg);
  const R=rolesOf(net.cfg),url=joinURL(net.code),st=net.status?`<p class="net-status">${esc(net.status)}</p>`:(net.opened?'<p class="net-status ok">Sala abierta: ya pueden entrar desde cualquier red.</p>':'');
  const room=`<div class="card room"><div><div class="label">Código de la sala</div><div class="code-big">${net.code}</div><p class="muted" style="font-size:14px;margin:0;overflow-wrap:anywhere">Entren a <b style="color:var(--ink)">${esc(url.replace(/^https?:\/\//,''))}</b><br>o abran el juego, toquen <b style="color:var(--ink)">Entrar a una sala</b> y escriban el código.</p></div><div class="qr" id="qr" aria-label="Código QR para entrar a la sala"></div></div>`;
  const cols=`grid-template-columns:110px repeat(${R.length},minmax(140px,1fr))`;
@@ -674,15 +747,15 @@ function renderHost(){
  if(!net.games){
   $('#t-host').textContent='Esperando a los equipos';
   let c=0;forSlots(s=>{if(s.token)c++});
-  h=`${room}${st}<div class="tgrid-wrap"><div class="tgrid" style="${cols}">${head}${net.slots.map((row,t)=>`<div class="team">${teamName(t)}<small>${row.filter(s=>s.token).length} de ${R.length}</small></div>${row.map((s,j)=>`<div class="cell">${s.token?`<div class="who"><span class="on${isOn(s)?'':' off'}"></span>${esc(s.name)}</div><button class="link-btn" data-act="free" data-t="${t}" data-j="${j}">Liberar lugar</button>`:'<span class="free">Libre</span>'}</div>`).join('')}`).join('')}</div></div>
+  h=`${room}${st}${TH?`<div style="margin-top:16px">${caseCard(TH,true,net.cfg.chain)}</div>`:''}<div class="tgrid-wrap"><div class="tgrid" style="${cols}">${head}${net.slots.map((row,t)=>`<div class="team">${teamName(t)}<small>${row.filter(s=>s.token).length} de ${R.length}</small></div>${row.map((s,j)=>`<div class="cell">${s.token?`<div class="who"><span class="on${isOn(s)?'':' off'}"></span>${esc(s.name)}</div><button class="link-btn" data-act="free" data-t="${t}" data-j="${j}">Liberar lugar</button>`:'<span class="free">Libre</span>'}</div>`).join('')}`).join('')}</div></div>
   <div class="actions"><button class="primary" data-act="start" ${c?'':'disabled'}>Empezar partida con ${c} persona${c===1?'':'s'} <span aria-hidden="true">→</span></button><button class="secondary" data-act="cancel">Cerrar sala</button></div>
-  <p class="muted" style="font-size:13px;margin-top:14px">Los lugares vacíos los juega la computadora. Demanda: ${net.cfg.hiddenPattern?'sorpresa':PATTERNS[net.cfg.pattern].n.toLowerCase()} · ${net.cfg.weeks} semanas (los jugadores no lo saben) · computadora: ${PROFILES[net.cfg.ai].n.toLowerCase()}${net.cfg.share?' · demanda del cliente compartida':''}.</p>
+  <p class="muted" style="font-size:13px;margin-top:14px">Los lugares vacíos los juega la computadora. Demanda: ${net.cfg.hiddenPattern?'sorpresa':patOf(net.cfg).n.toLowerCase()} · ${net.cfg.weeks} semanas (los jugadores no lo saben) · computadora: ${PROFILES[net.cfg.ai].n.toLowerCase()}${net.cfg.share?' · demanda del cliente compartida':''}.</p>
   ${seatLinks(R)}
   <h3 class="section-title">Explícales cómo opera cada eslabón</h3><p class="muted" style="font-size:14px">Proyecta esta parte antes de empezar. Cada integrante también la ve en su celular.</p>${guidesHTML(R)}`;
  }else{
-  const g0=net.games[0];$('#t-host').textContent=`Semana ${g0.week} de ${g0.cfg.weeks}`;
+  const g0=net.games[0];$('#t-host').textContent=weekLabel(TH,g0.week,g0.cfg.weeks);
   const ready=allReady();let left=0;net.games.forEach((g,t)=>statusArr(t).forEach(x=>{if(x==='wait'||x==='off')left++}));
-  h=`<div class="hostbar" style="margin-bottom:6px"><span class="demand-pill">Sala <b>${net.code}</b></span><span class="demand-pill">${ready?'Todos pidieron':`Faltan ${left} persona${left===1?'':'s'}`}</span></div>${st}
+  h=`${isJunta(TH,g0.week)?`<div class="junta" role="status"><span class="label">Semana de junta · planeación colaborativa</span><p>Los equipos pueden hablar y ven la información de toda su cadena. Tiempo sugerido: 3 minutos · llevan <b id="juntaClock">0:00</b></p></div>`:commsHTML(TH,g0.week)}${newsHTML(TH,g0.week)}<div class="hostbar" style="margin-bottom:6px"><span class="demand-pill">Sala <b>${net.code}</b></span><span class="demand-pill">${ready?'Todos pidieron':`Faltan ${left} persona${left===1?'':'s'}`}</span></div>${st}
   <div class="tgrid-wrap"><div class="tgrid" style="${cols}">${head}${net.games.map((g,t)=>{const sts=statusArr(t);return `<div class="team">${teamName(t)}${net.detail?`<small>${money(chainCost(g))}</small>`:''}</div>${R.map((r,j)=>{const s=net.slots[t][j],S=g.S[j],p=net.pending[t][j];return `<div class="cell">
    <div class="who">${g.cfg.humans[j]?`<span class="on${isOn(s)?'':' off'}"></span>${esc(s.name||'Integrante')}`:'Computadora'}</div>
    <div class="st ${sts[j]}">${sts[j]==='ok'?(p==='ai'?'✓ Pidió la computadora':'✓ Ya pidió'):sts[j]==='wait'?'Pensando…':sts[j]==='off'?'Sin conexión':'Decide al avanzar'}</div>
@@ -693,7 +766,7 @@ function renderHost(){
   <label><input type="checkbox" id="autoAdv" ${net.auto?'checked':''}> Avanzar en cuanto todos pidan</label>
   <label><input type="checkbox" id="showNums" ${net.detail?'checked':''}> Mostrar números (no proyectar)</label>
   <button class="secondary" data-act="end">Terminar ahora</button></div>
-  <details style="margin-top:22px"><summary style="cursor:pointer;font-weight:650;font-size:14px">Mostrar el código para alguien que llega tarde</summary><div style="margin-top:12px">${room}</div></details>${seatLinks(R)}`;
+  ${TH?`<div style="margin-top:18px">${caseCard(TH,false,net.cfg.chain)}</div>`:''}<details style="margin-top:22px"><summary style="cursor:pointer;font-weight:650;font-size:14px">Mostrar el código para alguien que llega tarde</summary><div style="margin-top:12px">${room}</div></details>${seatLinks(R)}`;
  }
  const openD=[...$('#hostBody').querySelectorAll('details')].map(d=>d.open);
  $('#hostBody').innerHTML=h;
@@ -735,21 +808,33 @@ function plLeave(silent){
 function plStatusText(){return pl.status||(pl.hostOff?'El facilitador se desconectó. Espera a que vuelva a abrir la sala.':'')}
 function plStatus(){if(!pl)return;if($('#s-join').classList.contains('active'))renderJoin();else{const b=$('#netBanner'),t=plStatusText();b.hidden=!t;b.textContent=t}}
 const okIdx=(x,n)=>Number.isInteger(x)&&x>=0&&x<n;
+const NUM=x=>{const n=Number(x);return Number.isFinite(n)?n:0};
+const NUMS=a=>arr(a).map(NUM);
+const LOGKEYS=['week','demand','rec','inc','sent','inv','back','pipe','cost'];
+function cleanView(d){
+ const v=d.v;['week','inv','back','cost','onOrder'].forEach(k=>v[k]=NUM(v[k]));v.demand=v.demand==null?null:NUM(v.demand);
+ v.ship=NUMS(v.ship);v.ordIn=v.ordIn?NUMS(v.ordIn):null;v.who=arr(v.who).map(x=>cleanName(x));
+ v.log=arr(v.log).map(x=>{const o={};LOGKEYS.forEach(k=>o[k]=NUM(x&&x[k]));o.order=x&&x.order!=null?NUM(x.order):null;return o});
+ if(v.shared){v.shared={demand:NUM(v.shared.demand),nodes:arr(v.shared.nodes).map(n=>({inv:NUM(n&&n.inv),back:NUM(n&&n.back),ship:NUMS(n&&n.ship),ordIn:n&&n.ordIn?NUMS(n.ordIn):null}))}}else v.shared=null;
+ d.status=d.status?arr(d.status).map(x=>ST_TXT[x]?x:'wait'):null;
+ d.submitted=d.submitted==null?null:(d.submitted==='ai'?'ai':NUM(d.submitted));
+ return d}
 const arr=x=>Array.isArray(x)?x:(x&&typeof x==='object'?Object.keys(x).reduce((a,k)=>(a[+k]=x[k],a),[]):[]);
 function plMsg(d){
  if(!pl||!d||typeof d!=='object')return;
  if(d.t==='lobby'&&Array.isArray(d.chain)&&d.chain.every(k=>ROLES[k])){
   const T=Math.min(6,+d.teams||0),n=d.chain.length,tk=arr(d.taken),nm=arr(d.names);
-  pl.lobby={chain:d.chain,T,taken:Array.from({length:T},(_,t)=>Array.from({length:n},(_,j)=>!!arr(tk[t])[j])),names:Array.from({length:T},(_,t)=>Array.from({length:n},(_,j)=>cleanName(arr(nm[t])[j]))),started:!!d.started};
+  pl.lobby={theme:okT(d.theme),chain:d.chain,T,taken:Array.from({length:T},(_,t)=>Array.from({length:n},(_,j)=>!!arr(tk[t])[j])),names:Array.from({length:T},(_,t)=>Array.from({length:n},(_,j)=>cleanName(arr(nm[t])[j]))),started:!!d.started};
   if($('#s-join').classList.contains('active'))renderJoin();
  }
  else if(d.t==='assigned'&&pl.lobby&&okIdx(d.team,pl.lobby.T)&&okIdx(d.role,pl.lobby.chain.length)){pl.team=d.team;pl.role=d.role;pl.name=cleanName(d.name);pl.msg='';pl.seat=null;store.set(PLSAVE,{code:pl.code,token:pl.token,name:pl.name});if(!d.started&&$('#s-join').classList.contains('active'))renderJoin()}
  else if(d.t==='taken'){pl.msg='Ese lugar ya lo tomó otra persona. Elige otro.';pl.seat=null;renderJoin()}
  else if(d.t==='freed'){if(pl.role==null)return;pl.team=pl.role=null;pl.lastKey='';pl.msg='El facilitador liberó tu lugar. Elige uno de nuevo.';show('s-join');renderJoin()}
  else if(d.t==='view'&&d.v&&Array.isArray(d.v.chain)&&d.v.chain.every(k=>ROLES[k])){
-  const v=d.v;v.ship=arr(v.ship);v.ordIn=v.ordIn?arr(v.ordIn):null;v.log=arr(v.log);v.who=arr(v.who);d.status=d.status?arr(d.status):null;if(d.submitted===undefined)d.submitted=null;paintPlayer(d)}
+  paintPlayer(cleanView(d))}
  else if(d.t==='end'&&d.r&&Array.isArray(d.r.chain)&&d.r.chain.every(k=>ROLES[k])){
-  const r=d.r;r.teams=arr(r.teams).map(x=>({...x,orders:arr(x.orders).map(arr),nets:arr(x.nets).map(arr)}));r.demand=arr(r.demand);r.an=arr(r.an).map(a=>a?{...a,notes:arr(a.notes)}:a);r.members=arr(r.members);playerResults(r)}
+  const r=d.r;r.teams=arr(r.teams).map(x=>({name:cleanName(x&&x.name),cost:NUM(x&&x.cost),orders:arr(x&&x.orders).map(NUMS),nets:arr(x&&x.nets).map(NUMS)}));r.demand=NUMS(r.demand);r.W=NUM(r.W);r.ref=NUM(r.ref);
+  r.an=arr(r.an).map(a=>a&&typeof a==='object'?{...Object.fromEntries(['role','W','cost','invCost','backCost','pctBack','stockWeeks','avgInv','maxOrder','maxWeek','maxInc','endNet','rank','of'].map(k=>[k,NUM(a[k])])),amp:a.amp==null?null:NUM(a.amp),notes:arr(a.notes).map(x=>({t:x&&x.t==='good'?'good':'bad',m:String(x&&x.m||'')}))}:null);r.members=arr(r.members).map(x=>x==null?null:cleanName(x));playerResults(r)}
 }
 function renderJoin(){
  const el=$('#joinBody');
@@ -761,7 +846,7 @@ function renderJoin(){
   const L=pl.lobby,R=rolesOf(L);
   h+=`<h3 style="font-size:24px;margin:0">${esc(TEAM_NAMES[pl.team])} · ${R[pl.role].n}</h3><p style="margin:0">${esc(pl.name)}. ${L.started?'Cargando la semana…':'Espera a que el facilitador empiece la partida.'}</p>
   <p class="muted" style="font-size:14px;margin:0">Tu equipo: ${R.map((r,j)=>j===pl.role?`<b style="color:var(--ink)">tú (${r.n.toLowerCase()})</b>`:`${L.names[pl.team][j]?esc(L.names[pl.team][j]):'lugar libre'} (${r.n.toLowerCase()})`).join(' · ')}</p>${st}${msg}
-  ${guideCard(R,pl.role)}<button class="link-btn" type="button" id="chgRole" style="justify-self:start">Cambiar de lugar</button>`;
+  ${L.theme?caseCard(L.theme,true,L.chain):''}${guideCard(R,pl.role)}<button class="link-btn" type="button" id="chgRole" style="justify-self:start">Cambiar de lugar</button>`;
  }
  else if(!pl.lobby){h+=st||'<p>Conectando…</p>'}
  else if(pl.seat&&okIdx(pl.seat[0],pl.lobby.T)&&okIdx(pl.seat[1],pl.lobby.chain.length)){
@@ -801,20 +886,48 @@ function paintPlayer(d){
   plSend({t:'order',week:v.week,q});f.querySelector('button[type=submit]').disabled=true;$('#err').textContent='Enviando…'});
 }
 
-function playerResults(r){
- const R=rolesOf(r),me=r.role,T=r.teams.length,mine=r.teams[r.team];if(!mine||!okIdx(me,R.length))return;
+const MYRES='itk-cadena-mis-resultados';
+const myResults=()=>{const a=store.get(MYRES);return Array.isArray(a)?a:[]};
+function saveMyResult(r,name){
+ const id=`${r.code||''}-${r.team}-${r.role}`,list=myResults().filter(x=>x.id!==id);
+ list.unshift({id,at:Date.now(),name,r});store.set(MYRES,list.slice(0,6));refreshMine();
+}
+function refreshMine(){const b=$('#mineBtn');if(!b)return;const n=myResults().length;b.hidden=!n;b.textContent=`Mis resultados (${n})`}
+let PR=null;
+function playerResults(r,savedName){
+ setTheme(r.theme);const R=rolesOf(r),me=r.role,T=r.teams.length,mine=r.teams[r.team];if(!mine||!okIdx(me,R.length))return;
+ const myName=savedName||(pl&&pl.name)||'Tú';
+ if(!savedName){r.code=pl&&pl.code||'';saveMyResult(r,myName)}
+ PR={r,name:myName};const ix=c=>r.ref>0?c/r.ref:null;
  const order=r.teams.map((_,t)=>t).sort((a,b)=>r.teams[a].cost-r.teams[b].cost),place=order.indexOf(r.team)+1;
- show('s-results');$('#csvBtn').hidden=true;$('#againBtn').textContent='Salir';$('#netBanner').hidden=true;
+ show('s-results');$('#csvBtn').hidden=false;$('#againBtn').textContent=savedName?'Volver a mis resultados':'Salir';$('#netBanner').hidden=true;
  $('#t-res').textContent=T>1?(place===1?`¡${mine.name} ganó!`:`${mine.name}: ${place}.º lugar de ${T}`):'Así se movió la cadena';
  const a=r.an||[],mem=r.members||[];
- $('#resBody').innerHTML=`${T>1?`<div class="label">Clasificación · ${r.W} semanas · misma demanda para todos</div><div class="podium" style="grid-template-columns:repeat(${Math.min(T,3)},minmax(0,1fr))">${order.map((t,k)=>`<div class="card${k===0?' win':''}${t===r.team?' mine':''}"><div class="place">${k+1}.º LUGAR</div><h3 style="margin:4px 0 0">${esc(r.teams[t].name)}${t===r.team?' · tu equipo':''}</h3><b>${money(r.teams[t].cost)}</b></div>`).join('')}</div>`
-  :`<div class="label">Costo total de la cadena · ${r.W} semanas</div><div class="big">${money(mine.cost)}</div>`}
+ $('#resBody').innerHTML=`${T>1?`<div class="label">Clasificación · ${r.W} semanas · misma demanda para todos</div><div class="podium" style="grid-template-columns:repeat(${Math.min(T,3)},minmax(0,1fr))">${order.map((t,k)=>`<div class="card${k===0?' win':''}${t===r.team?' mine':''}"><div class="place">${k+1}.º LUGAR</div><h3 style="margin:4px 0 0">${esc(r.teams[t].name)}${t===r.team?' · tu equipo':''}</h3><b>${money(r.teams[t].cost)}</b><span class="idx">Índice vs. computadora: <b>${fmtIdx(ix(r.teams[t].cost))}</b></span></div>`).join('')}</div>`
+  :`<div class="label">Costo total de la cadena · ${r.W} semanas</div><div class="big">${money(mine.cost)}</div><p class="idx">Índice vs. computadora: <b>${fmtIdx(ix(mine.cost))}</b></p>`}
  <p class="muted">Demanda del cliente: <b style="color:var(--ink)">${esc(String(r.pattern).toLowerCase())}</b>. Ahora sí pueden ver toda la cadena: busquen en qué semana empezó cada eslabón a pedir de más.</p>
- <h3 class="section-title">Cómo operaste</h3><div class="members" style="grid-template-columns:minmax(0,1fr)">${a[me]?memberCard(a[me],R,pl?.name||'Tú',{me:true,rank:a[me].rank,of:a[me].of}):''}</div>
+ <p class="saved-note"><b>Guarden esta pantalla como evidencia.</b> También quedó guardada en este celular, en <b>Mis resultados</b> (portada del juego). Con <b>Imprimir</b> la guardan en PDF y con <b>Descargar datos</b> bajan sus números semana a semana.${r.ref>0?` El índice compara el costo de su cadena contra la computadora “persona típica” con la misma demanda (${money(r.ref)}); menos de 1 significa que lo hicieron mejor.`:''}</p>
+ <h3 class="section-title">Cómo operaste</h3><div class="members" style="grid-template-columns:minmax(0,1fr)">${a[me]?memberCard(a[me],R,myName,{me:true,rank:a[me].rank,of:a[me].of}):''}</div>
  <h3 class="section-title">Tu equipo</h3>${teamCharts(R,r.demand,mine.orders,mine.nets,mine.name)}
  <div class="members" style="grid-template-columns:repeat(${Math.max(1,R.length-1)},minmax(0,1fr))">${R.map((_,j)=>j!==me&&mem[j]&&a[j]?memberCard(a[j],R,mem[j],{rank:a[j].rank,of:a[j].of}):'').join('')}</div>
  <h3 class="section-title">Cómo opera tu eslabón</h3>${guideCard(R,me)}${lessonsHTML()}`;
 }
+
+function playerCSV(r,name){
+ const R=rolesOf(r),mine=r.teams[r.team],head=['semana','demanda_cliente'];R.forEach(x=>head.push(x.k+'_pedido',x.k+'_inventario_neto'));
+ const lines=[head.join(',')];
+ for(let w=0;w<r.W;w++){const row=[w+1,r.demand[w]??''];R.forEach((_,j)=>row.push(mine.orders[j]?.[w]??'',mine.nets[j]?.[w]??''));lines.push(row.join(','))}
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+lines.join('\n')],{type:'text/csv'}));a.download=`resultados-${cleanName(mine.name).replace(/\s+/g,'-').toLowerCase()}-${R[r.role].k}.csv`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+function showMine(){
+ const list=myResults();show('s-mine');
+ $('#mineBody').innerHTML=list.length?`<div class="members" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">${list.map((x,i)=>{const r=x.r,R=rolesOf(r),T=r.teams.length,mine=r.teams[r.team],order=r.teams.map((_,t)=>t).sort((a,b)=>r.teams[a].cost-r.teams[b].cost),place=order.indexOf(r.team)+1;
+  return `<button class="card mine-card" data-mine="${i}"><span class="label">${new Date(x.at).toLocaleDateString('es-MX',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</span><b>${esc(String(r.pattern))}</b><span>${esc(mine?mine.name:'')} · ${R[r.role]?R[r.role].n:''}</span><span class="muted">${T>1?`${place}.º lugar de ${T} · `:''}${money(mine?mine.cost:0)}${r.ref>0?` · índice ${fmtIdx(mine.cost/r.ref)}`:''}</span></button>`}).join('')}</div>`
+  :'<p class="muted">Todavía no hay resultados guardados en este dispositivo.</p>';
+}
+$('#mineBody').addEventListener('click',e=>{const b=e.target.closest('[data-mine]');if(!b)return;const x=myResults()[+b.dataset.mine];if(x)playerResults(x.r,x.name||'Tú')});
+$('#mineBtn').onclick=showMine;
+refreshMine();
 
 /* --- Arranque: enlace con ?sala=CODIGO (y opcionalmente &equipo=N&rol=N) o sala guardada --- */
 $('#joinBtn').onclick=()=>{show('s-join');renderJoin()};
